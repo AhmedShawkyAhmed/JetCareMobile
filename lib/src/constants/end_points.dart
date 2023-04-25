@@ -1,0 +1,33 @@
+class EndPoints {
+  static const baseUrl = "https://jetcare-api.ahmedshawky.fun/api/";
+  static const imageDomain =
+      "https://jetcare-api.ahmedshawky.fun/public/images/";
+  static const login = "appLogin";
+  static const mail = "mail";
+  static const register = "register";
+  static const checkEmail = "checkEmail";
+  static const resetPassword = "resetPassword";
+  static const deleteAccount = "deleteAccount";
+  static const getHome = "getHome";
+  static const getAppInfo = "getAppInfo";
+  static const updateAccount = "updateAccount";
+  static const getCategoryDetails = "getCategoryDetails";
+  static const getPackageDetails = "getPackageDetails";
+  static const getPackages = "getPackages";
+  static const getMyOrders = "getMyOrders";
+  static const addSupport = "addSupport";
+  static const getSpaces = "getSpacesMobile";
+  static const addAddress = "addAddress";
+  static const getAreas = "getAreasMobile";
+  static const getDatesMobile = "getDatesMobile";
+  static const getPeriods = "getPeriodsMobile";
+  static const createOrder = "createOrder";
+  static const getMyAddresses = "getMyAddresses";
+  static const deleteAddress = "deleteAddress";
+  static const updateAddress = "updateAddress";
+  static const getMyTasks = "getMyTasks";
+  static const rejectOrder = "rejectOrder";
+  static const deleteOrder = "deleteOrder";
+  static const updateOrderStatus = "updateOrderStatus";
+  static const addCorporateOrder = "addCorporateOrder";
+}
