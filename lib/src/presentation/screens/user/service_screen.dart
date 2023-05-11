@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:jetcare/src/business_logic/cart_cubit/cart_cubit.dart';
 import 'package:jetcare/src/constants/app_strings.dart';
+import 'package:jetcare/src/constants/constants_methods.dart';
 import 'package:jetcare/src/constants/shared_preference_keys.dart';
 import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
 import 'package:jetcare/src/presentation/router/app_router_argument.dart';
@@ -8,6 +10,7 @@ import 'package:jetcare/src/presentation/router/app_router_names.dart';
 import 'package:jetcare/src/presentation/styles/app_colors.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/card_view.dart';
+import 'package:jetcare/src/presentation/views/indicator_view.dart';
 import 'package:jetcare/src/presentation/widgets/default_app_button.dart';
 import 'package:jetcare/src/presentation/widgets/default_text.dart';
 import 'package:jetcare/src/presentation/widgets/default_text_field.dart';
@@ -48,8 +51,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
                     padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 5.h),
                     child: CardView(
                       title: CacheHelper.getDataFromSharedPreference(
-                          key: SharedPreferenceKeys.language) ==
-                          "ar"
+                                  key: SharedPreferenceKeys.language) ==
+                              "ar"
                           ? widget.appRouterArgument.itemModel!.nameAr
                           : widget.appRouterArgument.itemModel!.nameEn,
                       image: widget.appRouterArgument.itemModel!.image,
@@ -76,10 +79,11 @@ class _ServiceScreenState extends State<ServiceScreen> {
                       child: DefaultText(
                         maxLines: 17,
                         text: CacheHelper.getDataFromSharedPreference(
-                            key: SharedPreferenceKeys.language) ==
-                            "ar"
+                                    key: SharedPreferenceKeys.language) ==
+                                "ar"
                             ? widget.appRouterArgument.itemModel!.descriptionAr!
-                            : widget.appRouterArgument.itemModel!.descriptionEn!,
+                            : widget
+                                .appRouterArgument.itemModel!.descriptionEn!,
                         fontSize: 15.sp,
                       ),
                     ),
@@ -87,67 +91,13 @@ class _ServiceScreenState extends State<ServiceScreen> {
                   SizedBox(
                     height: 2.h,
                   ),
-                  edit
-                      ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      DefaultTextField(
-                        width: 70.w,
-                        marginVertical: 0,
-                        marginHorizontal: 5.w,
-                        keyboardType: TextInputType.number,
-                        controller: quantityController,
-                        hintText: translate(AppStrings.count),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 5.w),
-                        child: DefaultText(
-                          text: translate(AppStrings.save),
-                          onTap: () {
-                            setState(() {
-                              quantity = int.parse(quantityController.text == ""
-                                  ? "1"
-                                  : quantityController.text);
-                              widget.appRouterArgument.itemModel!.quantity =
-                                  quantity;
-                              edit = !edit;
-                            });
-                          },
-                          textColor: AppColors.pc,
-                          fontSize: 13.sp,
-                        ),
-                      ),
-                    ],
-                  )
-                      : Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Row(
                     children: [
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 5.w),
                         child: DefaultText(
-                          fontSize: 13.sp,
-                          text: translate(AppStrings.count),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 5.w),
-                        child: DefaultText(
-                          fontSize: 13.sp,
-                          text:
-                          "$quantity ${widget.appRouterArgument.itemModel!.unit}",
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 5.w),
-                        child: DefaultText(
-                          text: translate(AppStrings.update),
-                          onTap: () {
-                            setState(() {
-                              edit = !edit;
-                            });
-                          },
-                          textColor: AppColors.pc,
-                          fontSize: 13.sp,
+                          text: "${translate(AppStrings.count)} ${widget.appRouterArgument.itemModel!.unit}",
+                          fontSize: 15.sp,
                         ),
                       ),
                     ],
@@ -155,41 +105,75 @@ class _ServiceScreenState extends State<ServiceScreen> {
                   SizedBox(
                     height: 2.h,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 5.w),
-                        child: DefaultText(
-                          text:
-                          "${translate(AppStrings.price)} : ${widget.appRouterArgument.itemModel!.price!.toInt() * quantity} ${translate(AppStrings.currency)}",
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 5.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        DefaultTextField(
+                          width: 25.w,
+                          marginVertical: 0,
+                          marginHorizontal: 5.w,
+                          maxLength: 5,
+                          controller: quantityController,
+                          keyboardType: TextInputType.number,
+                          hintText: translate(AppStrings.orderSpace),
+                          onChange: (value) {
+                            setState(() {
+                              printError(value);
+                              quantity = int.parse(value == "" ? "1" : value);
+                            });
+                          },
                         ),
-                      ),
-                    ],
-                  ),
-                  DefaultAppButton(
-                    title: translate(AppStrings.appointment),
-                    onTap: () {
-                      if (edit) {
-                        DefaultToast.showMyToast(translate(AppStrings.saveFirst));
-                      } else {
-                        setState(() {
-                          widget.appRouterArgument.itemModel!.price = widget
-                              .appRouterArgument.itemModel!.price!
-                              .toInt() *
-                              quantity;
-                        });
-                        Navigator.pushNamed(
-                          context,
-                          AppRouterNames.appointment,
-                          arguments: AppRouterArgument(
-                            type: "item",
-                            itemModel: widget.appRouterArgument.itemModel,
+                        Padding(
+                          padding: EdgeInsets.only(right: 5.w),
+                          child: SizedBox(
+                            width: 50.w,
+                            child: DefaultText(
+                              align: TextAlign.end,
+                              text:
+                              "${((widget.appRouterArgument.itemModel!.price)!.toInt() * quantity)} ${translate(AppStrings.currency)}",
+                              maxLines: 1,
+                            ),
                           ),
-                        );
-                      }
-                    },
+                        ),
+                      ],
+                    ),
                   ),
+                  CacheHelper.getDataFromSharedPreference(
+                              key: SharedPreferenceKeys.password) ==
+                          null
+                      ? DefaultAppButton(
+                          title: translate(AppStrings.loginFirst),
+                          onTap: () {
+                            Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              AppRouterNames.login,
+                              (route) => false,
+                            );
+                          },
+                        )
+                      : DefaultAppButton(
+                          title: translate(AppStrings.toCart),
+                          onTap: () {
+                            if (edit) {
+                              DefaultToast.showMyToast(
+                                  translate(AppStrings.saveFirst));
+                            } else {
+                              IndicatorView.showIndicator(context);
+                              CartCubit.get(context).addToCart(
+                                itemId: widget.appRouterArgument.itemModel!.id,
+                                count: quantity,
+                                price: widget.appRouterArgument.itemModel!.price!
+                                    .toDouble(),
+                                afterSuccess: () {
+                                  Navigator.pop(context);
+                                  quantityController.clear();
+                                },
+                              );
+                            }
+                          },
+                        ),
                   SizedBox(
                     height: 2.h,
                   ),

@@ -69,6 +69,10 @@ class DefaultTextField extends StatelessWidget {
         borderRadius: BorderRadius.circular(radius ?? 10),
       ),
       child: TextField(
+        textInputAction: TextInputAction.go,
+        onSubmitted: (value) {
+          FocusManager.instance.primaryFocus?.unfocus();
+        },
         keyboardType: keyboardType ?? TextInputType.text,
         textAlignVertical: TextAlignVertical.center,
         enabled: enabled ?? true,
@@ -88,6 +92,7 @@ class DefaultTextField extends StatelessWidget {
         maxLines: maxLine ?? 1,
         maxLength: maxLength,
         decoration: InputDecoration(
+          counterText: "",
           counterStyle: const TextStyle(color: AppColors.lightGrey),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(radius ?? 10),

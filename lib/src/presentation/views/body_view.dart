@@ -103,7 +103,7 @@ class BodyView extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: hasBack ? 5.h : 0),
+            padding: EdgeInsets.only(top: hasBack ? 10.h : 0),
             child: SizedBox(
               height: 100.h,
               width: 100.w,
@@ -117,7 +117,7 @@ class BodyView extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: 5.w,
-                    vertical: 6.h,
+                    vertical: 4.h,
                   ),
                   child: InkWell(
                     onTap: () {
@@ -130,12 +130,12 @@ class BodyView extends StatelessWidget {
                         horizontal: 3.w,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.pc,
+                        color: AppColors.white,
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: Icon(
                         Icons.arrow_back_ios,
-                        color: AppColors.white,
+                        color: AppColors.pc,
                         size: 20.sp,
                       ),
                     ),

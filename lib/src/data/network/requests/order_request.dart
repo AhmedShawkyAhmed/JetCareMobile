@@ -1,21 +1,15 @@
 class OrderRequest {
-  num userId, periodId, addressId, total;
-  int? packageId, itemId, calendarId,spaceId;
+  num periodId, addressId, total;
   String date;
   String? comment;
-  List<int> extraIds;
+  List<int> cart;
 
   OrderRequest({
-    required this.userId,
     required this.total,
     required this.addressId,
     required this.periodId,
     required this.date,
-    required this.spaceId,
-    this.calendarId,
-    this.itemId,
-    required this.extraIds,
-    this.packageId,
+    required this.cart,
     this.comment,
   });
 }

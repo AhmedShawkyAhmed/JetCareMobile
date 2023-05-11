@@ -28,21 +28,6 @@ class MoreScreen extends StatelessWidget {
         hasBack: false,
         widget: Column(
           children: [
-            Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: 5.w,
-                    right: 5.w,
-                    top: 5.h,
-                  ),
-                  child: DefaultText(
-                    text: globalAccountModel.name!,
-                    fontSize: 25.sp,
-                  ),
-                ),
-              ],
-            ),
             // Row(
             //   children: [
             //     SizedBox(
@@ -63,7 +48,7 @@ class MoreScreen extends StatelessWidget {
             //   ],
             // ),
             SizedBox(
-              height: 2.h,
+              height: 4.h,
             ),
             if (globalAccountModel.role == "client")
               MoreItem(

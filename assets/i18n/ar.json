@@ -89,7 +89,10 @@
   "reject": "رفض",
   "accept": "قبول",
   "complete": "إتمام",
-  "cancelOrder": "تم إلغاء الطلب بنجاح",
+  "cancelOrder": "إلغاء الطلب",
+  "cancelOrderQ": "هل أنت متأكد من رغبتك في إلغاء الطلب ؟",
+  "cancelReason": "سبب الإلغاء",
+  "enterCancelReason": "أدخل سبب الإلغاء",
   "summery": "ملخص الطلب",
   "confirm": "تأكيد",
   "chooseAddress": "إختر العنوان",
@@ -116,5 +119,6 @@
   "error": "حدث خطأ ما",
   "guest": "الدخول كزائر",
   "loginFirst": "تسجيل الدخول أولاً",
-  "items": "العناصر"
+  "items": "العناصر",
+  "toCart": "اضف إلي العربة"
 }

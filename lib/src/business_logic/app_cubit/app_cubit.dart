@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jetcare/src/presentation/screens/crew/crew_history_screen.dart';
 import 'package:jetcare/src/presentation/screens/crew/crew_home_screen.dart';
+import 'package:jetcare/src/presentation/screens/user/cart_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/history_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/home_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/more_screen.dart';
@@ -20,6 +21,7 @@ class AppCubit extends Cubit<AppState> {
   final List<Widget> clientScreens = [
     const HomeScreen(),
     const HistoryScreen(),
+    const CartScreen(),
     const MoreScreen(),
   ];
 

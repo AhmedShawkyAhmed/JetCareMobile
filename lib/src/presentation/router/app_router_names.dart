@@ -23,4 +23,6 @@ class AppRouterNames {
   static const appointment = "appointment";
   static const disable = "disable";
   static const confirmOrder = "confirmOrder";
+  static const notification = "notification";
+  static const cart = "cart";
 }

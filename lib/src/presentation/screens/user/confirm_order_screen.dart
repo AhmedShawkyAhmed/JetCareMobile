@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:jetcare/src/NotificationDownloadingService.dart';
+import 'package:jetcare/src/business_logic/app_cubit/app_cubit.dart';
+import 'package:jetcare/src/business_logic/notification_cubit/notification_cubit.dart';
 import 'package:jetcare/src/business_logic/order_cubit/order_cubit.dart';
 import 'package:jetcare/src/constants/app_strings.dart';
-import 'package:jetcare/src/constants/constants_variables.dart';
-import 'package:jetcare/src/data/network/requests/order_request.dart';
 import 'package:jetcare/src/presentation/router/app_router_argument.dart';
 import 'package:jetcare/src/presentation/router/app_router_names.dart';
 import 'package:jetcare/src/presentation/styles/app_colors.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
+import 'package:jetcare/src/presentation/views/cart_item.dart';
 import 'package:jetcare/src/presentation/views/indicator_view.dart';
-import 'package:jetcare/src/presentation/views/summery_item.dart';
 import 'package:jetcare/src/presentation/widgets/default_app_button.dart';
 import 'package:jetcare/src/presentation/widgets/default_text.dart';
 import 'package:jetcare/src/presentation/widgets/default_text_field.dart';
+import 'package:jetcare/src/presentation/widgets/toast.dart';
 import 'package:sizer/sizer.dart';
 
 class ConfirmOrderScreen extends StatelessWidget {
@@ -23,100 +25,151 @@ class ConfirmOrderScreen extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final TextEditingController commentController = TextEditingController();
+  final TextEditingController reasonController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.mainColor,
       body: BodyView(
-        widget: SingleChildScrollView(
-          child: Column(
+        hasBack: true,
+        widget: Padding(
+          padding: EdgeInsets.only(top: 1.h),
+          child: ListView(
             children: [
-              SizedBox(
-                height: 5.h,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  DefaultText(
-                    text: translate(AppStrings.summery),
-                    fontSize: 22.sp,
-                  ),
-                ],
-              ),
-              Container(
-                margin: EdgeInsets.only(
-                  left: 10.w,
-                  right: 10.w,
-                  top: 2.h,
-                  bottom: 5.h,
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                child: Row(
+                  children: [
+                    DefaultText(
+                      text: translate(AppStrings.total),
+                    ),
+                    const Spacer(),
+                    DefaultText(
+                      text:
+                          " ${appRouterArgument.orderModel!.total ?? 0} ${translate(AppStrings.currency)}",
+                    ),
+                  ],
                 ),
-                width: 80.w,
-                height: 1.5.sp,
-                color: AppColors.pc,
               ),
-              SizedBox(
-                child: GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 1,
-                    crossAxisSpacing: 0,
-                    mainAxisSpacing: 0,
-                    mainAxisExtent: 65,
-                  ),
-                  padding: EdgeInsets.zero,
-                  itemCount: orderSummery.length,
-                  itemBuilder: (context, index) {
-                    return SummeryItem(
-                      visible: !orderSummery[index].value.contains("null"),
-                      title: translate(orderSummery[index].key),
-                      sub: orderSummery[index].key == AppStrings.total
-                          ? "${orderSummery[index].value} ${translate(AppStrings.currency)}"
-                          : orderSummery[index].value,
+              if (appRouterArgument.orderModel!.status == "unassigned") ...[
+                DefaultAppButton(
+                  title: translate(AppStrings.cancel),
+                  fontSize: 14.sp,
+                  onTap: () {
+                    showDialog<void>(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          backgroundColor: AppColors.mainColor,
+                          title: DefaultText(
+                            text: translate(AppStrings.cancelOrder),
+                            align: TextAlign.center,
+                            fontSize: 19.sp,
+                          ),
+                          content: SingleChildScrollView(
+                            child: ListBody(
+                              children: <Widget>[
+                                DefaultText(
+                                  text: translate(AppStrings.cancelOrderQ),
+                                  align: TextAlign.center,
+                                  fontSize: 15.sp,
+                                  maxLines: 3,
+                                ),
+                                DefaultTextField(
+                                  controller: reasonController,
+                                  marginVertical: 0,
+                                  marginHorizontal: 0,
+                                  hintText: translate(AppStrings.cancelReason),
+                                  maxLine: 10,
+                                  height: 15.h,
+                                  width: 100.w,
+                                  maxLength: 500,
+                                ),
+                              ],
+                            ),
+                          ),
+                          actionsAlignment: MainAxisAlignment.spaceEvenly,
+                          actions: <Widget>[
+                            DefaultText(
+                              text: translate(AppStrings.cancelOrder),
+                              align: TextAlign.center,
+                              fontSize: 13.sp,
+                              textColor: AppColors.darkRed,
+                              onTap: () {
+                                if(reasonController.text == ""){
+                                  DefaultToast.showMyToast(translate(AppStrings.enterCancelReason));
+                                }else{
+                                  IndicatorView.showIndicator(context);
+                                  OrderCubit.get(context).updateOrderStatus(
+                                    orderId: appRouterArgument.orderModel!.id!,
+                                    status: "canceled",
+                                    reason: reasonController.text,
+                                    afterSuccess: () {
+                                      AppCubit.get(context).changeIndex(0);
+                                      Navigator.pushReplacementNamed(
+                                          context, AppRouterNames.layout);
+                                      NotificationCubit.get(context).saveNotification(
+                                        title: "الطلبات",
+                                        message: "تم إلغاء طلبك بنجاح",
+                                        afterSuccess: () {
+                                          NotificationService().showNotification(
+                                            id: 12,
+                                            title: "الطلبات",
+                                            body: "تم إلغاء طلبك بنجاح",
+                                          );
+                                        },
+                                      );
+                                    },
+                                  );
+                                }
+                              },
+                            ),
+                            DefaultText(
+                              text: translate(AppStrings.cancel),
+                              align: TextAlign.center,
+                              fontSize: 13.sp,
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        );
+                      },
                     );
                   },
+                  textColor: AppColors.white,
+                  buttonColor: AppColors.darkRed,
                 ),
+              ],
+              SizedBox(
+                height: 1.h,
               ),
-              DefaultTextField(
-                controller: commentController,
-                hintText: translate(AppStrings.addComment),
-                maxLine: 10,
-                height: 25.h,
-                maxLength: 500,
-              ),
-              DefaultAppButton(
-                title: translate(AppStrings.confirm),
-                onTap: () {
-                  IndicatorView.showIndicator(context);
-                  OrderCubit.get(context).createOrder(
-                    orderRequest: OrderRequest(
-                      userId: globalAccountModel.id!,
-                      total: int.parse(orderSummery.last.value.toString()),
-                      addressId: selectedAddress.id!,
-                      date: dateController.text,
-                      spaceId: selectedSpace.id,
-                      packageId: appRouterArgument.packageModel?.id,
-                      itemId: appRouterArgument.itemModel?.id,
-                      periodId: selectedPeriod.id!,
-                      extraIds: extrasIds,
-                      comment: commentController.text == ""
-                          ? null
-                          : commentController.text,
-                    ),
-                    afterSuccess: () {
-                      Navigator.pop(context);
-                      Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        AppRouterNames.success,
-                        arguments: AppRouterArgument(
-                          type: "order",
-                        ),
-                        (route) => false,
-                      );
-                      disposeConstants();
-                    },
+              ListView.builder(
+                physics: const ScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: appRouterArgument.orderModel!.cart!.length,
+                itemBuilder: (context, index) {
+                  return CartItem(
+                    withDelete: false,
+                    image: appRouterArgument.orderModel!.cart![index].package ==
+                            null
+                        ? appRouterArgument
+                            .orderModel!.cart![index].item!.image!
+                        : appRouterArgument
+                            .orderModel!.cart![index].package!.image!,
+                    name: appRouterArgument.orderModel!.cart![index].package ==
+                            null
+                        ? appRouterArgument
+                            .orderModel!.cart![index].item!.nameEn!
+                        : appRouterArgument
+                            .orderModel!.cart![index].package!.nameEn!,
+                    count: appRouterArgument.orderModel!.cart![index].count
+                        .toString(),
+                    price: appRouterArgument.orderModel!.cart![index].price
+                        .toString(),
+                    onDelete: () {},
                   );
                 },
               ),

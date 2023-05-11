@@ -18,3 +18,9 @@ void printError(String text) {
   }
 }
 
+void printInfo(String text) {
+  if (kDebugMode) {
+    print('\x1B[34m$text\x1B[0m');
+  }
+}
+

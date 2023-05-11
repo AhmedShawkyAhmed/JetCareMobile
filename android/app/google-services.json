@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "873102526889",
+    "project_id": "jetcare-f4e39",
+    "storage_bucket": "jetcare-f4e39.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:873102526889:android:2175a1371985d6b3015cb8",
+        "android_client_info": {
+          "package_name": "com.jetcareeg.jetcare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "873102526889-flrdmqd95sb5r5fe3tqqnc8vlk09vkss.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlnIf4aQA1LaQv1Ztl4LX0BAQjuzajr5o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "873102526889-flrdmqd95sb5r5fe3tqqnc8vlk09vkss.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

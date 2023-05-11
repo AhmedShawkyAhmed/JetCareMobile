@@ -2,19 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:intl/intl.dart';
+import 'package:jetcare/src/NotificationDownloadingService.dart';
 import 'package:jetcare/src/business_logic/address_cubit/address_cubit.dart';
+import 'package:jetcare/src/business_logic/app_cubit/app_cubit.dart';
 import 'package:jetcare/src/business_logic/global_cubit/global_cubit.dart';
+import 'package:jetcare/src/business_logic/notification_cubit/notification_cubit.dart';
+import 'package:jetcare/src/business_logic/order_cubit/order_cubit.dart';
 import 'package:jetcare/src/constants/app_strings.dart';
 import 'package:jetcare/src/constants/constants_methods.dart';
 import 'package:jetcare/src/constants/constants_variables.dart';
 import 'package:jetcare/src/constants/shared_preference_keys.dart';
 import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
-import 'package:jetcare/src/data/network/requests/order_summery.dart';
+import 'package:jetcare/src/data/network/requests/order_request.dart';
 import 'package:jetcare/src/presentation/router/app_router_argument.dart';
 import 'package:jetcare/src/presentation/router/app_router_names.dart';
 import 'package:jetcare/src/presentation/styles/app_colors.dart';
 import 'package:jetcare/src/presentation/views/address_widget.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
+import 'package:jetcare/src/presentation/views/indicator_view.dart';
 import 'package:jetcare/src/presentation/views/period_view.dart';
 import 'package:jetcare/src/presentation/widgets/default_app_button.dart';
 import 'package:jetcare/src/presentation/widgets/default_text.dart';
@@ -23,10 +28,7 @@ import 'package:jetcare/src/presentation/widgets/toast.dart';
 import 'package:sizer/sizer.dart';
 
 class AppointmentScreen extends StatefulWidget {
-  final AppRouterArgument appRouterArgument;
-
   const AppointmentScreen({
-    required this.appRouterArgument,
     Key? key,
   }) : super(key: key);
 
@@ -38,6 +40,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   DateTime now = DateTime.now();
   int quantity = 1;
   TextEditingController quantityController = TextEditingController();
+  final TextEditingController commentController = TextEditingController();
 
   Future<void> selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -95,7 +98,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
             ),
             if (CacheHelper.getDataFromSharedPreference(
                     key: SharedPreferenceKeys.password) !=
-                null)
+                null) ...[
               Row(
                 children: [
                   Padding(
@@ -107,15 +110,9 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                   ),
                 ],
               ),
-            if (CacheHelper.getDataFromSharedPreference(
-                    key: SharedPreferenceKeys.password) !=
-                null)
               SizedBox(
                 height: 2.h,
               ),
-            if (CacheHelper.getDataFromSharedPreference(
-                    key: SharedPreferenceKeys.password) !=
-                null)
               SizedBox(
                 height: 10.h,
                 child: BlocBuilder<AddressCubit, AddressState>(
@@ -174,9 +171,10 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                   },
                 ),
               ),
-            SizedBox(
-              height: 3.h,
-            ),
+              SizedBox(
+                height: 3.h,
+              ),
+            ],
             Row(
               children: [
                 Padding(
@@ -242,340 +240,68 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                 },
               ),
             ),
-            if (widget.appRouterArgument.type == "package") ...[
-              SizedBox(
-                height: 3.h,
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 5.w),
-                    child: DefaultText(
-                      text: "${translate(AppStrings.enterSpace)} M²",
-                      fontSize: 15.sp,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 2.h,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  DefaultTextField(
-                    width: 90.w,
-                    marginVertical: 0,
-                    marginHorizontal: 5.w,
-                    controller: quantityController,
-                    keyboardType: TextInputType.number,
-                    hintText: translate(AppStrings.orderSpace),
-                    onChange: (value) {
-                      setState(() {
-                        printError(value);
-                        quantity = int.parse(value == "" ? "1" : value);
-                      });
-                    },
-                  ),
-                ],
-              )
-            ],
             SizedBox(
-              height: 5.h,
+              height: 2.h,
             ),
-            Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 5.w),
-                  child: DefaultText(
-                    text: translate(AppStrings.addExtra),
-                    fontSize: 15.sp,
-                  ),
-                ),
-              ],
-            ),
-            GlobalCubit.get(context).homeResponse?.extraModel == null
-                ? SizedBox(
-                    height: 50.h,
-                    child: Center(
-                      child: DefaultText(
-                        text: translate(AppStrings.noExtras),
-                      ),
-                    ),
-                  )
-                : SizedBox(
-                    height: 14.h,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      padding: EdgeInsets.all(5.w),
-                      itemCount: GlobalCubit.get(context)
-                          .homeResponse!
-                          .extraModel!
-                          .length,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () {
-                            isChecked[index] = !isChecked[index];
-                            isChecked[index]
-                                ? {
-                                    selectedExtra.add(GlobalCubit.get(context)
-                                        .homeResponse!
-                                        .extraModel![index]),
-                                    extrasIds.add(GlobalCubit.get(context)
-                                        .homeResponse!
-                                        .extraModel![index]
-                                        .id!),
-                                    extrasPrice = extrasPrice +
-                                        GlobalCubit.get(context)
-                                            .homeResponse!
-                                            .extraModel![index]
-                                            .price!,
-                                  }
-                                : {
-                                    selectedExtra.remove(
-                                        GlobalCubit.get(context)
-                                            .homeResponse!
-                                            .extraModel![index]),
-                                    extrasIds.remove(GlobalCubit.get(context)
-                                        .homeResponse!
-                                        .extraModel![index]
-                                        .id!),
-                                    extrasPrice = extrasPrice -
-                                        GlobalCubit.get(context)
-                                            .homeResponse!
-                                            .extraModel![index]
-                                            .price!,
-                                  };
-                            setState(() {
-                              printResponse(extrasPrice.toString());
-                            });
-                          },
-                          child: Container(
-                            width: 40.w,
-                            height: 3.h,
-                            margin: EdgeInsets.symmetric(
-                                vertical: 0.5.h, horizontal: 2.w),
-                            padding: EdgeInsets.symmetric(
-                              vertical: 0.5.h,
-                              horizontal: 1.w,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.shade.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(
-                                  width: 30.w,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      DefaultText(
-                                        text: CacheHelper
-                                                    .getDataFromSharedPreference(
-                                                        key:
-                                                            SharedPreferenceKeys
-                                                                .language) ==
-                                                "ar"
-                                            ? GlobalCubit.get(context)
-                                                    .homeResponse!
-                                                    .extraModel![index]
-                                                    .nameAr ??
-                                                ""
-                                            : GlobalCubit.get(context)
-                                                    .homeResponse!
-                                                    .extraModel![index]
-                                                    .nameEn ??
-                                                "",
-                                        textColor: AppColors.white,
-                                        fontSize: 12.sp,
-                                      ),
-                                      DefaultText(
-                                        text:
-                                            "${GlobalCubit.get(context).homeResponse!.extraModel![index].price ?? ""} ${translate(AppStrings.currency)}",
-                                        textColor: AppColors.white,
-                                        fontSize: 10.sp,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 5.w,
-                                  child: Checkbox(
-                                    value: selectedExtra.contains(
-                                            GlobalCubit.get(context)
-                                                .homeResponse!
-                                                .extraModel![index])
-                                        ? true
-                                        : isChecked[index],
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(100),
-                                    ),
-                                    onChanged: (value) {},
-                                    activeColor: AppColors.pc,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-            SizedBox(
-              height: 5.h,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                DefaultText(
-                  text:
-                      "${((widget.appRouterArgument.packageModel == null ? widget.appRouterArgument.itemModel!.price : widget.appRouterArgument.packageModel!.price)!.toInt() * quantity) + (extrasPrice).toInt()} ${translate(AppStrings.currency)}",
-                  maxLines: 1,
-                ),
-              ],
+            DefaultTextField(
+              controller: commentController,
+              hintText: translate(AppStrings.addComment),
+              maxLine: 10,
+              height: 15.h,
+              maxLength: 500,
             ),
             SizedBox(
               height: 2.h,
             ),
-            CacheHelper.getDataFromSharedPreference(
-                        key: SharedPreferenceKeys.password) ==
-                    null
-                ? DefaultAppButton(
-                    title: translate(AppStrings.loginFirst),
-                    onTap: () {
-                      Navigator.pushNamedAndRemoveUntil(
+            DefaultAppButton(
+              title: translate(AppStrings.confirm),
+              onTap: () {
+                if (dateController.text == "") {
+                  DefaultToast.showMyToast(translate(AppStrings.selectData));
+                } else if (selectedAddress.id == null ||
+                    selectedAddress.id == 0) {
+                  DefaultToast.showMyToast(translate(AppStrings.selectAddress));
+                } else if (selectedPeriod.id == null ||
+                    selectedPeriod.id == 0) {
+                  DefaultToast.showMyToast(translate(AppStrings.selectTime));
+                } else {
+                  IndicatorView.showIndicator(context);
+                  OrderCubit.get(context).createOrder(
+                    orderRequest: OrderRequest(
+                      total: cartTotal,
+                      periodId: selectedPeriod.id!,
+                      addressId: selectedAddress.id!,
+                      date: dateController.text,
+                      comment: commentController.text == ""
+                          ? null
+                          : commentController.text,
+                      cart: cart,
+                    ),
+                    afterSuccess: () {
+                      Navigator.pushReplacementNamed(
                         context,
-                        AppRouterNames.login,
-                        (route) => false,
+                        AppRouterNames.success,
+                        arguments: AppRouterArgument(
+                          type: "order",
+                        ),
                       );
+                      NotificationCubit.get(context).saveNotification(
+                        title: "الطلبات",
+                        message: "تم إنشاء طلبك بنجاح و بإنتظار التأكيد",
+                        afterSuccess: () {
+                          NotificationService().showNotification(
+                            id: 12,
+                            title: "الطلبات",
+                            body: "تم إنشاء طلبك بنجاح و بإنتظار التأكيد",
+                          );
+                        },
+                      );
+                      cart.clear();
                     },
-                  )
-                : DefaultAppButton(
-                    title: translate(AppStrings.con),
-                    onTap: () {
-                      orderSummery.clear();
-                      if (dateController.text == "") {
-                        DefaultToast.showMyToast(
-                            translate(AppStrings.selectData));
-                      } else if (selectedAddress.id == 0) {
-                        DefaultToast.showMyToast(
-                            translate(AppStrings.selectAddress));
-                      } else if (selectedPeriod.id == 0) {
-                        DefaultToast.showMyToast(
-                            translate(AppStrings.selectTime));
-                      }  else if (quantity < 10 && widget.appRouterArgument.type == "package") {
-                        DefaultToast.showMyToast(
-                            translate(AppStrings.enterSpace));
-                      }else {
-                        orderSummery.insert(
-                          0,
-                          OrderSummery(
-                            key: AppStrings.order,
-                            value: CacheHelper.getDataFromSharedPreference(
-                                        key: SharedPreferenceKeys.language) ==
-                                    "ar"
-                                ? "${widget.appRouterArgument.packageModel == null ? widget.appRouterArgument.itemModel!.nameAr : widget.appRouterArgument.packageModel!.nameAr}"
-                                : "${widget.appRouterArgument.packageModel == null ? widget.appRouterArgument.itemModel!.nameEn : widget.appRouterArgument.packageModel!.nameEn}",
-                          ),
-                        );
-                        orderSummery.insert(
-                          1,
-                          OrderSummery(
-                            key: AppStrings.orderAddress,
-                            value:
-                                "${selectedAddress.floor}, ${selectedAddress.building}, ${selectedAddress.street}, ${selectedAddress.area}, ${selectedAddress.district}",
-                          ),
-                        );
-                        orderSummery.insert(
-                          2,
-                          OrderSummery(
-                            key: AppStrings.orderPhone,
-                            value: "${selectedAddress.phone}",
-                          ),
-                        );
-                        orderSummery.insert(
-                          3,
-                          OrderSummery(
-                            key: AppStrings.orderDate,
-                            value: dateController.text,
-                          ),
-                        );
-                        orderSummery.insert(
-                          4,
-                          OrderSummery(
-                            key: AppStrings.orderTime,
-                            value:
-                                "${selectedPeriod.from} - ${selectedPeriod.to}",
-                          ),
-                        );
-                        orderSummery.insert(
-                          5,
-                          OrderSummery(
-                            key: AppStrings.orderSpace,
-                            value:
-                                "$quantity M²",
-                          ),
-                        );
-                        orderSummery.insert(
-                          6,
-                          OrderSummery(
-                            key: AppStrings.count,
-                            value:
-                                "${widget.appRouterArgument.itemModel?.quantity} - ${widget.appRouterArgument.itemModel?.unit}",
-                          ),
-                        );
-                        orderSummery.insert(
-                          7,
-                          OrderSummery(
-                            key: AppStrings.price,
-                            value:
-                                "${((widget.appRouterArgument.packageModel == null ? widget.appRouterArgument.itemModel!.price : widget.appRouterArgument.packageModel!.price)!.toInt() * quantity) } ${translate(AppStrings.currency)}",
-                          ),
-                        );
-                        if (selectedExtra.isNotEmpty) {
-                          for (int i = 0; i < selectedExtra.length; i++) {
-                            orderSummery.insert(
-                              i + 8,
-                              OrderSummery(
-                                key: CacheHelper.getDataFromSharedPreference(
-                                            key: SharedPreferenceKeys
-                                                .language) ==
-                                        "ar"
-                                    ? "${selectedExtra[i].nameAr}"
-                                    : "${selectedExtra[i].nameEn}",
-                                value:
-                                    "${selectedExtra[i].price} ${translate(AppStrings.currency)}",
-                              ),
-                            );
-                          }
-                        }
-                        orderSummery.insert(
-                          selectedExtra.length + 8,
-                          OrderSummery(
-                            key: AppStrings.total,
-                            value:
-                                "${((widget.appRouterArgument.packageModel == null ? widget.appRouterArgument.itemModel!.price : widget.appRouterArgument.packageModel!.price)!.toInt() * quantity) + (extrasPrice).toInt()}",
-                          ),
-                        );
-                        if (widget.appRouterArgument.type == "item") {
-                          orderSummery.removeAt(5);
-                        }
-                        if (widget.appRouterArgument.type == "package") {
-                          orderSummery.removeAt(6);
-                        }
-                        Navigator.pushNamed(
-                          context,
-                          AppRouterNames.confirmOrder,
-                          arguments: widget.appRouterArgument,
-                        );
-                      }
-                    },
-                  ),
+                  );
+                }
+              },
+            ),
             SizedBox(
               height: 2.h,
             ),

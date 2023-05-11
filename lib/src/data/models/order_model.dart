@@ -1,6 +1,7 @@
 import 'package:jetcare/src/data/models/account_model.dart';
 import 'package:jetcare/src/data/models/address_model.dart';
 import 'package:jetcare/src/data/models/calendar_model.dart';
+import 'package:jetcare/src/data/models/cart_model.dart';
 import 'package:jetcare/src/data/models/item_model.dart';
 import 'package:jetcare/src/data/models/package_model.dart';
 import 'package:jetcare/src/data/models/period_model.dart';
@@ -17,6 +18,7 @@ class OrderModel {
   ItemModel? item;
   CalendarModel? calendar;
   List<ItemModel>? extras;
+  List<CartModel>? cart;
 
   OrderModel({
     this.id,
@@ -32,6 +34,7 @@ class OrderModel {
     this.package,
     this.calendar,
     this.extras,
+    this.cart,
     this.comment,
   });
 
@@ -61,6 +64,11 @@ class OrderModel {
             ? List<ItemModel>.from(
                 json["extras"].map((x) => ItemModel.fromJson(x)))
             : json["extras"],
+
+    cart: json["cart"] != null
+        ? List<CartModel>.from(
+        json["cart"].map((x) => CartModel.fromJson(x)))
+        : json["cart"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -78,5 +86,6 @@ class OrderModel {
         'calendar': calendar,
         'comment': comment,
         "extras": List<dynamic>.from(extras!.map((x) => x.toJson())),
+        "cart": List<dynamic>.from(cart!.map((x) => x.toJson())),
       };
 }

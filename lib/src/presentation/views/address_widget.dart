@@ -51,7 +51,7 @@ class _AddressWidgetState extends State<AddressWidget> {
                       DefaultText(
                         text:
                             "${widget.addressModel.floor}, ${widget.addressModel.building}, ${widget.addressModel.street}, ${widget.addressModel.area}, ${widget.addressModel.district}",
-                        fontSize: 12.sp,
+                        fontSize: 10.sp,
                         maxLines: 1,
                         fontWeight: FontWeight.w400,
                       ),
@@ -60,7 +60,7 @@ class _AddressWidgetState extends State<AddressWidget> {
                       ),
                       DefaultText(
                         text: "${translate(AppStrings.orderPhone)} ${widget.addressModel.phone}",
-                        fontSize: 12.sp,
+                        fontSize: 10.sp,
                         fontWeight: FontWeight.w400,
                       ),
                     ],

@@ -95,31 +95,26 @@ class OrderCubit extends Cubit<OrderState> {
     required OrderRequest orderRequest,
     required VoidCallback afterSuccess,
   }) async {
-    printError(orderRequest.extraIds.length.toString());
     try {
       emit(OrdersLoadingState());
       await DioHelper.postData(
         url: EndPoints.createOrder,
         body: {
-          'userId': orderRequest.userId,
-          'packageId': orderRequest.packageId,
-          'calendarId': orderRequest.calendarId,
-          'spaceId': orderRequest.spaceId,
+          'userId': globalAccountModel.id,
           'periodId': orderRequest.periodId,
-          'total': orderRequest.total,
           'addressId': orderRequest.addressId,
           'date': orderRequest.date,
-          'itemId': orderRequest.itemId,
+          'total': orderRequest.total,
           'comment': orderRequest.comment,
-          'extras': orderRequest.extraIds.isEmpty ? "" : orderRequest.extraIds,
+          'cart': orderRequest.cart.isEmpty ? "" : orderRequest.cart,
         },
         formData: false,
       ).then((value) {
         printResponse(value.data.toString());
         orderResponse = GlobalResponse.fromJson(value.data);
-        printSuccess("Order Response ${orderResponse!.message.toString()}");
         emit(OrdersSuccessState());
         afterSuccess();
+        printSuccess("Order Response ${orderResponse!.message.toString()}");
       });
     } on DioError catch (n) {
       emit(OrdersErrorState());
@@ -157,6 +152,8 @@ class OrderCubit extends Cubit<OrderState> {
   Future updateOrderStatus({
     required int orderId,
     required String status,
+
+    String? reason,
     required VoidCallback afterSuccess,
   }) async {
     try {
@@ -164,6 +161,7 @@ class OrderCubit extends Cubit<OrderState> {
       await DioHelper.postData(url: EndPoints.updateOrderStatus, body: {
         'id': orderId,
         'status': status,
+        'reason':reason,
       }).then((value) {
         globalResponse = GlobalResponse.fromJson(value.data);
         printSuccess(

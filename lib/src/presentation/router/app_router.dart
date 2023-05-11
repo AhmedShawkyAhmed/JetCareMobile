@@ -4,9 +4,11 @@ import 'package:jetcare/src/presentation/router/app_animation.dart';
 import 'package:jetcare/src/presentation/router/app_router_argument.dart';
 import 'package:jetcare/src/presentation/router/app_router_names.dart';
 import 'package:jetcare/src/presentation/screens/shared/disable_account_screen.dart';
+import 'package:jetcare/src/presentation/screens/shared/notification_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/add_address_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/address_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/appointment_screen.dart';
+import 'package:jetcare/src/presentation/screens/user/cart_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/category_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/confirm_order_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/contact_screen.dart';
@@ -42,7 +44,7 @@ class AppRouter {
         );
       case AppRouterNames.resetPassword:
         final AppRouterArgument appRouterArgument =
-        settings.arguments as AppRouterArgument;
+            settings.arguments as AppRouterArgument;
         return CustomPageRouteTransiton.fadeOut(
           page: ResetPassword(
             appRouterArgument: appRouterArgument,
@@ -50,7 +52,7 @@ class AppRouter {
         );
       case AppRouterNames.profile:
         final AppRouterArgument appRouterArgument =
-        settings.arguments as AppRouterArgument;
+            settings.arguments as AppRouterArgument;
         return CustomPageRouteTransiton.fadeOut(
           page: ProfileScreen(
             appRouterArgument: appRouterArgument,
@@ -58,7 +60,7 @@ class AppRouter {
         );
       case AppRouterNames.otp:
         final AppRouterArgument appRouterArgument =
-        settings.arguments as AppRouterArgument;
+            settings.arguments as AppRouterArgument;
         return CustomPageRouteTransiton.fadeOut(
           page: OTPScreen(
             appRouterArgument: appRouterArgument,
@@ -66,7 +68,7 @@ class AppRouter {
         );
       case AppRouterNames.confirmOrder:
         final AppRouterArgument appRouterArgument =
-        settings.arguments as AppRouterArgument;
+            settings.arguments as AppRouterArgument;
         return CustomPageRouteTransiton.fadeOut(
           page: ConfirmOrderScreen(
             appRouterArgument: appRouterArgument,
@@ -138,7 +140,7 @@ class AppRouter {
         );
       case AppRouterNames.addAddress:
         final AppRouterArgument appRouterArgument =
-        settings.arguments as AppRouterArgument;
+            settings.arguments as AppRouterArgument;
         return CustomPageRouteTransiton.fadeOut(
           page: AddAddressScreen(
             appRouterArguments: appRouterArgument,
@@ -148,9 +150,17 @@ class AppRouter {
         return CustomPageRouteTransiton.fadeOut(
           page: const MapScreen(),
         );
+      case AppRouterNames.notification:
+        return CustomPageRouteTransiton.fadeOut(
+          page: const NotificationScreen(),
+        );
+      case AppRouterNames.cart:
+        return CustomPageRouteTransiton.fadeOut(
+          page: const CartScreen(),
+        );
       case AppRouterNames.success:
         final AppRouterArgument appRouterArgument =
-        settings.arguments as AppRouterArgument;
+            settings.arguments as AppRouterArgument;
         return CustomPageRouteTransiton.fadeOut(
           page: SuccessScreen(
             appRouterArgument: appRouterArgument,
@@ -158,19 +168,15 @@ class AppRouter {
         );
       case AppRouterNames.info:
         final AppRouterArgument appRouterArgument =
-        settings.arguments as AppRouterArgument;
+            settings.arguments as AppRouterArgument;
         return CustomPageRouteTransiton.fadeOut(
           page: InfoScreen(
             appRouterArgument: appRouterArgument,
           ),
         );
       case AppRouterNames.appointment:
-        final AppRouterArgument appRouterArgument =
-        settings.arguments as AppRouterArgument;
         return CustomPageRouteTransiton.fadeOut(
-          page: AppointmentScreen(
-            appRouterArgument: appRouterArgument,
-          ),
+          page: const AppointmentScreen(),
         );
       default:
         return null;

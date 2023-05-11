@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:jetcare/src/business_logic/app_cubit/app_cubit.dart';
 import 'package:jetcare/src/business_logic/order_cubit/order_cubit.dart';
 import 'package:jetcare/src/constants/app_strings.dart';
 import 'package:jetcare/src/presentation/router/app_router_argument.dart';
@@ -58,6 +59,7 @@ class SuccessScreen extends StatelessWidget {
               title: translate(AppStrings.con),
               onTap: () {
                 if (appRouterArgument.type == "order") {
+                  AppCubit.get(context).changeIndex(0);
                   Navigator.pushNamedAndRemoveUntil(
                     context,
                     AppRouterNames.layout,

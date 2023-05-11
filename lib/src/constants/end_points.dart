@@ -30,4 +30,10 @@ class EndPoints {
   static const deleteOrder = "deleteOrder";
   static const updateOrderStatus = "updateOrderStatus";
   static const addCorporateOrder = "addCorporateOrder";
+  static const saveNotification = "saveNotification";
+  static const readNotification = "readNotification";
+  static const getNotifications = "getNotifications";
+  static const addToCart = "addToCart";
+  static const deleteFromCart = "deleteFromCart";
+  static const getMyCart = "getMyCart";
 }

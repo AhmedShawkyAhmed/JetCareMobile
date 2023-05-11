@@ -17,13 +17,16 @@ TextEditingController dateController = TextEditingController();
 List<ItemModel> selectedExtra = [];
 List<OrderSummery> orderSummery = [];
 List<int> extrasIds = [];
+List<int> cart = [];
 num extrasPrice = 0;
+num cartTotal = 0;
 int verifyCode = 0;
 LatLng addressLocation = const LatLng(0.0, 0.0);
 dynamic dropDownValue;
 
 disposeConstants(){
   extrasPrice = 0;
+  cartTotal = 0;
   selectedPeriod = PeriodModel();
   selectedAddress = AddressModel();
   selectedSpace = SpaceModel();
@@ -31,5 +34,6 @@ disposeConstants(){
   verifyCodeController.clear();
   dateController.clear();
   extrasIds.clear();
+  cart.clear();
   selectedExtra.clear();
 }

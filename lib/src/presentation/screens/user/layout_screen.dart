@@ -4,6 +4,7 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/business_logic/app_cubit/app_cubit.dart';
 import 'package:jetcare/src/constants/app_strings.dart';
 import 'package:jetcare/src/presentation/styles/app_colors.dart';
+import 'package:sizer/sizer.dart';
 
 class LayoutScreen extends StatefulWidget {
   const LayoutScreen({Key? key}) : super(key: key);
@@ -21,12 +22,14 @@ class _LayoutScreenState extends State<LayoutScreen> {
       listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(
-      backgroundColor: AppColors.mainColor,
+          backgroundColor: AppColors.mainColor,
           key: scaffoldKey,
           body: AppCubit.get(context)
               .clientScreens[AppCubit.get(context).currentIndex],
           bottomNavigationBar: BottomNavigationBar(
             elevation: 0.0,
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
             backgroundColor: AppColors.mainColor,
             selectedItemColor: AppColors.pc,
             unselectedItemColor: AppColors.shade,
@@ -35,24 +38,30 @@ class _LayoutScreenState extends State<LayoutScreen> {
             onTap: (index) {
               AppCubit.get(context).changeIndex(index);
             },
-            items: [
+            items: const [
               BottomNavigationBarItem(
-                icon: const Icon(
+                icon: Icon(
                   Icons.home,
                 ),
-                label: translate(AppStrings.home),
+                label: "",
               ),
               BottomNavigationBarItem(
-                icon: const Icon(
+                icon: Icon(
                   Icons.sticky_note_2_outlined,
                 ),
-                label: translate(AppStrings.myOrders),
+                label: "",
               ),
               BottomNavigationBarItem(
-                icon: const Icon(
+                icon: Icon(
+                  Icons.shopping_cart_outlined,
+                ),
+                label: "",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(
                   Icons.more_horiz_outlined,
                 ),
-                label: translate(AppStrings.more),
+                label: "",
               ),
             ],
           ),

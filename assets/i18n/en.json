@@ -89,7 +89,10 @@
   "reject": "Reject",
   "accept": "Accept",
   "complete": "Complete",
-  "cancelOrder": "Order Canceled Successfully",
+  "cancelOrder": "Cancel Order",
+  "cancelOrderQ": "Are you sure you want to Cancel this Order ?",
+  "cancelReason": "Cancel Reason",
+  "enterCancelReason": "Enter Cancel Reason",
   "summery": "Order Summery",
   "confirm": "Confirm",
   "chooseAddress": "Choose Address",
@@ -109,12 +112,13 @@
   "stopped": "Sorry, your Account has been Suspended by the Administrator.",
   "addComment": "Add Comment",
   "comment": "Comment",
-  "count": "Quantity",
+  "count": "Quantity of",
   "saveFirst": "Please, Save the Data First",
   "unavailable": "Sorry, this Service is Currently Unavailable",
   "enterEmail": "Please Enter Email Address",
   "error": "Something went Wrong",
   "guest": "Login as Guest",
   "loginFirst": "Login First",
-  "items": "Items"
+  "items": "Items",
+  "toCart": "Add to Cart"
 }

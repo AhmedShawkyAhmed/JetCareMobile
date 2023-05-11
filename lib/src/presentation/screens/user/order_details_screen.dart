@@ -282,8 +282,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         title: translate(AppStrings.cancel),
                         buttonColor: AppColors.darkRed,
                         onTap: () {
-                          OrderCubit.get(context).deleteOrder(
+                          OrderCubit.get(context).updateOrderStatus(
                             orderId: widget.appRouterArgument.orderModel!.id!,
+                            status: "canceled",
                             afterSuccess: () {
                               Navigator.pushNamedAndRemoveUntil(
                                 context,

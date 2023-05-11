@@ -12,6 +12,9 @@ class AppStrings {
   static const String email = "Email";
   static const String name = "name";
   static const String conPass = "ConPass";
+  static const String cancelOrderQ = "cancelOrderQ";
+  static const String enterCancelReason = "enterCancelReason";
+  static const String cancelReason = "cancelReason";
   static const String phoneExist = "phoneExist";
   static const String phoneNotExist = "phoneNotExist";
   static const String updateProfile = "updateProfile";
@@ -117,4 +120,5 @@ class AppStrings {
   static const String guest = "guest";
   static const String loginFirst = "loginFirst";
   static const String items = "items";
+  static const String toCart = "toCart";
 }
