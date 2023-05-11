@@ -134,13 +134,13 @@ class MoreScreen extends StatelessWidget {
               onTap: () {
                 CacheHelper.clearData();
                 AppCubit.get(context).currentIndex = 0;
+                CacheHelper.saveDataSharedPreference(
+                    key: SharedPreferenceKeys.language, value: "ar");
                 Navigator.pushNamedAndRemoveUntil(
                   context,
                   AppRouterNames.login,
                   (route) => false,
                 );
-                CacheHelper.saveDataSharedPreference(
-                    key: SharedPreferenceKeys.language, value: "ar");
               },
             ),
             const Spacer(),

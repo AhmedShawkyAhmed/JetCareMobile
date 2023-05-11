@@ -54,35 +54,26 @@ class VerifyPhone extends StatelessWidget {
                     AuthCubit.get(context).checkEmail(
                       email: emailController.text,
                       found: () {
-                        Navigator.pop(context);
-                        Navigator.pushNamed(
-                          context,
-                          AppRouterNames.resetPassword,
-                          arguments: AppRouterArgument(
-                            phone: emailController.text,
-                            type: "resetPassword",
-                          ),
+                        AuthCubit.get(context).sendEmail(
+                          email: emailController.text,
+                          success: () {
+                            Navigator.pop(context);
+                            Navigator.pushNamed(
+                              context,
+                              AppRouterNames.resetPassword,
+                              arguments: AppRouterArgument(
+                                phone: emailController.text,
+                                type: "resetPassword",
+                              ),
+                            );
+                          },
+                          failed: () {
+                            Navigator.pop(context);
+                            DefaultToast.showMyToast(
+                              translate(AppStrings.error),
+                            );
+                          },
                         );
-                        // AuthCubit.get(context).sendEmail(
-                        //   email: emailController.text,
-                        //   success: () {
-                        //     Navigator.pop(context);
-                        //     Navigator.pushNamed(
-                        //       context,
-                        //       AppRouterNames.resetPassword,
-                        //       arguments: AppRouterArgument(
-                        //         phone: emailController.text,
-                        //         type: "resetPassword",
-                        //       ),
-                        //     );
-                        //   },
-                        //   failed: () {
-                        //     Navigator.pop(context);
-                        //     DefaultToast.showMyToast(
-                        //       translate(AppStrings.error),
-                        //     );
-                        //   },
-                        // );
                       },
                       notFound: () {
                         Navigator.pop(context);

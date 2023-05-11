@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:jetcare/src/business_logic/auth_cubit/auth_cubit.dart';
 import 'package:jetcare/src/constants/app_strings.dart';
 import 'package:jetcare/src/constants/constants_methods.dart';
 import 'package:jetcare/src/constants/constants_variables.dart';
@@ -88,6 +89,22 @@ class OTPScreen extends StatelessWidget {
               textColor: AppColors.pc2,
               onTap: () {
                 // TODO: resend code
+                IndicatorView.showIndicator(context);
+                AuthCubit.get(context).sendEmail(
+                  email: appRouterArgument.phone.toString(),
+                  success: () {
+                    Navigator.pop(context);
+                    DefaultToast.showMyToast(
+                      "تم إرسال كود التحقق",
+                    );
+                  },
+                  failed: () {
+                    Navigator.pop(context);
+                    DefaultToast.showMyToast(
+                      translate(AppStrings.error),
+                    );
+                  },
+                );
               },
             ),
             SizedBox(
@@ -98,30 +115,30 @@ class OTPScreen extends StatelessWidget {
               onTap: () async {
                 // TODO: verify
                 if (verifyCodeController.text != "") {
-                  IndicatorView.showIndicator(context);
-                                Navigator.pop(context);
-
-                      if (appRouterArgument.type == "resetPassword") {
-                        Navigator.pushNamed(
-                          context,
-                          AppRouterNames.resetPassword,
-                          arguments: AppRouterArgument(
-                            phone: appRouterArgument.phone.toString(),
-                            type: "resetPassword",
-                          ),
-                        );
-                      } else {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          AppRouterNames.profile,
-                          (route) => false,
-                          arguments: AppRouterArgument(
-                            type: "register",
-                            phone: appRouterArgument.phone.toString(),
-                          ),
-                        );
-                      }
-
+                  if (verifyCodeController.text == verifyCode.toString()) {
+                    IndicatorView.showIndicator(context);
+                    if (appRouterArgument.type == "resetPassword") {
+                      Navigator.pushNamed(
+                        context,
+                        AppRouterNames.resetPassword,
+                        arguments: AppRouterArgument(
+                          phone: appRouterArgument.phone.toString(),
+                          type: "resetPassword",
+                        ),
+                      );
+                    } else {
+                      Navigator.pushNamed(
+                        context,
+                        AppRouterNames.profile,
+                        arguments: AppRouterArgument(
+                          type: "register",
+                          phone: appRouterArgument.phone.toString(),
+                        ),
+                      );
+                    }
+                  } else {
+                    DefaultToast.showMyToast("كود التحقق خطأ");
+                  }
                 } else {
                   DefaultToast.showMyToast(translate(AppStrings.enterCode));
                 }

@@ -117,7 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-                     SizedBox(width: 5.w),
+                    SizedBox(width: 5.w),
                     GestureDetector(
                       onTap: () {
                         setState(() {
@@ -248,20 +248,28 @@ class _LoginScreenState extends State<LoginScreen> {
                               }
                             : () {
                                 IndicatorView.showIndicator(context);
-                                Navigator.pop(context);
                                 AuthCubit.get(context).checkEmail(
                                   email: emailController.text,
                                   notFound: () {
-                                    Navigator.pushNamedAndRemoveUntil(
-                                      context,
-                                      AppRouterNames.profile,
-                                      (route) => true,
-                                      arguments: AppRouterArgument(
-                                        type: "register",
-                                        phone: emailController.text,
-                                      ),
+                                    AuthCubit.get(context).sendEmail(
+                                      email: emailController.text,
+                                      success: () {
+                                        Navigator.pushNamedAndRemoveUntil(
+                                          context,
+                                          AppRouterNames.otp,
+                                              (route) => true,
+                                          arguments: AppRouterArgument(
+                                            type: "register",
+                                            phone: emailController.text,
+                                          ),
+                                        );
+                                      },
+                                      failed: () {
+                                        Navigator.pop(context);
+                                        DefaultToast.showMyToast(
+                                            translate(AppStrings.error),);
+                                      },
                                     );
-                                    // TODO: send verify
                                   },
                                   found: () {
                                     Navigator.pop(context);
