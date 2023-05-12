@@ -43,114 +43,126 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   );
                 }
-                return ListView(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10.w),
-                      child: Row(
+                return CartCubit.get(context).cartResponse!.status != 200
+                    ? const Center(
+                        child: DefaultText(
+                          text: "لا يوجد عناصر",
+                        ),
+                      )
+                    : ListView(
                         children: [
-                          DefaultText(
-                            text: translate(AppStrings.total),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10.w),
+                            child: Row(
+                              children: [
+                                DefaultText(
+                                  text: translate(AppStrings.total),
+                                ),
+                                const Spacer(),
+                                DefaultText(
+                                  text:
+                                      " ${CartCubit.get(context).cartResponse?.total.toString() ?? 0} ${translate(AppStrings.currency)}",
+                                ),
+                              ],
+                            ),
                           ),
-                          const Spacer(),
-                          DefaultText(
-                            text:
-                                " ${CartCubit.get(context).cartResponse?.total.toString() ?? 0} ${translate(AppStrings.currency)}",
+                          DefaultAppButton(
+                            title: translate(AppStrings.con),
+                            fontSize: 14.sp,
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, AppRouterNames.appointment);
+                            },
+                            textColor: AppColors.pc,
+                            buttonColor: AppColors.white,
+                          ),
+                          ListView.builder(
+                            physics: const ScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: CartCubit.get(context)
+                                    .cartResponse
+                                    ?.cart
+                                    ?.length ??
+                                0,
+                            itemBuilder: (context, index) {
+                              return CartItem(
+                                withDelete: true,
+                                image: CartCubit.get(context)
+                                            .cartResponse!
+                                            .cart![index]
+                                            .package ==
+                                        null
+                                    ? CartCubit.get(context)
+                                            .cartResponse!
+                                            .cart![index]
+                                            .item
+                                            ?.image ??
+                                        "1674441185.jpg"
+                                    : CartCubit.get(context)
+                                        .cartResponse!
+                                        .cart![index]
+                                        .package!
+                                        .image!,
+                                name: CartCubit.get(context)
+                                            .cartResponse!
+                                            .cart![index]
+                                            .package ==
+                                        null
+                                    ? CartCubit.get(context)
+                                            .cartResponse!
+                                            .cart![index]
+                                            .item
+                                            ?.nameEn ??
+                                        ""
+                                    : CartCubit.get(context)
+                                        .cartResponse!
+                                        .cart![index]
+                                        .package!
+                                        .nameEn!,
+                                count: CartCubit.get(context)
+                                    .cartResponse!
+                                    .cart![index]
+                                    .count
+                                    .toString(),
+                                price: CartCubit.get(context)
+                                    .cartResponse!
+                                    .cart![index]
+                                    .price
+                                    .toString(),
+                                onDelete: () {
+                                  IndicatorView.showIndicator(context);
+                                  CartCubit.get(context).deleteFromCart(
+                                    id: CartCubit.get(context)
+                                        .cartResponse!
+                                        .cart![index]
+                                        .id,
+                                    afterSuccess: () {
+                                      setState(() {
+                                        CartCubit.get(context)
+                                            .cartResponse!
+                                            .total = (CartCubit.get(context)
+                                                .cartResponse!
+                                                .total!
+                                                .toInt() -
+                                            CartCubit.get(context)
+                                                .cartResponse!
+                                                .cart![index]
+                                                .price
+                                                .toInt());
+                                      });
+                                      CartCubit.get(context)
+                                          .cartResponse!
+                                          .cart!
+                                          .removeAt(index);
+                                      Navigator.pop(context);
+                                    },
+                                  );
+                                },
+                              );
+                            },
                           ),
                         ],
-                      ),
-                    ),
-                    DefaultAppButton(
-                      title: translate(AppStrings.con),
-                      fontSize: 14.sp,
-                      onTap: () {
-                        Navigator.pushNamed(context, AppRouterNames.appointment);
-                      },
-                      textColor: AppColors.pc,
-                      buttonColor: AppColors.white,
-                    ),
-                    ListView.builder(
-                      physics: const ScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount:
-                          CartCubit.get(context).cartResponse?.cart?.length ??
-                              0,
-                      itemBuilder: (context, index) {
-                        return CartItem(
-                          withDelete: true,
-                          image: CartCubit.get(context)
-                                      .cartResponse!
-                                      .cart![index]
-                                      .package ==
-                                  null
-                              ? CartCubit.get(context)
-                                  .cartResponse!
-                                  .cart![index]
-                                  .item!
-                                  .image!
-                              : CartCubit.get(context)
-                                  .cartResponse!
-                                  .cart![index]
-                                  .package!
-                                  .image!,
-                          name: CartCubit.get(context)
-                                      .cartResponse!
-                                      .cart![index]
-                                      .package ==
-                                  null
-                              ? CartCubit.get(context)
-                                  .cartResponse!
-                                  .cart![index]
-                                  .item!
-                                  .nameEn!
-                              : CartCubit.get(context)
-                                  .cartResponse!
-                                  .cart![index]
-                                  .package!
-                                  .nameEn!,
-                          count: CartCubit.get(context)
-                              .cartResponse!
-                              .cart![index]
-                              .count
-                              .toString(),
-                          price: CartCubit.get(context)
-                              .cartResponse!
-                              .cart![index]
-                              .price
-                              .toString(),
-                          onDelete: () {
-                            IndicatorView.showIndicator(context);
-                            CartCubit.get(context).deleteFromCart(
-                              id: CartCubit.get(context)
-                                  .cartResponse!
-                                  .cart![index]
-                                  .id,
-                              afterSuccess: () {
-                                setState(() {
-                                  CartCubit.get(context).cartResponse!.total =
-                                      (CartCubit.get(context)
-                                              .cartResponse!
-                                              .total!
-                                              .toInt() -
-                                          CartCubit.get(context)
-                                              .cartResponse!
-                                              .cart![index]
-                                              .price
-                                              .toInt());
-                                });
-                                CartCubit.get(context)
-                                    .cartResponse!
-                                    .cart!
-                                    .removeAt(index);
-                                Navigator.pop(context);
-                              },
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                );
+                      );
               },
             ),
           ),
