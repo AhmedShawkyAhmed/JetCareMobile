@@ -4,6 +4,8 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/business_logic/cart_cubit/cart_cubit.dart';
 import 'package:jetcare/src/constants/app_strings.dart';
 import 'package:jetcare/src/constants/constants_variables.dart';
+import 'package:jetcare/src/constants/shared_preference_keys.dart';
+import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
 import 'package:jetcare/src/presentation/router/app_router_names.dart';
 import 'package:jetcare/src/presentation/styles/app_colors.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
@@ -108,13 +110,28 @@ class _CartScreenState extends State<CartScreen> {
                                             .cart![index]
                                             .package ==
                                         null
+                                    ? CacheHelper.getDataFromSharedPreference(
+                                    key: SharedPreferenceKeys.language) ==
+                                    "ar"
                                     ? CartCubit.get(context)
                                             .cartResponse!
                                             .cart![index]
                                             .item
-                                            ?.nameEn ??
-                                        ""
-                                    : CartCubit.get(context)
+                                            ?.nameAr ??
+                                        "" :CartCubit.get(context)
+                                    .cartResponse!
+                                    .cart![index]
+                                    .item
+                                    ?.nameEn ??
+                                    ""
+                                    : CacheHelper.getDataFromSharedPreference(
+                                    key: SharedPreferenceKeys.language) ==
+                                    "ar"
+                                    ? CartCubit.get(context)
+                                    .cartResponse!
+                                    .cart![index]
+                                    .package!
+                                    .nameAr!:CartCubit.get(context)
                                         .cartResponse!
                                         .cart![index]
                                         .package!

@@ -6,6 +6,8 @@ import 'package:jetcare/src/business_logic/notification_cubit/notification_cubit
 import 'package:jetcare/src/business_logic/order_cubit/order_cubit.dart';
 import 'package:jetcare/src/constants/app_strings.dart';
 import 'package:jetcare/src/constants/constants_variables.dart';
+import 'package:jetcare/src/constants/shared_preference_keys.dart';
+import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
 import 'package:jetcare/src/presentation/router/app_router_argument.dart';
 import 'package:jetcare/src/presentation/router/app_router_names.dart';
 import 'package:jetcare/src/presentation/styles/app_colors.dart';
@@ -59,8 +61,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                 ),
               ),
               if (globalAccountModel.role == "crew" &&
-                  widget.appRouterArgument.orderModel!.status ==
-                      "assigned")
+                  widget.appRouterArgument.orderModel!.status == "assigned")
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Padding(
@@ -82,7 +83,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                                 Navigator.pushNamedAndRemoveUntil(
                                   context,
                                   AppRouterNames.crewLayout,
-                                      (route) => false,
+                                  (route) => false,
                                 );
                                 OrderCubit.get(context).getMyTasks();
                               },
@@ -102,18 +103,17 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                               status: "accepted",
                               afterSuccess: () {
                                 setState(() {
-                                  widget.appRouterArgument.orderModel!
-                                      .status ==
+                                  widget.appRouterArgument.orderModel!.status ==
                                       "accepted";
                                 });
                                 Navigator.pushNamedAndRemoveUntil(
                                   context,
                                   AppRouterNames.crewLayout,
-                                      (route) => false,
+                                  (route) => false,
                                 );
                                 OrderCubit.get(context).getMyTasks();
                               },
-                              afterCancel: (){},
+                              afterCancel: () {},
                             );
                           },
                         ),
@@ -122,8 +122,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                   ),
                 ),
               if (globalAccountModel.role == "crew" &&
-                  widget.appRouterArgument.orderModel!.status ==
-                      "accepted")
+                  widget.appRouterArgument.orderModel!.status == "accepted")
                 DefaultAppButton(
                   title: translate(AppStrings.complete),
                   onTap: () {
@@ -135,14 +134,16 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                         Navigator.pushNamedAndRemoveUntil(
                           context,
                           AppRouterNames.crewLayout,
-                              (route) => false,
+                          (route) => false,
                         );
                       },
-                      afterCancel: (){},
+                      afterCancel: () {},
                     );
                   },
                 ),
-              if (globalAccountModel.role != "crew" && widget.appRouterArgument.orderModel!.status == "unassigned") ...[
+              if (globalAccountModel.role != "crew" &&
+                  widget.appRouterArgument.orderModel!.status ==
+                      "unassigned") ...[
                 DefaultAppButton(
                   title: translate(AppStrings.cancel),
                   fontSize: 14.sp,
@@ -188,36 +189,39 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                               fontSize: 13.sp,
                               textColor: AppColors.darkRed,
                               onTap: () {
-                                if(reasonController.text == ""){
-                                  DefaultToast.showMyToast(translate(AppStrings.enterCancelReason));
-                                }else{
+                                if (reasonController.text == "") {
+                                  DefaultToast.showMyToast(
+                                      translate(AppStrings.enterCancelReason));
+                                } else {
                                   IndicatorView.showIndicator(context);
                                   OrderCubit.get(context).updateOrderStatusUser(
-                                    orderId: widget.appRouterArgument.orderModel!.id!,
-                                    status: "canceled",
-                                    reason: reasonController.text,
-                                    afterSuccess: () {
-                                      AppCubit.get(context).changeIndex(0);
-                                      Navigator.pushReplacementNamed(
-                                          context, AppRouterNames.layout);
-                                      NotificationCubit.get(context).saveNotification(
-                                        title: "الطلبات",
-                                        message: "تم إلغاء طلبك بنجاح",
-                                        afterSuccess: () {
-                                          NotificationService().showNotification(
-                                            id: 12,
-                                            title: "الطلبات",
-                                            body: "تم إلغاء طلبك بنجاح",
-                                          );
-                                        },
-                                      );
-                                    },
-                                    afterCancel: (){
-                                      reasonController.clear();
-                                      Navigator.pop(context);
-                                      Navigator.pop(context);
-                                    }
-                                  );
+                                      orderId: widget
+                                          .appRouterArgument.orderModel!.id!,
+                                      status: "canceled",
+                                      reason: reasonController.text,
+                                      afterSuccess: () {
+                                        AppCubit.get(context).changeIndex(0);
+                                        Navigator.pushReplacementNamed(
+                                            context, AppRouterNames.layout);
+                                        NotificationCubit.get(context)
+                                            .saveNotification(
+                                          title: "الطلبات",
+                                          message: "تم إلغاء طلبك بنجاح",
+                                          afterSuccess: () {
+                                            NotificationService()
+                                                .showNotification(
+                                              id: 12,
+                                              title: "الطلبات",
+                                              body: "تم إلغاء طلبك بنجاح",
+                                            );
+                                          },
+                                        );
+                                      },
+                                      afterCancel: () {
+                                        reasonController.clear();
+                                        Navigator.pop(context);
+                                        Navigator.pop(context);
+                                      });
                                 }
                               },
                             ),
@@ -248,21 +252,35 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                 itemBuilder: (context, index) {
                   return CartItem(
                     withDelete: false,
-                    image: widget.appRouterArgument.orderModel!.cart![index].package ==
+                    image: widget.appRouterArgument.orderModel!.cart![index]
+                                .package ==
                             null
-                        ? widget.appRouterArgument
-                            .orderModel!.cart![index].item!.image!
-                        : widget.appRouterArgument
-                            .orderModel!.cart![index].package!.image!,
-                    name: widget.appRouterArgument.orderModel!.cart![index].package ==
+                        ? widget.appRouterArgument.orderModel!.cart![index]
+                            .item!.image!
+                        : widget.appRouterArgument.orderModel!.cart![index]
+                            .package!.image!,
+                    name: widget.appRouterArgument.orderModel!.cart![index]
+                                .package ==
                             null
-                        ? widget.appRouterArgument
-                            .orderModel!.cart![index].item!.nameEn!
-                        : widget.appRouterArgument
-                            .orderModel!.cart![index].package!.nameEn!,
-                    count: widget.appRouterArgument.orderModel!.cart![index].count
+                        ? CacheHelper.getDataFromSharedPreference(
+                                    key: SharedPreferenceKeys.language) ==
+                                "ar"
+                            ? widget.appRouterArgument.orderModel!.cart![index]
+                                .item!.nameAr!
+                            : widget.appRouterArgument.orderModel!.cart![index]
+                                .item!.nameEn!
+                        : CacheHelper.getDataFromSharedPreference(
+                                    key: SharedPreferenceKeys.language) ==
+                                "ar"
+                            ? widget.appRouterArgument.orderModel!.cart![index]
+                                .package!.nameAr!
+                            : widget.appRouterArgument.orderModel!.cart![index]
+                                .package!.nameEn!,
+                    count: widget
+                        .appRouterArgument.orderModel!.cart![index].count
                         .toString(),
-                    price: widget.appRouterArgument.orderModel!.cart![index].price
+                    price: widget
+                        .appRouterArgument.orderModel!.cart![index].price
                         .toString(),
                     onDelete: () {},
                   );
