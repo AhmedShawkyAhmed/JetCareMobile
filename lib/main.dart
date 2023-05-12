@@ -29,13 +29,13 @@ import 'package:jetcare/src/presentation/widgets/toast.dart';
 import 'package:sizer/sizer.dart';
 
 late LocalizationDelegate delegate;
-
+String? fcmToken;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await NotificationService().init();
   DioHelper.init();
-  String? fcmToken = await FirebaseMessaging.instance.getToken();
+  fcmToken = await FirebaseMessaging.instance.getToken();
   printInfo(fcmToken.toString());
   BlocOverrides.runZoned(
     () async {
@@ -49,6 +49,7 @@ void main() async {
         fallbackLocale: locale,
         supportedLocales: ['ar', 'en'],
       );
+      CacheHelper.saveDataSharedPreference(key: SharedPreferenceKeys.fcm, value: fcmToken);
       await delegate.changeLocale(Locale(locale));
       runApp(
         MyApp(appRouter: AppRouter()),

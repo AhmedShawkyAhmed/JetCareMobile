@@ -28,7 +28,7 @@ class EndPoints {
   static const getMyTasks = "getMyTasks";
   static const rejectOrder = "rejectOrder";
   static const deleteOrder = "deleteOrder";
-  static const updateOrderStatus = "updateOrderStatus";
+  static const updateOrderStatus = "updateOrderStatusUser";
   static const addCorporateOrder = "addCorporateOrder";
   static const saveNotification = "saveNotification";
   static const readNotification = "readNotification";
@@ -36,4 +36,5 @@ class EndPoints {
   static const addToCart = "addToCart";
   static const deleteFromCart = "deleteFromCart";
   static const getMyCart = "getMyCart";
+  static const updateFCM = "updateFCM";
 }

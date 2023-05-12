@@ -35,3 +35,7 @@ class UpdateErrorState extends AuthState {}
 class RegisterLoadingState extends AuthState {}
 class RegisterSuccessState extends AuthState {}
 class RegisterErrorState extends AuthState {}
+
+class FCMLoadingState extends AuthState {}
+class FCMSuccessState extends AuthState {}
+class FCMErrorState extends AuthState {}

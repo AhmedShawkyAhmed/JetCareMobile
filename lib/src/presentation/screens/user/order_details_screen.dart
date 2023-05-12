@@ -249,6 +249,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                       );
                                       OrderCubit.get(context).getMyTasks();
                                     },
+                                    afterCancel: (){},
                                   );
                                 },
                               ),
@@ -273,6 +274,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                 (route) => false,
                               );
                             },
+                            afterCancel: (){},
                           );
                         },
                       ),
@@ -295,6 +297,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                   translate(AppStrings.cancelOrder));
                               OrderCubit.get(context).getMyOrders();
                             },
+                            afterCancel: (){},
                           );
                         },
                       ),

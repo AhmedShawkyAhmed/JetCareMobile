@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jetcare/main.dart';
 import 'package:jetcare/src/constants/constants_methods.dart';
 import 'package:jetcare/src/constants/constants_variables.dart';
 import 'package:jetcare/src/constants/end_points.dart';
@@ -24,6 +25,7 @@ class AuthCubit extends Cubit<AuthState> {
   GlobalResponse? globalResponse,
       checkPhoneResponse,
       resetPasswordResponse,
+      fcmResponse,
       sendEmailResponse;
   bool pass = true;
   String verify = "";
@@ -77,6 +79,19 @@ class AuthCubit extends Cubit<AuthState> {
               crew();
             }
           }
+          if (CacheHelper.getDataFromSharedPreference(
+              key: SharedPreferenceKeys.fcm) ==
+              null) {
+            CacheHelper.saveDataSharedPreference(
+                key: SharedPreferenceKeys.fcm, value: fcmToken);
+          } else if (CacheHelper.getDataFromSharedPreference(
+              key: SharedPreferenceKeys.fcm) !=
+              globalAccountModel.fcm) {
+            updateFCM(
+              id: globalAccountModel.id!,
+              fcm: fcmToken!,
+            );
+          }
         }
       });
     } on DioError catch (n) {
@@ -84,6 +99,32 @@ class AuthCubit extends Cubit<AuthState> {
       printError(n.toString());
     } catch (e) {
       emit(LoginErrorState());
+      printError(e.toString());
+    }
+  }
+  Future updateFCM({
+    required int id,
+    required String fcm,
+  }) async {
+    try {
+      emit(FCMLoadingState());
+      await DioHelper.postData(
+        url: EndPoints.updateFCM,
+        body: {
+          'id': id,
+          'fcm': fcm,
+        },
+      ).then((value) {
+        fcmResponse = GlobalResponse.fromJson(value.data);
+        printSuccess(
+            "FCM Response ${fcmResponse!.status.toString()}");
+        emit(FCMSuccessState());
+      });
+    } on DioError catch (n) {
+      emit(FCMErrorState());
+      printError(n.toString());
+    } catch (e) {
+      emit(FCMErrorState());
       printError(e.toString());
     }
   }

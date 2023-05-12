@@ -10,6 +10,7 @@ import 'package:jetcare/src/data/network/requests/order_request.dart';
 import 'package:jetcare/src/data/network/responses/corporate_response.dart';
 import 'package:jetcare/src/data/network/responses/global_response.dart';
 import 'package:jetcare/src/data/network/responses/history_response.dart';
+import 'package:jetcare/src/presentation/widgets/toast.dart';
 
 part 'order_state.dart';
 
@@ -152,9 +153,9 @@ class OrderCubit extends Cubit<OrderState> {
   Future updateOrderStatus({
     required int orderId,
     required String status,
-
     String? reason,
     required VoidCallback afterSuccess,
+    required VoidCallback afterCancel,
   }) async {
     try {
       emit(UpdateOrderStatusLoadingState());
@@ -167,7 +168,12 @@ class OrderCubit extends Cubit<OrderState> {
         printSuccess(
             "Order Status Response ${globalResponse!.message.toString()}");
         emit(UpdateOrderStatusSuccessState());
-        afterSuccess();
+        if(globalResponse!.status == 200){
+          afterSuccess();
+        }else if(globalResponse!.status == 402){
+          DefaultToast.showMyToast(globalResponse!.message.toString());
+          afterCancel();
+        }
       });
     } on DioError catch (n) {
       emit(UpdateOrderStatusErrorState());

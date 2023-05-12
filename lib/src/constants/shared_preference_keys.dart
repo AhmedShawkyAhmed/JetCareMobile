@@ -4,4 +4,5 @@ class SharedPreferenceKeys{
   static const String phone = "phone";
   static const String password = "password";
   static const String role = "role";
+  static const String fcm = "fcm";
 }

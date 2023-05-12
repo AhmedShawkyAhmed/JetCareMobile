@@ -122,6 +122,11 @@ class ConfirmOrderScreen extends StatelessWidget {
                                         },
                                       );
                                     },
+                                    afterCancel: (){
+                                      reasonController.clear();
+                                      Navigator.pop(context);
+                                      Navigator.pop(context);
+                                    }
                                   );
                                 }
                               },
