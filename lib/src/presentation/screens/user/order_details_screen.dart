@@ -232,7 +232,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                 marginHorizontal: 0,
                                 buttonColor: AppColors.darkBlue,
                                 onTap: () {
-                                  OrderCubit.get(context).updateOrderStatus(
+                                  OrderCubit.get(context).updateOrderStatusUser(
                                     orderId: widget
                                         .appRouterArgument.orderModel!.id!,
                                     status: "accepted",
@@ -263,7 +263,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                       DefaultAppButton(
                         title: translate(AppStrings.complete),
                         onTap: () {
-                          OrderCubit.get(context).updateOrderStatus(
+                          OrderCubit.get(context).updateOrderStatusUser(
                             orderId: widget.appRouterArgument.orderModel!.id!,
                             status: "completed",
                             afterSuccess: () {
@@ -284,7 +284,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         title: translate(AppStrings.cancel),
                         buttonColor: AppColors.darkRed,
                         onTap: () {
-                          OrderCubit.get(context).updateOrderStatus(
+                          OrderCubit.get(context).updateOrderStatusUser(
                             orderId: widget.appRouterArgument.orderModel!.id!,
                             status: "canceled",
                             afterSuccess: () {

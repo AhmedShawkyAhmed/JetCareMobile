@@ -5,6 +5,7 @@ import 'package:jetcare/src/business_logic/app_cubit/app_cubit.dart';
 import 'package:jetcare/src/business_logic/notification_cubit/notification_cubit.dart';
 import 'package:jetcare/src/business_logic/order_cubit/order_cubit.dart';
 import 'package:jetcare/src/constants/app_strings.dart';
+import 'package:jetcare/src/constants/constants_variables.dart';
 import 'package:jetcare/src/presentation/router/app_router_argument.dart';
 import 'package:jetcare/src/presentation/router/app_router_names.dart';
 import 'package:jetcare/src/presentation/styles/app_colors.dart';
@@ -17,7 +18,7 @@ import 'package:jetcare/src/presentation/widgets/default_text_field.dart';
 import 'package:jetcare/src/presentation/widgets/toast.dart';
 import 'package:sizer/sizer.dart';
 
-class ConfirmOrderScreen extends StatelessWidget {
+class ConfirmOrderScreen extends StatefulWidget {
   final AppRouterArgument appRouterArgument;
 
   ConfirmOrderScreen({
@@ -25,6 +26,11 @@ class ConfirmOrderScreen extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  @override
+  State<ConfirmOrderScreen> createState() => _ConfirmOrderScreenState();
+}
+
+class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
   final TextEditingController reasonController = TextEditingController();
 
   @override
@@ -47,12 +53,96 @@ class ConfirmOrderScreen extends StatelessWidget {
                     const Spacer(),
                     DefaultText(
                       text:
-                          " ${appRouterArgument.orderModel!.total ?? 0} ${translate(AppStrings.currency)}",
+                          " ${widget.appRouterArgument.orderModel!.total ?? 0} ${translate(AppStrings.currency)}",
                     ),
                   ],
                 ),
               ),
-              if (appRouterArgument.orderModel!.status == "unassigned") ...[
+              if (globalAccountModel.role == "crew" &&
+                  widget.appRouterArgument.orderModel!.status ==
+                      "assigned")
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: 1.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        DefaultAppButton(
+                          title: translate(AppStrings.reject),
+                          width: 30.w,
+                          height: 4.h,
+                          radius: 5.sp,
+                          marginHorizontal: 0,
+                          buttonColor: AppColors.darkRed,
+                          onTap: () {
+                            OrderCubit.get(context).rejectOrder(
+                              orderId: widget.appRouterArgument.orderModel!.id!,
+                              afterSuccess: () {
+                                Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  AppRouterNames.crewLayout,
+                                      (route) => false,
+                                );
+                                OrderCubit.get(context).getMyTasks();
+                              },
+                            );
+                          },
+                        ),
+                        DefaultAppButton(
+                          title: translate(AppStrings.accept),
+                          width: 30.w,
+                          height: 4.h,
+                          radius: 5.sp,
+                          marginHorizontal: 0,
+                          buttonColor: AppColors.darkBlue,
+                          onTap: () {
+                            OrderCubit.get(context).updateOrderStatus(
+                              orderId: widget.appRouterArgument.orderModel!.id!,
+                              status: "accepted",
+                              afterSuccess: () {
+                                setState(() {
+                                  widget.appRouterArgument.orderModel!
+                                      .status ==
+                                      "accepted";
+                                });
+                                Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  AppRouterNames.crewLayout,
+                                      (route) => false,
+                                );
+                                OrderCubit.get(context).getMyTasks();
+                              },
+                              afterCancel: (){},
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              if (globalAccountModel.role == "crew" &&
+                  widget.appRouterArgument.orderModel!.status ==
+                      "accepted")
+                DefaultAppButton(
+                  title: translate(AppStrings.complete),
+                  onTap: () {
+                    OrderCubit.get(context).updateOrderStatus(
+                      orderId: widget.appRouterArgument.orderModel!.id!,
+                      status: "completed",
+                      afterSuccess: () {
+                        OrderCubit.get(context).getMyTasks();
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          AppRouterNames.crewLayout,
+                              (route) => false,
+                        );
+                      },
+                      afterCancel: (){},
+                    );
+                  },
+                ),
+              if (globalAccountModel.role != "crew" && widget.appRouterArgument.orderModel!.status == "unassigned") ...[
                 DefaultAppButton(
                   title: translate(AppStrings.cancel),
                   fontSize: 14.sp,
@@ -102,8 +192,8 @@ class ConfirmOrderScreen extends StatelessWidget {
                                   DefaultToast.showMyToast(translate(AppStrings.enterCancelReason));
                                 }else{
                                   IndicatorView.showIndicator(context);
-                                  OrderCubit.get(context).updateOrderStatus(
-                                    orderId: appRouterArgument.orderModel!.id!,
+                                  OrderCubit.get(context).updateOrderStatusUser(
+                                    orderId: widget.appRouterArgument.orderModel!.id!,
                                     status: "canceled",
                                     reason: reasonController.text,
                                     afterSuccess: () {
@@ -154,25 +244,25 @@ class ConfirmOrderScreen extends StatelessWidget {
               ListView.builder(
                 physics: const ScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: appRouterArgument.orderModel!.cart!.length,
+                itemCount: widget.appRouterArgument.orderModel!.cart!.length,
                 itemBuilder: (context, index) {
                   return CartItem(
                     withDelete: false,
-                    image: appRouterArgument.orderModel!.cart![index].package ==
+                    image: widget.appRouterArgument.orderModel!.cart![index].package ==
                             null
-                        ? appRouterArgument
+                        ? widget.appRouterArgument
                             .orderModel!.cart![index].item!.image!
-                        : appRouterArgument
+                        : widget.appRouterArgument
                             .orderModel!.cart![index].package!.image!,
-                    name: appRouterArgument.orderModel!.cart![index].package ==
+                    name: widget.appRouterArgument.orderModel!.cart![index].package ==
                             null
-                        ? appRouterArgument
+                        ? widget.appRouterArgument
                             .orderModel!.cart![index].item!.nameEn!
-                        : appRouterArgument
+                        : widget.appRouterArgument
                             .orderModel!.cart![index].package!.nameEn!,
-                    count: appRouterArgument.orderModel!.cart![index].count
+                    count: widget.appRouterArgument.orderModel!.cart![index].count
                         .toString(),
-                    price: appRouterArgument.orderModel!.cart![index].price
+                    price: widget.appRouterArgument.orderModel!.cart![index].price
                         .toString(),
                     onDelete: () {},
                   );

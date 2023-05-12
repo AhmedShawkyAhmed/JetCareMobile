@@ -150,6 +150,40 @@ class OrderCubit extends Cubit<OrderState> {
     }
   }
 
+  Future updateOrderStatusUser({
+    required int orderId,
+    required String status,
+    String? reason,
+    required VoidCallback afterSuccess,
+    required VoidCallback afterCancel,
+  }) async {
+    try {
+      emit(UpdateOrderStatusLoadingState());
+      await DioHelper.postData(url: EndPoints.updateOrderStatusUser, body: {
+        'id': orderId,
+        'status': status,
+        'reason':reason,
+      }).then((value) {
+        globalResponse = GlobalResponse.fromJson(value.data);
+        printSuccess(
+            "Order Status Response ${globalResponse!.message.toString()}");
+        emit(UpdateOrderStatusSuccessState());
+        if(globalResponse!.status == 200){
+          afterSuccess();
+        }else if(globalResponse!.status == 402){
+          DefaultToast.showMyToast(globalResponse!.message.toString());
+          afterCancel();
+        }
+      });
+    } on DioError catch (n) {
+      emit(UpdateOrderStatusErrorState());
+      printError(n.toString());
+    } catch (e) {
+      emit(UpdateOrderStatusErrorState());
+      printError(e.toString());
+    }
+  }
+
   Future updateOrderStatus({
     required int orderId,
     required String status,

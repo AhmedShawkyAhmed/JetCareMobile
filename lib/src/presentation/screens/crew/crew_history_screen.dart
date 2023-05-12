@@ -3,13 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/business_logic/order_cubit/order_cubit.dart';
 import 'package:jetcare/src/constants/app_strings.dart';
-import 'package:jetcare/src/constants/shared_preference_keys.dart';
-import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
 import 'package:jetcare/src/presentation/router/app_router_argument.dart';
 import 'package:jetcare/src/presentation/router/app_router_names.dart';
 import 'package:jetcare/src/presentation/styles/app_colors.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
-import 'package:jetcare/src/presentation/views/card_view.dart';
+import 'package:jetcare/src/presentation/views/cart_item.dart';
 import 'package:jetcare/src/presentation/views/loading_view.dart';
 import 'package:jetcare/src/presentation/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
@@ -19,21 +17,10 @@ class CrewHistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BlocProvider(
+  create: (context) => OrderCubit()..getMyTasks(),
+  child: Scaffold(
       backgroundColor: AppColors.mainColor,
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.white,
-        child: const Center(
-          child: Icon(
-            Icons.refresh_outlined,
-            color: AppColors.pc,
-          ),
-        ),
-        onPressed: () {
-          OrderCubit.get(context).getMyTasks();
-        },
-      ),
       body: BodyView(
         hasBack: false,
         widget: Padding(
@@ -77,79 +64,35 @@ class CrewHistoryScreen extends StatelessWidget {
                             .ordersHistory!
                             .length,
                         itemBuilder: (context, index) {
-                          return CardView(
-                            title: CacheHelper.getDataFromSharedPreference(
-                                        key: SharedPreferenceKeys.language) ==
-                                    "ar"
-                                ? OrderCubit.get(context)
-                                            .tasksResponse!
-                                            .ordersHistory![index]
-                                            .package ==
-                                        null
-                                    ? OrderCubit.get(context)
-                                            .tasksResponse!
-                                            .ordersHistory![index]
-                                            .item
-                                            ?.nameAr ??
-                                        ""
-                                    : OrderCubit.get(context)
-                                            .tasksResponse!
-                                            .ordersHistory![index]
-                                            .package
-                                            ?.nameAr ??
-                                        ""
-                                : OrderCubit.get(context)
-                                            .tasksResponse!
-                                            .ordersHistory![index]
-                                            .package ==
-                                        null
-                                    ? OrderCubit.get(context)
-                                            .tasksResponse!
-                                            .ordersHistory![index]
-                                            .item
-                                            ?.nameEn ??
-                                        ""
-                                    : OrderCubit.get(context)
-                                            .tasksResponse!
-                                            .ordersHistory![index]
-                                            .package
-                                            ?.nameEn ??
-                                        "",
-                            image: OrderCubit.get(context)
-                                        .tasksResponse!
-                                        .ordersHistory![index]
-                                        .package ==
-                                    null
-                                ? OrderCubit.get(context)
-                                    .tasksResponse!
-                                    .ordersHistory![index]
-                                    .item!
-                                    .image
-                                : OrderCubit.get(context)
-                                    .tasksResponse!
-                                    .ordersHistory![index]
-                                    .package!
-                                    .image,
-                            colorMain: AppColors.pc.withOpacity(0.8),
-                            colorSub: AppColors.shade.withOpacity(0.4),
-                            onTap: () {
+                          return InkWell(
+                            onTap: (){
                               Navigator.pushNamed(
                                 context,
-                                AppRouterNames.orderDetails,
+                                AppRouterNames.confirmOrder,
                                 arguments: AppRouterArgument(
-                                  type: OrderCubit.get(context)
-                                              .tasksResponse!
-                                              .ordersHistory![index]
-                                              .package ==
-                                          null
-                                      ? "item"
-                                      : "package",
                                   orderModel: OrderCubit.get(context)
                                       .tasksResponse!
                                       .ordersHistory![index],
                                 ),
                               );
                             },
+                            child: CartItem(
+                              withDelete: false,
+                              onDelete: () {},
+                              name:
+                              "# ${OrderCubit.get(context).tasksResponse!.ordersHistory![index].id.toString()}",
+                              count: OrderCubit.get(context)
+                                  .tasksResponse!
+                                  .ordersHistory![index]
+                                  .date
+                                  .toString(),
+                              price: OrderCubit.get(context)
+                                  .tasksResponse!
+                                  .ordersHistory![index]
+                                  .total
+                                  .toString(),
+                              image: "1674441185.jpg",
+                            ),
                           );
                         },
                       ),
@@ -163,6 +106,7 @@ class CrewHistoryScreen extends StatelessWidget {
           ),
         ),
       ),
-    );
+    ),
+);
   }
 }

@@ -4,7 +4,6 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:intl/intl.dart';
 import 'package:jetcare/src/NotificationDownloadingService.dart';
 import 'package:jetcare/src/business_logic/address_cubit/address_cubit.dart';
-import 'package:jetcare/src/business_logic/app_cubit/app_cubit.dart';
 import 'package:jetcare/src/business_logic/global_cubit/global_cubit.dart';
 import 'package:jetcare/src/business_logic/notification_cubit/notification_cubit.dart';
 import 'package:jetcare/src/business_logic/order_cubit/order_cubit.dart';

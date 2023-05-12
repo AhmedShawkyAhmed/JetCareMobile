@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/business_logic/order_cubit/order_cubit.dart';
 import 'package:jetcare/src/constants/app_strings.dart';
-import 'package:jetcare/src/constants/end_points.dart';
 import 'package:jetcare/src/constants/shared_preference_keys.dart';
 import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
 import 'package:jetcare/src/presentation/router/app_router_argument.dart';
@@ -30,8 +29,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => OrderCubit()
-        ..getMyOrders()
-        ..getMyTasks(),
+        ..getMyOrders(),
       child: Scaffold(
         backgroundColor: AppColors.mainColor,
         body: BodyView(

@@ -102,6 +102,7 @@ class AuthCubit extends Cubit<AuthState> {
       printError(e.toString());
     }
   }
+
   Future updateFCM({
     required int id,
     required String fcm,
