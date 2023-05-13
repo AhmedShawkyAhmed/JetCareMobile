@@ -46,50 +46,52 @@ class _HomeScreenState extends State<HomeScreen> {
               return ListView(
                 padding: EdgeInsets.only(bottom: 4.h),
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                        left: 5.w, right: 5.w, top: 2.h, bottom: 2.h),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        DefaultText(
-                          text: globalAccountModel.name!,
-                          fontSize: 15.sp,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            IndicatorView.showIndicator(context);
-                            NotificationCubit.get(context).getNotifications(
-                              userId: globalAccountModel.id!,
-                              afterSuccess: () {
-                                Navigator.pop(context);
-                                Navigator.pushNamed(
-                                  context,
-                                  AppRouterNames.notification,
-                                );
-                              },
-                            );
-                          },
-                          child: Container(
-                            width: 9.w,
-                            height: 9.w,
-                            decoration: BoxDecoration(
-                              color: AppColors.white,
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: Center(
-                              child: Icon(
-                                Icons.notifications_active,
-                                color: AppColors.pc,
-                                size: 15.sp,
+                  if(globalAccountModel.name == null)...[
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: 5.w, right: 5.w, top: 2.h, bottom: 2.h),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          DefaultText(
+                            text: globalAccountModel.name??"زائر",
+                            fontSize: 15.sp,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              IndicatorView.showIndicator(context);
+                              NotificationCubit.get(context).getNotifications(
+                                userId: globalAccountModel.id!,
+                                afterSuccess: () {
+                                  Navigator.pop(context);
+                                  Navigator.pushNamed(
+                                    context,
+                                    AppRouterNames.notification,
+                                  );
+                                },
+                              );
+                            },
+                            child: Container(
+                              width: 9.w,
+                              height: 9.w,
+                              decoration: BoxDecoration(
+                                color: AppColors.white,
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Center(
+                                child: Icon(
+                                  Icons.notifications_active,
+                                  color: AppColors.pc,
+                                  size: 15.sp,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
+                  ],
                   if (GlobalCubit.get(context).homeResponse?.adsModel != null)
                     CarouselSlider.builder(
                       itemCount: GlobalCubit.get(context)

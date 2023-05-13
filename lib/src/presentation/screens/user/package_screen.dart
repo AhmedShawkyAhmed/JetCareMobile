@@ -35,7 +35,8 @@ class _PackageScreenState extends State<PackageScreen> {
     return Scaffold(
       backgroundColor: AppColors.mainColor,
       body: BodyView(
-        widget: Column(
+        hasBack: true,
+        widget: ListView(
           children: [
             SizedBox(
               height: 5.h,
@@ -66,7 +67,8 @@ class _PackageScreenState extends State<PackageScreen> {
                 onTap: () {},
               ),
             ),
-            Expanded(
+            SizedBox(
+              height: 30.h,
               child: ListView.builder(
                 padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
                 shrinkWrap: true,

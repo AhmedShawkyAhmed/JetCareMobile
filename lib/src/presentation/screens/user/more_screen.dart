@@ -7,6 +7,7 @@ import 'package:jetcare/src/constants/app_strings.dart';
 import 'package:jetcare/src/constants/constants_variables.dart';
 import 'package:jetcare/src/constants/shared_preference_keys.dart';
 import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
+import 'package:jetcare/src/data/models/account_model.dart';
 import 'package:jetcare/src/presentation/router/app_router_argument.dart';
 import 'package:jetcare/src/presentation/router/app_router_names.dart';
 import 'package:jetcare/src/presentation/styles/app_colors.dart';
@@ -133,6 +134,7 @@ class MoreScreen extends StatelessWidget {
               icon: Icons.logout_outlined,
               onTap: () {
                 CacheHelper.clearData();
+                globalAccountModel = AccountModel();
                 AppCubit.get(context).currentIndex = 0;
                 CacheHelper.saveDataSharedPreference(
                     key: SharedPreferenceKeys.language, value: "ar");
