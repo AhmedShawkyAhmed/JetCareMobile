@@ -64,7 +64,7 @@ class _SplashScreenState extends State<SplashScreen> {
               );
             },
             afterFail: () {
-              Navigator.pop(context);
+              Navigator.pushReplacementNamed(context, AppRouterNames.login);
             },
             crew: () {
               GlobalCubit.get(context).navigate(

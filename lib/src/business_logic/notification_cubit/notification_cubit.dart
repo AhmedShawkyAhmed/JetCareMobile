@@ -27,8 +27,8 @@ class NotificationCubit extends Cubit<NotificationState> {
       await DioHelper.getData(url: EndPoints.getNotifications, query: {
         "userId": userId,
       }).then((value) {
-        printResponse(value.data.toString());
         notificationResponse = NotificationResponse.fromJson(value.data);
+        printResponse(value.data.toString());
         emit(GetNotificationSuccessState());
         afterSuccess();
       });
