@@ -46,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
               return ListView(
                 padding: EdgeInsets.only(bottom: 4.h),
                 children: [
-                  if(globalAccountModel.name == null)...[
+                  if(globalAccountModel.name != null)...[
                     Padding(
                       padding: EdgeInsets.only(
                           left: 5.w, right: 5.w, top: 2.h, bottom: 2.h),
@@ -153,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         GlobalCubit.get(context).homeResponse!.corporateModel,
                   ),
                   HomeView(
-                    title: translate(AppStrings.category),
+                    title: translate(AppStrings.service),
                     type: "category",
                     visible: GlobalCubit.get(context)
                         .homeResponse!
@@ -163,7 +163,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         GlobalCubit.get(context).homeResponse!.categoryModel,
                   ),
                   HomeView(
-                    title: translate(AppStrings.package),
+                    title: translate(AppStrings.offers),
                     type: "package",
                     visible: GlobalCubit.get(context)
                         .homeResponse!

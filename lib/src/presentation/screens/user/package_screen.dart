@@ -172,8 +172,12 @@ class _PackageScreenState extends State<PackageScreen> {
                                 .price)!
                             .toDouble(),
                         afterSuccess: () {
-                          Navigator.pop(context);
                           quantityController.clear();
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            AppRouterNames.addedToCart,
+                            (route) => false,
+                          );
                         },
                       );
                     },

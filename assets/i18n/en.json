@@ -85,6 +85,7 @@
   "orderTime": "Time",
   "orderCrew": "Crew",
   "orderCrewPhone": "Crew Phone",
+  "offers": "Offers",
   "total": "Total",
   "reject": "Reject",
   "accept": "Accept",
@@ -120,5 +121,8 @@
   "guest": "Login as Guest",
   "loginFirst": "Login First",
   "items": "Items",
-  "toCart": "Add to Cart"
+  "toCart": "Add to Cart",
+  "addedToCart": "Item Added to Cart Successfully",
+  "goToHome": "Continue Shopping",
+  "goToCart": "Go to Cart"
 }

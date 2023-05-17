@@ -6,6 +6,7 @@ import 'package:jetcare/src/presentation/router/app_router_names.dart';
 import 'package:jetcare/src/presentation/screens/shared/disable_account_screen.dart';
 import 'package:jetcare/src/presentation/screens/shared/notification_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/add_address_screen.dart';
+import 'package:jetcare/src/presentation/screens/user/added_success_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/address_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/appointment_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/cart_screen.dart';
@@ -121,6 +122,10 @@ class AppRouter {
       case AppRouterNames.categoryDetails:
         return CustomPageRouteTransiton.fadeOut(
           page: const CategoryScreen(),
+        );
+      case AppRouterNames.addedToCart:
+        return CustomPageRouteTransiton.fadeOut(
+          page: const AddedSuccessScreen(),
         );
       case AppRouterNames.home:
         return CustomPageRouteTransiton.fadeOut(

@@ -24,6 +24,7 @@ class AppStrings {
   static const String account = "account";
   static const String addresses = "addresses";
   static const String contactUs = "contactUs";
+  static const String offers = "offers";
   static const String terms = "terms";
   static const String about = "about";
   static const String logout = "logout";
@@ -121,4 +122,7 @@ class AppStrings {
   static const String loginFirst = "loginFirst";
   static const String items = "items";
   static const String toCart = "toCart";
+  static const String goToCart = "goToCart";
+  static const String goToHome = "goToHome";
+  static const String addedToCart = "addedToCart";
 }

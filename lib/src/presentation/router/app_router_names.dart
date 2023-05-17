@@ -25,4 +25,5 @@ class AppRouterNames {
   static const confirmOrder = "confirmOrder";
   static const notification = "notification";
   static const cart = "cart";
+  static const addedToCart = "addedToCart";
 }
