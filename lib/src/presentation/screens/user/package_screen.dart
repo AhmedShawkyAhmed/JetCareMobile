@@ -32,160 +32,163 @@ class _PackageScreenState extends State<PackageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.mainColor,
-      body: BodyView(
-        hasBack: true,
-        widget: ListView(
-          children: [
-            SizedBox(
-              height: 5.h,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5.w),
-              child: CardView(
-                title: CacheHelper.getDataFromSharedPreference(
-                            key: SharedPreferenceKeys.language) ==
-                        "ar"
-                    ? DetailsCubit.get(context)
-                        .packageResponse!
-                        .packageModel!
-                        .nameAr
-                    : DetailsCubit.get(context)
-                        .packageResponse!
-                        .packageModel!
-                        .nameEn,
-                image: DetailsCubit.get(context)
-                    .packageResponse!
-                    .packageModel!
-                    .image,
-                height: 19.h,
-                mainHeight: 25.h,
-                titleFont: 17.sp,
-                colorMain: AppColors.pc.withOpacity(0.8),
-                colorSub: AppColors.shade.withOpacity(0.4),
-                onTap: () {},
+    return GestureDetector(
+      onTap: ()=> FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        backgroundColor: AppColors.mainColor,
+        body: BodyView(
+          hasBack: true,
+          widget: ListView(
+            children: [
+              SizedBox(
+                height: 5.h,
               ),
-            ),
-            SizedBox(
-              height: 30.h,
-              child: ListView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-                shrinkWrap: true,
-                itemCount:
-                    DetailsCubit.get(context).packageResponse!.items!.length,
-                itemBuilder: (context, index) {
-                  return PackageItem(
-                    title: CacheHelper.getDataFromSharedPreference(
-                                key: SharedPreferenceKeys.language) ==
-                            "ar"
-                        ? DetailsCubit.get(context)
-                            .packageResponse!
-                            .items![index]
-                            .nameAr!
-                        : DetailsCubit.get(context)
-                            .packageResponse!
-                            .items![index]
-                            .nameEn!,
-                  );
-                },
-              ),
-            ),
-            SizedBox(
-              height: 3.h,
-            ),
-            Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 5.w),
-                  child: DefaultText(
-                    text: "${translate(AppStrings.enterSpace)} M²",
-                    fontSize: 15.sp,
-                  ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 5.w),
+                child: CardView(
+                  title: CacheHelper.getDataFromSharedPreference(
+                              key: SharedPreferenceKeys.language) ==
+                          "ar"
+                      ? DetailsCubit.get(context)
+                          .packageResponse!
+                          .packageModel!
+                          .nameAr
+                      : DetailsCubit.get(context)
+                          .packageResponse!
+                          .packageModel!
+                          .nameEn,
+                  image: DetailsCubit.get(context)
+                      .packageResponse!
+                      .packageModel!
+                      .image,
+                  height: 19.h,
+                  mainHeight: 25.h,
+                  titleFont: 17.sp,
+                  colorMain: AppColors.pc.withOpacity(0.8),
+                  colorSub: AppColors.shade.withOpacity(0.4),
+                  onTap: () {},
                 ),
-              ],
-            ),
-            SizedBox(
-              height: 2.h,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              ),
+              SizedBox(
+                height: 30.h,
+                child: ListView.builder(
+                  padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+                  shrinkWrap: true,
+                  itemCount:
+                      DetailsCubit.get(context).packageResponse!.items!.length,
+                  itemBuilder: (context, index) {
+                    return PackageItem(
+                      title: CacheHelper.getDataFromSharedPreference(
+                                  key: SharedPreferenceKeys.language) ==
+                              "ar"
+                          ? DetailsCubit.get(context)
+                              .packageResponse!
+                              .items![index]
+                              .nameAr!
+                          : DetailsCubit.get(context)
+                              .packageResponse!
+                              .items![index]
+                              .nameEn!,
+                    );
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 3.h,
+              ),
+              Row(
                 children: [
-                  DefaultTextField(
-                    width: 25.w,
-                    marginVertical: 0,
-                    marginHorizontal: 5.w,
-                    maxLength: 5,
-                    controller: quantityController,
-                    keyboardType: TextInputType.number,
-                    hintText: translate(AppStrings.orderSpace),
-                    onChange: (value) {
-                      setState(() {
-                        printError(value);
-                        quantity = int.parse(value == "" ? "1" : value);
-                      });
-                    },
-                  ),
                   Padding(
-                    padding: EdgeInsets.only(right: 5.w),
-                    child: SizedBox(
-                      width: 50.w,
-                      child: DefaultText(
-                        align: TextAlign.end,
-                        text:
-                            "${((DetailsCubit.get(context).packageResponse!.packageModel!.price)!.toInt() * quantity)} ${translate(AppStrings.currency)}",
-                        maxLines: 1,
-                      ),
+                    padding: EdgeInsets.symmetric(horizontal: 5.w),
+                    child: DefaultText(
+                      text: "${translate(AppStrings.enterSpace)} M²",
+                      fontSize: 15.sp,
                     ),
                   ),
                 ],
               ),
-            ),
-            CacheHelper.getDataFromSharedPreference(
-                        key: SharedPreferenceKeys.password) ==
-                    null
-                ? DefaultAppButton(
-                    title: translate(AppStrings.loginFirst),
-                    onTap: () {
-                      Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        AppRouterNames.login,
-                        (route) => false,
-                      );
-                    },
-                  )
-                : DefaultAppButton(
-                    title: translate(AppStrings.toCart),
-                    onTap: () {
-                      IndicatorView.showIndicator(context);
-                      CartCubit.get(context).addToCart(
-                        packageId: DetailsCubit.get(context)
-                            .packageResponse!
-                            .packageModel!
-                            .id!,
-                        count: quantity,
-                        price: (DetailsCubit.get(context)
-                                .packageResponse!
-                                .packageModel!
-                                .price)!
-                            .toDouble(),
-                        afterSuccess: () {
-                          quantityController.clear();
-                          Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            AppRouterNames.addedToCart,
-                            (route) => false,
-                          );
-                        },
-                      );
-                    },
-                  ),
-            SizedBox(
-              height: 2.h,
-            ),
-          ],
+              SizedBox(
+                height: 2.h,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 5.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    DefaultTextField(
+                      width: 25.w,
+                      marginVertical: 0,
+                      marginHorizontal: 5.w,
+                      maxLength: 5,
+                      controller: quantityController,
+                      keyboardType: TextInputType.number,
+                      hintText: translate(AppStrings.orderSpace),
+                      onChange: (value) {
+                        setState(() {
+                          printError(value);
+                          quantity = int.parse(value == "" ? "1" : value);
+                        });
+                      },
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(right: 5.w),
+                      child: SizedBox(
+                        width: 50.w,
+                        child: DefaultText(
+                          align: TextAlign.end,
+                          text:
+                              "${((DetailsCubit.get(context).packageResponse!.packageModel!.price)!.toInt() * quantity)} ${translate(AppStrings.currency)}",
+                          maxLines: 1,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              CacheHelper.getDataFromSharedPreference(
+                          key: SharedPreferenceKeys.password) ==
+                      null
+                  ? DefaultAppButton(
+                      title: translate(AppStrings.loginFirst),
+                      onTap: () {
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          AppRouterNames.login,
+                          (route) => false,
+                        );
+                      },
+                    )
+                  : DefaultAppButton(
+                      title: translate(AppStrings.toCart),
+                      onTap: () {
+                        IndicatorView.showIndicator(context);
+                        CartCubit.get(context).addToCart(
+                          packageId: DetailsCubit.get(context)
+                              .packageResponse!
+                              .packageModel!
+                              .id!,
+                          count: quantity,
+                          price: (DetailsCubit.get(context)
+                                  .packageResponse!
+                                  .packageModel!
+                                  .price)!
+                              .toDouble(),
+                          afterSuccess: () {
+                            quantityController.clear();
+                            Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              AppRouterNames.addedToCart,
+                              (route) => false,
+                            );
+                          },
+                        );
+                      },
+                    ),
+              SizedBox(
+                height: 2.h,
+              ),
+            ],
+          ),
         ),
       ),
     );
