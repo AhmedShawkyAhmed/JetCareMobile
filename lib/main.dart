@@ -25,12 +25,14 @@ import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
 import 'package:jetcare/src/data/data_provider/remote/dio_helper.dart';
 import 'package:jetcare/src/presentation/router/app_router.dart';
 import 'package:jetcare/src/presentation/router/app_router_names.dart';
+import 'package:jetcare/src/presentation/screens/shared/error_screen.dart';
 import 'package:jetcare/src/presentation/widgets/toast.dart';
 import 'package:sizer/sizer.dart';
 
 late LocalizationDelegate delegate;
 String? fcmToken;
 void main() async {
+  customError();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await NotificationService().init();
