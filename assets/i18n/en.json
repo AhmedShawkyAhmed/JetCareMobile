@@ -113,7 +113,7 @@
   "stopped": "Sorry, your Account has been Suspended by the Administrator.",
   "addComment": "Add Comment",
   "comment": "Comment",
-  "count": "Quantity of",
+  "count": "Quantity / Space",
   "saveFirst": "Please, Save the Data First",
   "unavailable": "Sorry, this Service is Currently Unavailable",
   "enterEmail": "Please Enter Email Address",
@@ -122,6 +122,7 @@
   "loginFirst": "Login First",
   "items": "Items",
   "toCart": "Add to Cart",
+  "cart": "Cart",
   "addedToCart": "Item Added to Cart Successfully",
   "goToHome": "Continue Shopping",
   "goToCart": "Go to Cart"

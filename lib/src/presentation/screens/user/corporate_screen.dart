@@ -47,8 +47,8 @@ class CorporateScreen extends StatelessWidget {
                     : appRouterArgument.itemModel!.nameEn,
                 image: appRouterArgument.itemModel!.image!,
                 height: 19.h,
-                mainHeight: 25.h,
-                titleFont: 17.sp,
+                mainHeight: 28.h,
+                titleFont: 16.sp,
                 colorMain: AppColors.pc.withOpacity(0.8),
                 colorSub: AppColors.shade.withOpacity(0.4),
                 onTap: () {},
@@ -67,9 +67,9 @@ class CorporateScreen extends StatelessWidget {
                           "ar"
                       ? appRouterArgument.itemModel!.descriptionAr.toString()
                       : appRouterArgument.itemModel!.descriptionEn.toString(),
-                  fontSize: 14.sp,
+                  fontSize: 12.sp,
                   maxLines: 20,
-                  align: TextAlign.center,
+                  align: TextAlign.start,
                 ),
               ),
             SizedBox(

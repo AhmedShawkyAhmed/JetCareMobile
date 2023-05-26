@@ -20,8 +20,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  bool run = true;
-  bool text = false;
 
   @override
   initState() {

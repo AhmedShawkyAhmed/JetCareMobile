@@ -125,4 +125,5 @@ class AppStrings {
   static const String goToCart = "goToCart";
   static const String goToHome = "goToHome";
   static const String addedToCart = "addedToCart";
+  static const String cart = "cart";
 }

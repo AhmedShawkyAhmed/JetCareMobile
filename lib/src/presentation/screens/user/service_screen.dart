@@ -98,7 +98,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 5.w),
                           child: DefaultText(
-                            text: "${translate(AppStrings.count)} ${widget.appRouterArgument.itemModel!.unit}",
+                            text: "${widget.appRouterArgument.itemModel!.unit}",
                             fontSize: 15.sp,
                           ),
                         ),
@@ -119,7 +119,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                             maxLength: 5,
                             controller: quantityController,
                             keyboardType: TextInputType.number,
-                            hintText: translate(AppStrings.orderSpace),
+                            hintText: translate(AppStrings.count),
                             onChange: (value) {
                               setState(() {
                                 printError(value);

@@ -79,26 +79,26 @@ class _CardViewState extends State<CardView> {
                       ),
                     ),
                   ),
-                  Container(
-                    width: widget.width ?? 100.w,
-                    height: widget.height ?? 20.h,
-                    margin: EdgeInsets.only(
-                      left: 1.w,
-                      right: 1.w,
-                      top: 1.h,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      gradient: LinearGradient(
-                        begin: Alignment.bottomRight,
-                        end: Alignment.centerLeft,
-                        colors: [
-                          widget.colorSub ?? AppColors.shade.withOpacity(0.1),
-                          widget.colorMain ?? AppColors.pc.withOpacity(0.1),
-                        ],
-                      ),
-                    ),
-                  ),
+                  // Container(
+                  //   width: widget.width ?? 100.w,
+                  //   height: widget.height ?? 20.h,
+                  //   margin: EdgeInsets.only(
+                  //     left: 1.w,
+                  //     right: 1.w,
+                  //     top: 1.h,
+                  //   ),
+                  //   decoration: BoxDecoration(
+                  //     borderRadius: BorderRadius.circular(20),
+                  //     gradient: LinearGradient(
+                  //       begin: Alignment.bottomRight,
+                  //       end: Alignment.centerLeft,
+                  //       colors: [
+                  //         widget.colorSub ?? AppColors.shade.withOpacity(0.1),
+                  //         widget.colorMain ?? AppColors.pc.withOpacity(0.1),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
                   if (widget.status)
                     Align(
                       alignment: Alignment.topLeft,

@@ -257,7 +257,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         Navigator.pushNamedAndRemoveUntil(
                                           context,
                                           AppRouterNames.otp,
-                                              (route) => true,
+                                          (route) => true,
                                           arguments: AppRouterArgument(
                                             type: "register",
                                             phone: emailController.text,
@@ -267,7 +267,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                       failed: () {
                                         Navigator.pop(context);
                                         DefaultToast.showMyToast(
-                                            translate(AppStrings.error),);
+                                          translate(AppStrings.error),
+                                        );
                                       },
                                     );
                                   },

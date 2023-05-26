@@ -4,7 +4,6 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/business_logic/app_cubit/app_cubit.dart';
 import 'package:jetcare/src/constants/app_strings.dart';
 import 'package:jetcare/src/presentation/styles/app_colors.dart';
-import 'package:sizer/sizer.dart';
 
 class LayoutScreen extends StatefulWidget {
   const LayoutScreen({Key? key}) : super(key: key);
@@ -28,8 +27,8 @@ class _LayoutScreenState extends State<LayoutScreen> {
               .clientScreens[AppCubit.get(context).currentIndex],
           bottomNavigationBar: BottomNavigationBar(
             elevation: 0.0,
-            showSelectedLabels: false,
-            showUnselectedLabels: false,
+            showSelectedLabels: true,
+            showUnselectedLabels: true,
             backgroundColor: AppColors.mainColor,
             selectedItemColor: AppColors.pc,
             unselectedItemColor: AppColors.shade,
@@ -38,30 +37,30 @@ class _LayoutScreenState extends State<LayoutScreen> {
             onTap: (index) {
               AppCubit.get(context).changeIndex(index);
             },
-            items: const [
+            items: [
               BottomNavigationBarItem(
-                icon: Icon(
+                icon: const Icon(
                   Icons.home,
                 ),
-                label: "",
+                label: translate(AppStrings.home),
               ),
               BottomNavigationBarItem(
-                icon: Icon(
+                icon: const Icon(
                   Icons.sticky_note_2_outlined,
                 ),
-                label: "",
+                label: translate(AppStrings.myOrders),
               ),
               BottomNavigationBarItem(
-                icon: Icon(
+                icon: const Icon(
                   Icons.shopping_cart_outlined,
                 ),
-                label: "",
+                label: translate(AppStrings.cart),
               ),
               BottomNavigationBarItem(
-                icon: Icon(
+                icon: const Icon(
                   Icons.more_horiz_outlined,
                 ),
-                label: "",
+                label: translate(AppStrings.more),
               ),
             ],
           ),
