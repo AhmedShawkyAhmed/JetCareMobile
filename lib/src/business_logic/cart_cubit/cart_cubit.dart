@@ -7,7 +7,6 @@ import 'package:jetcare/src/constants/end_points.dart';
 import 'package:jetcare/src/data/data_provider/remote/dio_helper.dart';
 import 'package:jetcare/src/data/network/responses/cart_response.dart';
 import 'package:jetcare/src/data/network/responses/global_response.dart';
-import 'package:jetcare/src/presentation/widgets/toast.dart';
 
 part 'cart_state.dart';
 
@@ -71,7 +70,6 @@ class CartCubit extends Cubit<CartState> {
       ).then((value) {
         addToCartResponse = GlobalResponse.fromJson(value.data);
         emit(AddCartSuccessState());
-        DefaultToast.showMyToast(addToCartResponse!.message.toString());
         afterSuccess();
       });
     } on DioError catch (n) {
@@ -96,7 +94,6 @@ class CartCubit extends Cubit<CartState> {
         },
       ).then((value) {
         deleteToCartResponse = GlobalResponse.fromJson(value.data);
-        DefaultToast.showMyToast(deleteToCartResponse!.message.toString());
         emit(DeleteCartSuccessState());
         afterSuccess();
       });

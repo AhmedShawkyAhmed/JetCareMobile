@@ -73,7 +73,7 @@ class _CartScreenState extends State<CartScreen> {
                             fontSize: 14.sp,
                             onTap: () {
                               Navigator.pushNamed(
-                                  context, AppRouterNames.appointment);
+                                  context, AppRouterNames.appointment,);
                             },
                             textColor: AppColors.pc,
                             buttonColor: AppColors.white,
@@ -166,6 +166,7 @@ class _CartScreenState extends State<CartScreen> {
                                                 .cart![index]
                                                 .price
                                                 .toInt());
+                                        cart.removeAt(index);
                                       });
                                       CartCubit.get(context)
                                           .cartResponse!
