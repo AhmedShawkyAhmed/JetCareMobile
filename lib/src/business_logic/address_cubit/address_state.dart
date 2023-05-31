@@ -20,3 +20,11 @@ class DeleteAddressErrorState extends AddressState {}
 class EditAddressLoadingState extends AddressState {}
 class EditAddressSuccessState extends AddressState {}
 class EditAddressErrorState extends AddressState {}
+
+class GetStatesLoading extends AddressState {}
+class GetStatesSuccess extends AddressState {}
+class GetStatesError extends AddressState {}
+
+class AreaLodingState extends AddressState {}
+class AreaSuccessState extends AddressState {}
+class AreaErrorState extends AddressState {}

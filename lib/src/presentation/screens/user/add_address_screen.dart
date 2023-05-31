@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jetcare/src/business_logic/address_cubit/address_cubit.dart';
 import 'package:jetcare/src/constants/app_strings.dart';
 import 'package:jetcare/src/constants/constants_variables.dart';
+import 'package:jetcare/src/data/models/area_model.dart';
 import 'package:jetcare/src/data/network/requests/address_request.dart';
 import 'package:jetcare/src/presentation/router/app_router_argument.dart';
 import 'package:jetcare/src/presentation/router/app_router_names.dart';
@@ -11,6 +13,7 @@ import 'package:jetcare/src/presentation/styles/app_colors.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/indicator_view.dart';
 import 'package:jetcare/src/presentation/widgets/default_app_button.dart';
+import 'package:jetcare/src/presentation/widgets/default_drop_down_menu.dart';
 import 'package:jetcare/src/presentation/widgets/default_text.dart';
 import 'package:jetcare/src/presentation/widgets/default_text_field.dart';
 import 'package:jetcare/src/presentation/widgets/toast.dart';
@@ -30,20 +33,14 @@ class AddAddressScreen extends StatefulWidget {
 
 class _AddAddressScreenState extends State<AddAddressScreen> {
   final TextEditingController phoneController = TextEditingController();
-  final TextEditingController floorController = TextEditingController();
-  final TextEditingController buildingController = TextEditingController();
-  final TextEditingController streetController = TextEditingController();
-  final TextEditingController areaController = TextEditingController();
-  final TextEditingController districtController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
+  int stateId = 0;
+  int areaId = 0;
 
   @override
   dispose() {
     phoneController.clear();
-    floorController.clear();
-    buildingController.clear();
-    streetController.clear();
-    areaController.clear();
-    districtController.clear();
+    addressController.clear();
     addressLocation = const LatLng(0.0, 0.0);
     super.dispose();
   }
@@ -77,35 +74,73 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
               keyboardType: TextInputType.phone,
             ),
             DefaultTextField(
-              controller: floorController,
+              controller: addressController,
               hintText: widget.appRouterArguments.type == "edit"
-                  ? widget.appRouterArguments.addressModel!.floor.toString()
-                  : translate(AppStrings.floor),
-              keyboardType: TextInputType.number,
+                  ? widget.appRouterArguments.addressModel!.address!
+                  : translate(AppStrings.orderAddress),
             ),
-            DefaultTextField(
-              controller: buildingController,
-              hintText: widget.appRouterArguments.type == "edit"
-                  ? widget.appRouterArguments.addressModel!.building!
-                  : translate(AppStrings.building),
+            BlocBuilder<AddressCubit, AddressState>(
+              builder: (context, state) {
+                return AddressCubit.get(context).allStatesResponse == null || AddressCubit.get(context)
+                    .allStatesResponse!
+                    .statesList == null ||
+                        AddressCubit.get(context)
+                            .allStatesResponse!
+                            .statesList!
+                            .isEmpty
+                    ? const SizedBox()
+                    : Container(
+                        height: 5.h,
+                        width: 100.w,
+                        margin: EdgeInsets.symmetric(
+                            horizontal: 10.w, vertical: 2.h),
+                        child: DefaultDropdown<AreaModel>(
+                          hint: translate(AppStrings.state),
+                          showSearchBox: true,
+                          itemAsString: (AreaModel? u) => u?.nameAr ?? "",
+                          items: AddressCubit.get(context)
+                              .allStatesResponse!
+                              .statesList!,
+                          onChanged: (val) {
+                            setState(() {
+                              stateId = val!.id!;
+                              AddressCubit.get(context).getAllAreas(
+                                  stateId: val.id == 0 ? 0 : val.id);
+                            });
+                          },
+                        ),
+                      );
+              },
             ),
-            DefaultTextField(
-              controller: streetController,
-              hintText: widget.appRouterArguments.type == "edit"
-                  ? widget.appRouterArguments.addressModel!.street!
-                  : translate(AppStrings.street),
-            ),
-            DefaultTextField(
-              controller: areaController,
-              hintText: widget.appRouterArguments.type == "edit"
-                  ? widget.appRouterArguments.addressModel!.area!
-                  : translate(AppStrings.area),
-            ),
-            DefaultTextField(
-              controller: districtController,
-              hintText: widget.appRouterArguments.type == "edit"
-                  ? widget.appRouterArguments.addressModel!.district!
-                  : translate(AppStrings.district),
+            BlocBuilder<AddressCubit, AddressState>(
+              builder: (context, state) {
+                return AddressCubit.get(context).getAreaResponse == null ||
+                        AddressCubit.get(context).getAreaResponse!.areas ==
+                            null ||
+                        AddressCubit.get(context)
+                            .getAreaResponse!
+                            .areas!
+                            .isEmpty
+                    ? const SizedBox()
+                    : Container(
+                        height: 5.h,
+                        width: 100.w,
+                        margin: EdgeInsets.symmetric(
+                            horizontal: 10.w, vertical: 2.h),
+                        child: DefaultDropdown<AreaModel>(
+                          hint: translate(AppStrings.area),
+                          showSearchBox: true,
+                          itemAsString: (AreaModel? u) => u?.nameAr ?? "",
+                          items:
+                              AddressCubit.get(context).getAreaResponse!.areas!,
+                          onChanged: (val) {
+                            setState(() {
+                              areaId = val!.id!;
+                            });
+                          },
+                        ),
+                      );
+              },
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.w),
@@ -149,16 +184,14 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                     title: translate(AppStrings.save),
                     onTap: () {
                       IndicatorView.showIndicator(context);
-                                Navigator.pop(context);
+                      Navigator.pop(context);
                       AddressCubit.get(context).updateAddress(
                         addressRequest: AddressRequest(
                           userId: widget.appRouterArguments.addressModel!.id!,
                           phone: phoneController.text,
-                          floor: floorController.text,
-                          building: buildingController.text,
-                          street: streetController.text,
-                          area: areaController.text,
-                          district: districtController.text,
+                          address: addressController.text,
+                          stateId: stateId,
+                          areaId: areaId,
                           latitude: addressLocation.latitude.toString(),
                           longitude: addressLocation.longitude.toString(),
                         ),
@@ -178,36 +211,28 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                       if (phoneController.text == "") {
                         DefaultToast.showMyToast(
                             translate(AppStrings.enterPhone));
-                      } else if (floorController.text == "") {
+                      } else if (addressController.text == "") {
                         DefaultToast.showMyToast(
-                            translate(AppStrings.enterFloor));
-                      } else if (buildingController.text == "") {
+                            translate(AppStrings.enterAddress));
+                      } else if (stateId == 0) {
                         DefaultToast.showMyToast(
-                            translate(AppStrings.enterBuilding));
-                      } else if (streetController.text == "") {
-                        DefaultToast.showMyToast(
-                            translate(AppStrings.enterStreet));
-                      } else if (areaController.text == "") {
+                            translate(AppStrings.enterState));
+                      } else if (areaId == 0) {
                         DefaultToast.showMyToast(
                             translate(AppStrings.enterArea));
-                      } else if (districtController.text == "") {
-                        DefaultToast.showMyToast(
-                            translate(AppStrings.enterDistrict));
                       } else if (locationController.text == "") {
                         DefaultToast.showMyToast(
                             translate(AppStrings.enterLocation));
                       } else {
                         IndicatorView.showIndicator(context);
-                                Navigator.pop(context);
+                        Navigator.pop(context);
                         AddressCubit.get(context).addAddress(
                           addressRequest: AddressRequest(
                             userId: globalAccountModel.id!,
                             phone: phoneController.text,
-                            floor: floorController.text,
-                            building: buildingController.text,
-                            street: streetController.text,
-                            area: areaController.text,
-                            district: districtController.text,
+                            address: addressController.text,
+                            stateId: stateId,
+                            areaId: areaId,
                             latitude: addressLocation.latitude.toString(),
                             longitude: addressLocation.longitude.toString(),
                           ),

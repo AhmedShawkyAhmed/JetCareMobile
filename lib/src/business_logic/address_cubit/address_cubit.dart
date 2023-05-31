@@ -6,9 +6,12 @@ import 'package:jetcare/src/constants/constants_variables.dart';
 import 'package:jetcare/src/constants/end_points.dart';
 import 'package:jetcare/src/data/data_provider/remote/dio_helper.dart';
 import 'package:jetcare/src/data/models/address_model.dart';
+import 'package:jetcare/src/data/models/area_model.dart';
 import 'package:jetcare/src/data/network/requests/address_request.dart';
 import 'package:jetcare/src/data/network/responses/address_response.dart';
+import 'package:jetcare/src/data/network/responses/area_response.dart';
 import 'package:jetcare/src/data/network/responses/global_response.dart';
+import 'package:jetcare/src/data/network/responses/state_response.dart';
 
 part 'address_state.dart';
 
@@ -16,11 +19,69 @@ class AddressCubit extends Cubit<AddressState> {
   AddressCubit() : super(AddressInitial());
 
   static AddressCubit get(context) => BlocProvider.of(context);
-
-  AddressResponse? addressResponse,addAddressResponse;
+  AreaResponse? getAreaResponse;
+  StatesResponse? allStatesResponse;
+  AddressResponse? addressResponse, addAddressResponse;
   GlobalResponse? globalResponse, deleteResponse;
   List<AddressModel> addressList = [];
+  List<String> statesList = [];
   int addressCount = 0;
+  List<String> areas = [];
+  List<AreaModel> areaList = [];
+  List<int> areaId = [];
+
+  Future getAllStates({String? keyword,required VoidCallback afterSuccess}) async {
+    try {
+      emit(GetStatesLoading());
+      await DioHelper.getData(
+        url: EndPoints.getAllStates,
+        query: {
+          "keyword": keyword,
+        },
+      ).then((value) {
+        printSuccess(value.data.toString());
+        allStatesResponse = StatesResponse.fromJson(value.data);
+        for (int i = 0; i < allStatesResponse!.statesList!.length; i++) {
+          statesList.add(allStatesResponse!.statesList![i].nameAr!);
+        }
+        emit(GetStatesSuccess());
+        afterSuccess();
+      });
+    } on DioError catch (n) {
+      emit(GetStatesError());
+      printError(n.toString());
+    } catch (e) {
+      emit(GetStatesError());
+      printError(e.toString());
+    }
+  }
+
+  Future getAllAreas({int? stateId}) async {
+    try {
+      emit(AreaLodingState());
+      await DioHelper.getData(
+        url: EndPoints.getAreasOfState,
+        query: {
+          "stateId": stateId,
+        },
+      ).then((value) {
+        printSuccess(value.data.toString());
+        getAreaResponse = AreaResponse.fromJson(value.data);
+        areaList.addAll(getAreaResponse!.areas!);
+        for (int i = 0; i < areaList.length; i++) {
+          areas.add(areaList[i].nameAr!);
+          areaId.add(areaList[i].id!);
+        }
+        emit(AreaSuccessState());
+      });
+    } on DioError catch (n) {
+      emit(AreaErrorState());
+      printError(n.toString());
+    } catch (e) {
+      emit(AreaErrorState());
+      printError(e.toString());
+    }
+  }
 
   Future getMyAddresses({required VoidCallback afterSuccess}) async {
     addressList.clear();
@@ -31,7 +92,7 @@ class AddressCubit extends Cubit<AddressState> {
       }).then((value) {
         addressResponse = AddressResponse.fromJson(value.data);
         printSuccess("Address Response ${addressResponse!.message.toString()}");
-        if(addressResponse!.status.toString() == "200"){
+        if (addressResponse!.status.toString() == "200") {
           addressList.addAll(addressResponse!.address!);
           addressCount = addressResponse!.address!.length;
         }
@@ -56,11 +117,9 @@ class AddressCubit extends Cubit<AddressState> {
       await DioHelper.postData(url: EndPoints.addAddress, body: {
         'userId': addressRequest.userId,
         'phone': addressRequest.phone,
-        'floor': addressRequest.floor,
-        'building': addressRequest.building,
-        'street': addressRequest.street,
-        'area': addressRequest.area,
-        'district': addressRequest.district,
+        'address': addressRequest.address,
+        'stateId': addressRequest.stateId,
+        'areaId': addressRequest.areaId,
         'latitude': addressRequest.latitude,
         'longitude': addressRequest.longitude,
       }).then((value) {
@@ -87,11 +146,9 @@ class AddressCubit extends Cubit<AddressState> {
       await DioHelper.postData(url: EndPoints.updateAddress, body: {
         'id': addressRequest.userId,
         'phone': addressRequest.phone,
-        'floor': addressRequest.floor,
-        'building': addressRequest.building,
-        'street': addressRequest.street,
-        'area': addressRequest.area,
-        'district': addressRequest.district,
+        'address': addressRequest.address,
+        'stateId': addressRequest.stateId,
+        'areaId': addressRequest.areaId,
         'latitude': addressRequest.latitude,
         'longitude': addressRequest.longitude,
       }).then((value) {

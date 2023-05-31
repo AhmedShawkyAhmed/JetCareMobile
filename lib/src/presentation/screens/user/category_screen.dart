@@ -48,7 +48,7 @@ class CategoryScreen extends StatelessWidget {
                     .image,
                 height: 19.h,
                 mainHeight: 25.h,
-                titleFont: 17.sp,
+                titleFont: 14.sp,
                 colorMain: AppColors.pc.withOpacity(0.8),
                 colorSub: AppColors.shade.withOpacity(0.4),
                 onTap: () {},
@@ -81,7 +81,8 @@ class CategoryScreen extends StatelessWidget {
                             .categoryModel!
                             .descriptionEn
                             .toString(),
-                    fontSize: 14.sp,
+                    fontSize: 12.sp,
+                    maxLines: 5,
                   ),
                 ],
               ),

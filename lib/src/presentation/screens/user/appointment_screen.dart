@@ -27,7 +27,10 @@ import 'package:jetcare/src/presentation/widgets/toast.dart';
 import 'package:sizer/sizer.dart';
 
 class AppointmentScreen extends StatefulWidget {
+  final AppRouterArgument appRouterArgument;
+
   const AppointmentScreen({
+    required this.appRouterArgument,
     Key? key,
   }) : super(key: key);
 
@@ -249,6 +252,63 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
               height: 15.h,
               maxLength: 500,
             ),
+            if (shipping.isNotEmpty) ...[
+              SizedBox(
+                height: 2.h,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                child: Row(
+                  children: [
+                    DefaultText(
+                      text: translate(AppStrings.price),
+                    ),
+                    const Spacer(),
+                    DefaultText(
+                      text:
+                          " ${widget.appRouterArgument.total ?? 0} ${translate(AppStrings.currency)}",
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                child: Row(
+                  children: [
+                    DefaultText(
+                      text: translate(AppStrings.shipping),
+                    ),
+                    const Spacer(),
+                    DefaultText(
+                      text: selectedAddress.area == null ||
+                              selectedAddress.area!.price!.toInt() == 0
+                          ? translate(AppStrings.free)
+                          : " ${selectedAddress.area!.price!.toInt()} ${translate(AppStrings.currency)}",
+                    ),
+                  ],
+                ),
+              ),
+              Divider(
+                endIndent: 10.w,
+                indent: 10.w,
+                color: AppColors.pc,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                child: Row(
+                  children: [
+                    DefaultText(
+                      text: translate(AppStrings.total),
+                    ),
+                    const Spacer(),
+                    DefaultText(
+                      text:
+                          " ${((double.parse(widget.appRouterArgument.total.toString())) + (selectedAddress.area == null || selectedAddress.area!.price!.toInt() == 0 ? 0 : selectedAddress.area!.price!.toDouble())).toInt()} ${translate(AppStrings.currency)}",
+                    ),
+                  ],
+                ),
+              ),
+            ],
             SizedBox(
               height: 2.h,
             ),
@@ -267,7 +327,26 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                   IndicatorView.showIndicator(context);
                   OrderCubit.get(context).createOrder(
                     orderRequest: OrderRequest(
-                      total: cartTotal,
+                      total: shipping.isEmpty
+                          ? widget.appRouterArgument.total.toString()
+                          : ((double.parse(widget.appRouterArgument.total
+                                      .toString())) +
+                                  (selectedAddress.area == null ||
+                                          selectedAddress.area!.price!
+                                                  .toInt() ==
+                                              0
+                                      ? 0
+                                      : selectedAddress.area!.price!
+                                          .toDouble()))
+                              .toString(),
+                      price: widget.appRouterArgument.total.toString(),
+                      shipping: shipping.isEmpty
+                          ? "0"
+                          : (selectedAddress.area == null ||
+                                      selectedAddress.area!.price!.toInt() == 0
+                                  ? 0
+                                  : selectedAddress.area!.price!.toInt())
+                              .toString(),
                       periodId: selectedPeriod.id!,
                       addressId: selectedAddress.id!,
                       date: dateController.text,

@@ -31,7 +31,7 @@ class ServiceScreen extends StatefulWidget {
 
 class _ServiceScreenState extends State<ServiceScreen> {
   bool edit = false;
-  int quantity = 1;
+  int quantity = 0;
   TextEditingController quantityController = TextEditingController();
 
   @override
@@ -60,7 +60,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         image: widget.appRouterArgument.itemModel!.image,
                         height: 19.h,
                         mainHeight: 25.h,
-                        titleFont: 17.sp,
+                        titleFont: 15.sp,
                         colorMain: AppColors.pc.withOpacity(0.8),
                         colorSub: AppColors.shade.withOpacity(0.4),
                         onTap: () {},
@@ -70,6 +70,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                       padding: EdgeInsets.symmetric(horizontal: 5.w),
                       child: DefaultText(
                         text: translate(AppStrings.description),
+                        fontSize: 14.sp,
                       ),
                     ),
                     SizedBox(
@@ -86,7 +87,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                               ? widget.appRouterArgument.itemModel!.descriptionAr!
                               : widget
                                   .appRouterArgument.itemModel!.descriptionEn!,
-                          fontSize: 15.sp,
+                          fontSize: 12.sp,
                         ),
                       ),
                     ),
@@ -119,11 +120,11 @@ class _ServiceScreenState extends State<ServiceScreen> {
                             maxLength: 5,
                             controller: quantityController,
                             keyboardType: TextInputType.number,
-                            hintText: translate(AppStrings.count),
+                            hintText: "",
                             onChange: (value) {
                               setState(() {
                                 printError(value);
-                                quantity = int.parse(value == "" ? "1" : value);
+                                quantity = int.parse(value == "" ? "0" : value);
                               });
                             },
                           ),
@@ -134,7 +135,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                               child: DefaultText(
                                 align: TextAlign.end,
                                 text:
-                                "${((widget.appRouterArgument.itemModel!.price)!.toInt() * quantity)} ${translate(AppStrings.currency)}",
+                                "${((widget.appRouterArgument.itemModel!.price)!.toInt() * (quantity == 0?1:quantity))} ${translate(AppStrings.currency)}",
                                 maxLines: 1,
                               ),
                             ),
@@ -158,10 +159,9 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         : DefaultAppButton(
                             title: translate(AppStrings.toCart),
                             onTap: () {
-                              if (edit) {
-                                DefaultToast.showMyToast(
-                                    translate(AppStrings.saveFirst));
-                              } else {
+                              if(quantity == 0){
+                                DefaultToast.showMyToast(translate(AppStrings.enterQuantity));
+                              }else{
                                 IndicatorView.showIndicator(context);
                                 CartCubit.get(context).addToCart(
                                   itemId: widget.appRouterArgument.itemModel!.id,

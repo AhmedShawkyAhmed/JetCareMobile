@@ -8,6 +8,7 @@ import 'package:jetcare/src/presentation/router/app_router_names.dart';
 import 'package:jetcare/src/presentation/styles/app_colors.dart';
 import 'package:jetcare/src/presentation/views/address_widget.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
+import 'package:jetcare/src/presentation/views/indicator_view.dart';
 import 'package:jetcare/src/presentation/views/loading_view.dart';
 import 'package:jetcare/src/presentation/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
@@ -45,11 +46,14 @@ class AddressScreen extends StatelessWidget {
                   ),
                   child: DefaultText(
                     onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        AppRouterNames.addAddress,
-                        arguments: AppRouterArgument(type: "new"),
-                      );
+                      IndicatorView.showIndicator(context);
+                      AddressCubit.get(context).getAllStates(afterSuccess: (){
+                        Navigator.pushNamed(
+                          context,
+                          AppRouterNames.addAddress,
+                          arguments: AppRouterArgument(type: "new"),
+                        );
+                      });
                     },
                     text: translate(AppStrings.addAddress),
                     fontSize: 12.sp,

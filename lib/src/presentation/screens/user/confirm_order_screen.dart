@@ -23,7 +23,7 @@ import 'package:sizer/sizer.dart';
 class ConfirmOrderScreen extends StatefulWidget {
   final AppRouterArgument appRouterArgument;
 
-  ConfirmOrderScreen({
+  const ConfirmOrderScreen({
     required this.appRouterArgument,
     Key? key,
   }) : super(key: key);
@@ -45,6 +45,41 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
           padding: EdgeInsets.only(top: 1.h),
           child: ListView(
             children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                child: Row(
+                  children: [
+                    DefaultText(
+                      text: translate(AppStrings.price),
+                    ),
+                    const Spacer(),
+                    DefaultText(
+                      text:
+                          " ${widget.appRouterArgument.orderModel!.price ?? 0} ${translate(AppStrings.currency)}",
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                child: Row(
+                  children: [
+                    DefaultText(
+                      text: translate(AppStrings.shipping),
+                    ),
+                    const Spacer(),
+                    DefaultText(
+                      text:widget.appRouterArgument.orderModel!.shipping == 0?translate(AppStrings.free):
+                          " ${widget.appRouterArgument.orderModel!.shipping ?? 0} ${translate(AppStrings.currency)}",
+                    ),
+                  ],
+                ),
+              ),
+              Divider(
+                endIndent: 10.w,
+                indent: 10.w,
+                color: AppColors.pc,
+              ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10.w),
                 child: Row(

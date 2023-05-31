@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jetcare/src/constants/end_points.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
 import 'package:jetcare/src/presentation/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 

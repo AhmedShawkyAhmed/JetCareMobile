@@ -2,6 +2,7 @@ import 'package:jetcare/src/data/models/item_model.dart';
 
 class PackageModel {
   int? id;
+  int? hasShipping;
   String? nameAr;
   String? nameEn;
   String? descriptionAr;
@@ -14,6 +15,7 @@ class PackageModel {
 
   PackageModel({
     this.id,
+    this.hasShipping,
     this.nameAr,
     this.nameEn,
     this.descriptionAr,
@@ -27,6 +29,7 @@ class PackageModel {
 
   factory PackageModel.fromJson(Map<String, dynamic> json) => PackageModel(
         id: json['id'] ?? 0,
+    hasShipping: json['hasShipping'] ?? 0,
         nameAr: json['nameAr'] ?? "",
         nameEn: json['nameEn'] ?? "",
         descriptionAr: json['descriptionAr'] ?? "",
@@ -46,6 +49,7 @@ class PackageModel {
 
   Map<String, dynamic> toJson() => {
         'id': id,
+        'hasShipping': hasShipping,
         'nameAr': nameAr,
         'nameEn': nameEn,
         'descriptionAr': descriptionAr,
