@@ -180,8 +180,11 @@ class AppRouter {
           ),
         );
       case AppRouterNames.appointment:
+        final AppRouterArgument appRouterArgument =
+        settings.arguments as AppRouterArgument;
         return CustomPageRouteTransiton.fadeOut(
-          page: const AppointmentScreen(),
+          page: AppointmentScreen(
+            appRouterArgument: appRouterArgument,),
         );
       default:
         return null;

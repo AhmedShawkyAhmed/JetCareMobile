@@ -110,7 +110,13 @@ class AppStrings {
   static const String history = "history";
   static const String noTasks = "noTasks";
   static const String noExtras = "noExtras";
+  static const String shipping = "shipping";
+  static const String free = "free";
   static const String lang = "lang";
+  static const String state = "state";
+  static const String enterState = "enterState";
+  static const String enterAddress = "enterAddress";
+  static const String enterQuantity = "enterQuantity";
   static const String addComment = "addComment";
   static const String comment = "comment";
   static const String unavailable = "unavailable";

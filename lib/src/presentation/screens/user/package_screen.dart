@@ -15,6 +15,7 @@ import 'package:jetcare/src/presentation/views/package_item_widget.dart';
 import 'package:jetcare/src/presentation/widgets/default_app_button.dart';
 import 'package:jetcare/src/presentation/widgets/default_text.dart';
 import 'package:jetcare/src/presentation/widgets/default_text_field.dart';
+import 'package:jetcare/src/presentation/widgets/toast.dart';
 import 'package:sizer/sizer.dart';
 
 class PackageScreen extends StatefulWidget {
@@ -33,7 +34,7 @@ class _PackageScreenState extends State<PackageScreen> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: ()=> FocusScope.of(context).unfocus(),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         backgroundColor: AppColors.mainColor,
         body: BodyView(
@@ -63,7 +64,7 @@ class _PackageScreenState extends State<PackageScreen> {
                       .image,
                   height: 19.h,
                   mainHeight: 25.h,
-                  titleFont: 17.sp,
+                  titleFont: 15.sp,
                   colorMain: AppColors.pc.withOpacity(0.8),
                   colorSub: AppColors.shade.withOpacity(0.4),
                   onTap: () {},
@@ -102,7 +103,7 @@ class _PackageScreenState extends State<PackageScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 5.w),
                     child: DefaultText(
                       text: "${translate(AppStrings.enterSpace)} M²",
-                      fontSize: 15.sp,
+                      fontSize: 12.sp,
                     ),
                   ),
                 ],
@@ -122,11 +123,11 @@ class _PackageScreenState extends State<PackageScreen> {
                       maxLength: 5,
                       controller: quantityController,
                       keyboardType: TextInputType.number,
-                      hintText: translate(AppStrings.orderSpace),
+                      hintText: "",
                       onChange: (value) {
                         setState(() {
                           printError(value);
-                          quantity = int.parse(value == "" ? "1" : value);
+                          quantity = int.parse(value == "" ? "0" : value);
                         });
                       },
                     ),
@@ -137,7 +138,7 @@ class _PackageScreenState extends State<PackageScreen> {
                         child: DefaultText(
                           align: TextAlign.end,
                           text:
-                              "${((DetailsCubit.get(context).packageResponse!.packageModel!.price)!.toInt() * quantity)} ${translate(AppStrings.currency)}",
+                              "${((DetailsCubit.get(context).packageResponse!.packageModel!.price)!.toInt() * (quantity == 0 ? 1 : quantity))} ${translate(AppStrings.currency)}",
                           maxLines: 1,
                         ),
                       ),
@@ -161,27 +162,32 @@ class _PackageScreenState extends State<PackageScreen> {
                   : DefaultAppButton(
                       title: translate(AppStrings.toCart),
                       onTap: () {
-                        IndicatorView.showIndicator(context);
-                        CartCubit.get(context).addToCart(
-                          packageId: DetailsCubit.get(context)
-                              .packageResponse!
-                              .packageModel!
-                              .id!,
-                          count: quantity,
-                          price: (DetailsCubit.get(context)
-                                  .packageResponse!
-                                  .packageModel!
-                                  .price)!
-                              .toDouble(),
-                          afterSuccess: () {
-                            quantityController.clear();
-                            Navigator.pushNamedAndRemoveUntil(
-                              context,
-                              AppRouterNames.addedToCart,
-                              (route) => false,
-                            );
-                          },
-                        );
+                        if (quantity == 0) {
+                          DefaultToast.showMyToast(
+                              translate(AppStrings.enterQuantity));
+                        } else {
+                          IndicatorView.showIndicator(context);
+                          CartCubit.get(context).addToCart(
+                            packageId: DetailsCubit.get(context)
+                                .packageResponse!
+                                .packageModel!
+                                .id!,
+                            count: quantity,
+                            price: (DetailsCubit.get(context)
+                                    .packageResponse!
+                                    .packageModel!
+                                    .price)!
+                                .toDouble(),
+                            afterSuccess: () {
+                              quantityController.clear();
+                              Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                AppRouterNames.addedToCart,
+                                (route) => false,
+                              );
+                            },
+                          );
+                        }
                       },
                     ),
               SizedBox(

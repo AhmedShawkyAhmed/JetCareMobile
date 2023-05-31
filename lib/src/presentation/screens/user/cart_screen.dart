@@ -6,6 +6,7 @@ import 'package:jetcare/src/constants/app_strings.dart';
 import 'package:jetcare/src/constants/constants_variables.dart';
 import 'package:jetcare/src/constants/shared_preference_keys.dart';
 import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
+import 'package:jetcare/src/presentation/router/app_router_argument.dart';
 import 'package:jetcare/src/presentation/router/app_router_names.dart';
 import 'package:jetcare/src/presentation/styles/app_colors.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
@@ -73,7 +74,7 @@ class _CartScreenState extends State<CartScreen> {
                             fontSize: 14.sp,
                             onTap: () {
                               Navigator.pushNamed(
-                                  context, AppRouterNames.appointment,);
+                                  context, AppRouterNames.appointment,arguments: AppRouterArgument(total: CartCubit.get(context).cartResponse?.total.toString()));
                             },
                             textColor: AppColors.pc,
                             buttonColor: AppColors.white,

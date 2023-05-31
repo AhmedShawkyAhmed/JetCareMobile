@@ -50,7 +50,7 @@ class _AddressWidgetState extends State<AddressWidget> {
                     children: [
                       DefaultText(
                         text:
-                            "${widget.addressModel.floor}, ${widget.addressModel.building}, ${widget.addressModel.street}, ${widget.addressModel.area}, ${widget.addressModel.district}",
+                            "${widget.addressModel.address}, ${widget.addressModel.area!.nameAr}, ${widget.addressModel.state!.nameAr}",
                         fontSize: 10.sp,
                         maxLines: 1,
                         fontWeight: FontWeight.w400,
@@ -76,7 +76,7 @@ class _AddressWidgetState extends State<AddressWidget> {
                   children: [
                     DefaultText(
                       text:
-                          "${widget.addressModel.floor}, ${widget.addressModel.building}, ${widget.addressModel.street}, ${widget.addressModel.area}, ${widget.addressModel.district}",
+                      "${widget.addressModel.address}, ${widget.addressModel.area!.nameAr}, ${widget.addressModel.state!.nameAr}",
                       fontSize: 13.sp,
                       fontWeight: FontWeight.w400,
                     ),

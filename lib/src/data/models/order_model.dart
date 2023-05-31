@@ -10,7 +10,7 @@ class OrderModel {
   int? id;
   String? status;
   String? createdAt, date, comment;
-  num? total;
+  num? total, price, shipping;
   AccountModel? user, crew;
   PeriodModel? period;
   AddressModel? address;
@@ -25,6 +25,8 @@ class OrderModel {
     this.status,
     this.createdAt,
     this.total,
+    this.price,
+    this.shipping,
     this.user,
     this.crew,
     this.date,
@@ -41,6 +43,8 @@ class OrderModel {
   factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
         id: json['id'] ?? 0,
         total: json['total'] ?? 0,
+        price: json['price'] ?? 0,
+        shipping: json['shipping'] ?? 0,
         status: json['status'] ?? "",
         comment: json['comment'] ?? "",
         createdAt: json['created_at'] ?? "",
@@ -64,16 +68,17 @@ class OrderModel {
             ? List<ItemModel>.from(
                 json["extras"].map((x) => ItemModel.fromJson(x)))
             : json["extras"],
-
-    cart: json["cart"] != null
-        ? List<CartModel>.from(
-        json["cart"].map((x) => CartModel.fromJson(x)))
-        : json["cart"],
+        cart: json["cart"] != null
+            ? List<CartModel>.from(
+                json["cart"].map((x) => CartModel.fromJson(x)))
+            : json["cart"],
       );
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'total': total,
+        'price': price,
+        'shipping': shipping,
         'status': status,
         'created_at': createdAt,
         'user': user,

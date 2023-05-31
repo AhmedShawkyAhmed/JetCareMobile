@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jetcare/src/constants/shared_preference_keys.dart';
-import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
 import 'package:jetcare/src/presentation/styles/app_colors.dart';
+import 'package:simple_rich_text/simple_rich_text.dart';
 import 'package:sizer/sizer.dart';
 
 class DefaultText extends StatelessWidget {
@@ -34,7 +33,7 @@ class DefaultText extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      child: Text(
+      child: SimpleRichText(
         text,
         textAlign: align ?? TextAlign.start,
         style: TextStyle(
@@ -45,16 +44,16 @@ class DefaultText extends StatelessWidget {
                   ? TextDecoration.lineThrough
                   : TextDecoration.none,
           color: textColor ?? AppColors.white,
-          fontSize: fontSize ?? 17.sp,
-          fontWeight: fontWeight ?? FontWeight.w300,
+          fontSize: fontSize ?? 14.sp,
+          fontWeight: fontWeight ?? FontWeight.normal,
         ),
-        textDirection: CacheHelper.getDataFromSharedPreference(
-                    key: SharedPreferenceKeys.language) ==
-                "ar"
-            ? TextDirection.rtl
-            : TextDirection.ltr,
+        // textDirection: CacheHelper.getDataFromSharedPreference(
+        //             key: SharedPreferenceKeys.language) ==
+        //         "ar"
+        //     ? TextDirection.rtl
+        //     : TextDirection.ltr,
         maxLines: maxLines ?? 1,
-        overflow: TextOverflow.clip,
+        textOverflow: TextOverflow.clip,
       ),
     );
   }

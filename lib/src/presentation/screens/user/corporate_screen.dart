@@ -47,15 +47,25 @@ class CorporateScreen extends StatelessWidget {
                     : appRouterArgument.itemModel!.nameEn,
                 image: appRouterArgument.itemModel!.image!,
                 height: 19.h,
-                mainHeight: 28.h,
-                titleFont: 16.sp,
+                mainHeight: 25.h,
+                titleFont: 15.sp,
                 colorMain: AppColors.pc.withOpacity(0.8),
                 colorSub: AppColors.shade.withOpacity(0.4),
                 onTap: () {},
               ),
             ),
             SizedBox(
-              height: 2.h,
+              height: 1.h,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5.w),
+              child: DefaultText(
+                text: translate(AppStrings.description),
+                fontSize: 14.sp,
+              ),
+            ),
+            SizedBox(
+              height: 1.h,
             ),
             if (appRouterArgument.itemModel!.descriptionAr != "" &&
                 appRouterArgument.itemModel!.descriptionAr != null)
@@ -68,7 +78,7 @@ class CorporateScreen extends StatelessWidget {
                       ? appRouterArgument.itemModel!.descriptionAr.toString()
                       : appRouterArgument.itemModel!.descriptionEn.toString(),
                   fontSize: 12.sp,
-                  maxLines: 20,
+                  maxLines: 200,
                   align: TextAlign.start,
                 ),
               ),

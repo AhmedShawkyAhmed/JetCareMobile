@@ -10,6 +10,8 @@ class EndPoints {
   static const deleteAccount = "deleteAccount";
   static const getHome = "getHome";
   static const getAppInfo = "getAppInfo";
+  static const getAllStates = "getAllStates";
+  static const getAreasOfState = "getAreasOfState";
   static const updateAccount = "updateAccount";
   static const getCategoryDetails = "getCategoryDetails";
   static const getPackageDetails = "getPackageDetails";

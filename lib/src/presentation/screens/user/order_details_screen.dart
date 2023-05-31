@@ -122,11 +122,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                       visible: true,
                       title: translate(AppStrings.orderAddress),
                       sub:
-                          "${widget.appRouterArgument.orderModel!.address!.floor},"
-                          " ${widget.appRouterArgument.orderModel!.address!.building},"
-                          " ${widget.appRouterArgument.orderModel!.address!.street},"
-                          " ${widget.appRouterArgument.orderModel!.address!.area},"
-                          " ${widget.appRouterArgument.orderModel!.address!.district}",
+                          "${widget.appRouterArgument.orderModel!.address!.address},"
+                          " ${widget.appRouterArgument.orderModel!.address!.area!.nameAr},"
+                          " ${widget.appRouterArgument.orderModel!.address!.state!.nameAr}",
                       padding: 0,
                     ),
                     SummeryItem(

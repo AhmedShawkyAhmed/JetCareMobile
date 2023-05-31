@@ -23,6 +23,7 @@ class CartCubit extends Cubit<CartState> {
     required VoidCallback afterSuccess,
   }) async {
     try {
+      shipping.clear();
       cart.clear();
       cartTotal = 0;
       emit(GetCartLoadingState());
@@ -35,7 +36,11 @@ class CartCubit extends Cubit<CartState> {
         if(cartResponse!.status == 200){
           for(int i = 0; i < cartResponse!.cart!.length; i++){
             cart.add(cartResponse!.cart![i].id);
+            if(cartResponse!.cart![i].item!.hasShipping == 1){
+              shipping.add(cartResponse!.cart![i].item!.hasShipping!);
+            }
           }
+          printSuccess(shipping.isNotEmpty.toString());
         }
         emit(GetCartSuccessState());
         afterSuccess();

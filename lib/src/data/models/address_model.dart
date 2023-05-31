@@ -1,6 +1,9 @@
+import 'package:jetcare/src/data/models/area_model.dart';
+
 class AddressModel {
-  int? id, floor;
-  String? phone, building, street, area, district, latitude, longitude;
+  int? id;
+  String? phone, address, latitude, longitude;
+  AreaModel? state, area;
 
   AddressModel({
     this.id,
@@ -8,33 +11,31 @@ class AddressModel {
     this.area,
     this.latitude,
     this.longitude,
-    this.street,
-    this.building,
-    this.district,
-    this.floor,
+    this.state,
+    this.address,
   });
 
   factory AddressModel.fromJson(Map<String, dynamic> json) => AddressModel(
         id: json['id'] ?? 0,
-        floor: json['floor'] ?? 0,
         longitude: json['longitude'] ?? "",
         latitude: json['latitude'] ?? "",
-        area: json['area'] ?? "",
-        building: json['building'] ?? "",
-        district: json['district'] ?? "",
+        area: json["area"] != null
+            ? AreaModel.fromJson(json["area"])
+            : null,
+        address: json['address'] ?? "",
+        state: json["state"] != null
+            ? AreaModel.fromJson(json["state"])
+            : null,
         phone: json['phone'] ?? "",
-        street: json['street'] ?? "",
       );
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'floor': floor,
         'longitude': longitude,
         'latitude': latitude,
         'area': area,
-        'building': building,
-        'district': district,
+        'state': state,
         'phone': phone,
-        'street': street,
+        'address': address,
       };
 }

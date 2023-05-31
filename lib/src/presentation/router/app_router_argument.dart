@@ -8,6 +8,7 @@ import 'package:jetcare/src/data/models/package_model.dart';
 class AppRouterArgument {
   final String? type;
   final int? id;
+  final String? total;
   final String? phone;
   final ItemModel? itemModel;
   final PackageModel? packageModel;
@@ -19,6 +20,7 @@ class AppRouterArgument {
   AppRouterArgument({
     this.type,
     this.id,
+    this.total,
     this.phone,
     this.itemModel,
     this.packageModel,
