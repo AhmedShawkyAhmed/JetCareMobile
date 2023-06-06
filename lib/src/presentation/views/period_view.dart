@@ -26,11 +26,14 @@ class PeriodView extends StatelessWidget {
         color: color ?? AppColors.shade.withOpacity(0.1),
       ),
       child: Center(
-        child: DefaultText(
-          text: "$from  - $to  ${unit ?? ""}",
-          fontSize: 12.sp,
-          maxLines: 3,
-          fontWeight: FontWeight.w400,
+        child: Text(
+          "$from  - $to  ${unit ?? ""}",
+          style: TextStyle(
+            fontSize: 9.sp,
+            fontWeight: FontWeight.w400,
+            color: AppColors.white,
+          ),
+          textDirection:TextDirection.ltr,
         ),
       ),
     );

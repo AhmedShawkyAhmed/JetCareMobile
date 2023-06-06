@@ -126,11 +126,15 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                           text: translate(AppStrings.aAddress),
                           textColor: AppColors.pc,
                           onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              AppRouterNames.addAddress,
-                              arguments: AppRouterArgument(type: "new"),
-                            );
+                            IndicatorView.showIndicator(context);
+                            AddressCubit.get(context).getAllStates(afterSuccess: (){
+                              Navigator.pop(context);
+                              Navigator.pushNamed(
+                                context,
+                                AppRouterNames.addAddress,
+                                arguments: AppRouterArgument(type: "new"),
+                              );
+                            });
                           },
                         ),
                       );

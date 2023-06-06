@@ -10,6 +10,7 @@ import 'package:jetcare/src/presentation/views/address_widget.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/indicator_view.dart';
 import 'package:jetcare/src/presentation/views/loading_view.dart';
+import 'package:jetcare/src/presentation/widgets/default_app_button.dart';
 import 'package:jetcare/src/presentation/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
@@ -39,25 +40,23 @@ class AddressScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 5.w,
-                    vertical: 5.h,
-                  ),
-                  child: DefaultText(
-                    onTap: () {
-                      IndicatorView.showIndicator(context);
-                      AddressCubit.get(context).getAllStates(afterSuccess: (){
-                        Navigator.pushNamed(
-                          context,
-                          AppRouterNames.addAddress,
-                          arguments: AppRouterArgument(type: "new"),
-                        );
-                      });
-                    },
-                    text: translate(AppStrings.addAddress),
-                    fontSize: 12.sp,
-                  ),
+                DefaultAppButton(
+                  width: 40.w,
+                  marginHorizontal: 1.w,
+                  marginVertical: 0,
+                  height: 5.h,
+                  title: translate(AppStrings.addAddress),
+                  onTap: () {
+                    IndicatorView.showIndicator(context);
+                    AddressCubit.get(context).getAllStates(afterSuccess: () {
+                      Navigator.pop(context);
+                      Navigator.pushNamed(
+                        context,
+                        AppRouterNames.addAddress,
+                        arguments: AppRouterArgument(type: "new"),
+                      );
+                    });
+                  },
                 ),
               ],
             ),

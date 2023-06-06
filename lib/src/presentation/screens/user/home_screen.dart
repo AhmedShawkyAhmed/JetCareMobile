@@ -2,7 +2,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:jetcare/src/NotificationDownloadingService.dart';
 import 'package:jetcare/src/business_logic/global_cubit/global_cubit.dart';
 import 'package:jetcare/src/business_logic/notification_cubit/notification_cubit.dart';
 import 'package:jetcare/src/constants/app_strings.dart';
@@ -61,22 +60,17 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           InkWell(
                             onTap: () {
-                              NotificationService().showNotification(
-                                id: 12,
-                                title: "الطلبات",
-                                body: "تم إنشاء طلبك بنجاح و بإنتظار التأكيد",
+                              IndicatorView.showIndicator(context);
+                              NotificationCubit.get(context).getNotifications(
+                                userId: globalAccountModel.id!,
+                                afterSuccess: () {
+                                  Navigator.pop(context);
+                                  Navigator.pushNamed(
+                                    context,
+                                    AppRouterNames.notification,
+                                  );
+                                },
                               );
-                              // IndicatorView.showIndicator(context);
-                              // NotificationCubit.get(context).getNotifications(
-                              //   userId: globalAccountModel.id!,
-                              //   afterSuccess: () {
-                              //     Navigator.pop(context);
-                              //     Navigator.pushNamed(
-                              //       context,
-                              //       AppRouterNames.notification,
-                              //     );
-                              //   },
-                              // );
                             },
                             child: Container(
                               width: 9.w,
