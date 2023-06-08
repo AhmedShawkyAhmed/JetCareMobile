@@ -103,6 +103,7 @@ class AppStrings {
   static const String selectData = "selectData";
   static const String selectAddress = "selectAddress";
   static const String selectTime = "selectTime";
+  static const String delete = "delete";
   static const String order = "order";
   static const String orderSpace = "orderSpace";
   static const String stopped = "stopped";

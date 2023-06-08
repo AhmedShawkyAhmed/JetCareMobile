@@ -108,6 +108,7 @@
   "orderSpace": "Space",
   "state": "Governorate",
   "tasks": "Tasks",
+  "delete": "Delete",
   "history": "History",
   "noTasks": "No Tasks Yet !",
   "noExtras": "No Extras",

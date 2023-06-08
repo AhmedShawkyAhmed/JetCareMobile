@@ -112,6 +112,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                           marginHorizontal: 0,
                           buttonColor: AppColors.darkRed,
                           onTap: () {
+                            IndicatorView.showIndicator(context);
                             OrderCubit.get(context).rejectOrder(
                               orderId: widget.appRouterArgument.orderModel!.id!,
                               afterSuccess: () {
@@ -133,6 +134,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                           marginHorizontal: 0,
                           buttonColor: AppColors.darkBlue,
                           onTap: () {
+                            IndicatorView.showIndicator(context);
                             OrderCubit.get(context).updateOrderStatus(
                               orderId: widget.appRouterArgument.orderModel!.id!,
                               status: "accepted",
@@ -161,6 +163,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                 DefaultAppButton(
                   title: translate(AppStrings.complete),
                   onTap: () {
+                    IndicatorView.showIndicator(context);
                     OrderCubit.get(context).updateOrderStatus(
                       orderId: widget.appRouterArgument.orderModel!.id!,
                       status: "completed",

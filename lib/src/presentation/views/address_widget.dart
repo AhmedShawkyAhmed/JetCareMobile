@@ -33,7 +33,7 @@ class _AddressWidgetState extends State<AddressWidget> {
       padding: EdgeInsets.all(10.sp),
       margin: widget.addressModelList.isNotEmpty
           ? EdgeInsets.only(right: 2.h)
-          : EdgeInsets.only(bottom: 2.h),
+          : EdgeInsets.only(top: 2.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: widget.color ?? AppColors.shade.withOpacity(0.1),
@@ -77,7 +77,7 @@ class _AddressWidgetState extends State<AddressWidget> {
                     DefaultText(
                       text:
                       "${widget.addressModel.address}, ${widget.addressModel.area!.nameAr}, ${widget.addressModel.state!.nameAr}",
-                      fontSize: 13.sp,
+                      fontSize: 10.sp,
                       fontWeight: FontWeight.w400,
                     ),
                     SizedBox(
@@ -85,7 +85,7 @@ class _AddressWidgetState extends State<AddressWidget> {
                     ),
                     DefaultText(
                       text: "${translate(AppStrings.orderPhone)} ${widget.addressModel.phone}",
-                      fontSize: 13.sp,
+                      fontSize: 10.sp,
                       fontWeight: FontWeight.w400,
                     ),
                     Row(
@@ -95,7 +95,7 @@ class _AddressWidgetState extends State<AddressWidget> {
                           height: 3.h,
                           radius: 5,
                           marginHorizontal: 0,
-                          title: "edit",
+                          title: translate(AppStrings.update),
                           fontSize: 10.sp,
                           onTap: widget.edit,
                         ),
@@ -104,7 +104,7 @@ class _AddressWidgetState extends State<AddressWidget> {
                           height: 3.h,
                           radius: 5,
                           marginHorizontal: 5.w,
-                          title: "Delete",
+                          title: translate(AppStrings.delete),
                           buttonColor: AppColors.darkRed,
                           fontSize: 10.sp,
                           onTap: widget.delete,

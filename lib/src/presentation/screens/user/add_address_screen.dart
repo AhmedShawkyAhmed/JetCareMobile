@@ -220,9 +220,6 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                       } else if (areaId == 0) {
                         DefaultToast.showMyToast(
                             translate(AppStrings.enterArea));
-                      } else if (locationController.text == "") {
-                        DefaultToast.showMyToast(
-                            translate(AppStrings.enterLocation));
                       } else {
                         IndicatorView.showIndicator(context);
                         Navigator.pop(context);

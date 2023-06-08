@@ -60,7 +60,7 @@ class VerifyPhone extends StatelessWidget {
                             Navigator.pop(context);
                             Navigator.pushNamed(
                               context,
-                              AppRouterNames.resetPassword,
+                              AppRouterNames.otp,
                               arguments: AppRouterArgument(
                                 phone: emailController.text,
                                 type: "resetPassword",
