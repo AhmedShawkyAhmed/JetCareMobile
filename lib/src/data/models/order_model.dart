@@ -1,6 +1,6 @@
 import 'package:jetcare/src/data/models/account_model.dart';
 import 'package:jetcare/src/data/models/address_model.dart';
-import 'package:jetcare/src/data/models/calendar_model.dart';
+import 'package:jetcare/src/data/models/calender_model.dart';
 import 'package:jetcare/src/data/models/cart_model.dart';
 import 'package:jetcare/src/data/models/item_model.dart';
 import 'package:jetcare/src/data/models/package_model.dart';
@@ -16,7 +16,7 @@ class OrderModel {
   AddressModel? address;
   PackageModel? package;
   ItemModel? item;
-  CalendarModel? calendar;
+  CalenderModel? calendar;
   List<ItemModel>? extras;
   List<CartModel>? cart;
 
@@ -62,7 +62,7 @@ class OrderModel {
             : null,
         item: json["item"] != null ? ItemModel.fromJson(json["item"]) : null,
         calendar: json["calendar"] != null
-            ? CalendarModel.fromJson(json["calendar"])
+            ? CalenderModel.fromJson(json["calendar"])
             : null,
         extras: json["extras"] != null
             ? List<ItemModel>.from(

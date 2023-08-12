@@ -54,15 +54,15 @@ class DefaultDropdown<T> extends StatelessWidget {
   final Widget? dropdownButtonBuilder;
   final Widget Function(BuildContext, T?)? selectedLeadingWidget;
   final Widget Function(BuildContext context, T item, bool isSelected)?
-  dropdownLeadingWidget;
+      dropdownLeadingWidget;
 
   /// callback executed before applying value change
   final BeforeChange<T>? onBeforeChange;
 
   @override
   Widget build(BuildContext context) {
-    final relativeMenuHeight = (items.length *
-        ((20.sp + 3.h) * 1.6)); //Item count * approximate Item height
+    final relativeMenuHeight =
+        (items.length * (5.h) + 7.h); //Item count * approximate Item height
     var inputBorder = OutlineInputBorder(
       borderRadius: borderRadius ?? BorderRadius.circular(7),
       borderSide: BorderSide(
@@ -83,7 +83,7 @@ class DefaultDropdown<T> extends StatelessWidget {
             constraints: const BoxConstraints(),
             contentPadding: EdgeInsets.symmetric(
               horizontal: 4.w,
-              vertical: 2.h,
+              vertical: 0.5.h,
             ),
           ),
         ),
@@ -105,10 +105,9 @@ class DefaultDropdown<T> extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: dropdownTextStyle ??
                         TextStyle(
-                          color: enabled
-                              ? AppColors.pc
-                              : const Color(0xff636363),
-                          fontSize: 15.sp,
+                          color:
+                              enabled ? AppColors.pc : const Color(0xff636363),
+                          fontSize: 12.sp,
                         ),
                   ),
                 ),
@@ -117,8 +116,7 @@ class DefaultDropdown<T> extends StatelessWidget {
           ),
         ),
         menuProps: MenuProps(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(7)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
         ),
         constraints: BoxConstraints(
           maxHeight: maxHeight ??
@@ -130,25 +128,25 @@ class DefaultDropdown<T> extends StatelessWidget {
       dropdownButtonProps: DropdownButtonProps(
         constraints: const BoxConstraints(minHeight: 0, minWidth: 0),
         splashRadius: 12,
-        iconSize: 15.sp,
+        iconSize: 12.sp,
         icon: dropdownButtonBuilder ??
             Icon(
               Icons.keyboard_arrow_down,
               color: enabled ? AppColors.pc : const Color(0xff636363),
-              size:15.sp,
+              size: 12.sp,
             ),
         selectedIcon: dropdownButtonBuilder ??
             Icon(
               Icons.keyboard_arrow_down,
               color: enabled ? AppColors.pc : const Color(0xff636363),
-              size: 15.sp,
+              size: 12.sp,
             ),
       ),
       dropdownDecoratorProps: DropDownDecoratorProps(
         textAlignVertical: TextAlignVertical.center,
         dropdownSearchDecoration: InputDecoration(
           suffixIconConstraints:
-          const BoxConstraints(minHeight: 0, minWidth: 0),
+              const BoxConstraints(minHeight: 0, minWidth: 0),
           isCollapsed: isCollapsed,
           fillColor: AppColors.white,
           filled: filled,
@@ -160,7 +158,7 @@ class DefaultDropdown<T> extends StatelessWidget {
         if (value == null || (value is String && (value == ''))) {
           return Container(
             alignment: selectedAlign ?? AlignmentDirectional.center,
-            padding: const EdgeInsetsDirectional.only(start: 10),
+            padding: const EdgeInsetsDirectional.only(start: 0),
             child: FittedBox(
               alignment: selectedAlign ?? AlignmentDirectional.center,
               fit: BoxFit.scaleDown,
@@ -171,7 +169,7 @@ class DefaultDropdown<T> extends StatelessWidget {
                 style: hintStyle ??
                     TextStyle(
                       color: AppColors.mainColor,
-                      fontSize: 15.sp,
+                      fontSize: 12.sp,
                     ),
               ),
             ),
@@ -191,16 +189,15 @@ class DefaultDropdown<T> extends StatelessWidget {
                     value is String
                         ? value
                         : itemAsString == null
-                        ? value.toString()
-                        : itemAsString!(value),
+                            ? value.toString()
+                            : itemAsString!(value),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: selectedTextStyle ??
                         TextStyle(
-                          color: enabled
-                              ? AppColors.pc
-                              : const Color(0xff636363),
-                          fontSize: 15.sp,
+                          color:
+                              enabled ? AppColors.pc : const Color(0xff636363),
+                          fontSize: 12.sp,
                         ),
                   ),
                 ),

@@ -13,6 +13,7 @@ import 'package:jetcare/src/business_logic/address_cubit/address_cubit.dart';
 import 'package:jetcare/src/business_logic/app_cubit/app_cubit.dart';
 import 'package:jetcare/src/business_logic/auth_cubit/auth_cubit.dart';
 import 'package:jetcare/src/business_logic/bloc_observer.dart';
+import 'package:jetcare/src/business_logic/calender_cubit/calender_cubit.dart';
 import 'package:jetcare/src/business_logic/cart_cubit/cart_cubit.dart';
 import 'package:jetcare/src/business_logic/details_cubit/details_cubit.dart';
 import 'package:jetcare/src/business_logic/global_cubit/global_cubit.dart';
@@ -114,6 +115,7 @@ class _MyAppState extends State<MyApp> {
               ..getInfo()
               ..getPeriods())),
         BlocProvider(create: ((context) => OrderCubit())),
+        BlocProvider(create: ((context) => CalenderCubit()..getCalender())),
         BlocProvider(create: ((context) => DetailsCubit())),
         BlocProvider(create: ((context) => LanguageCubit())),
         BlocProvider(create: ((context) => NotificationCubit())),

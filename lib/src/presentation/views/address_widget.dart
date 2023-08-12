@@ -7,6 +7,7 @@ import 'package:jetcare/src/presentation/widgets/default_app_button.dart';
 import 'package:jetcare/src/presentation/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
+// ignore: must_be_immutable
 class AddressWidget extends StatefulWidget {
   final AddressModel addressModel;
   final List<AddressModel> addressModelList;
@@ -32,7 +33,7 @@ class _AddressWidgetState extends State<AddressWidget> {
     return Container(
       padding: EdgeInsets.all(10.sp),
       margin: widget.addressModelList.isNotEmpty
-          ? EdgeInsets.only(right: 2.h)
+          ? EdgeInsets.only(right: 2.h, top: 2.h)
           : EdgeInsets.only(top: 2.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
@@ -49,8 +50,7 @@ class _AddressWidgetState extends State<AddressWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       DefaultText(
-                        text:
-                            "${widget.addressModel.address}, ${widget.addressModel.area!.nameAr}, ${widget.addressModel.state!.nameAr}",
+                        text: "${widget.addressModel.address}",
                         fontSize: 10.sp,
                         maxLines: 1,
                         fontWeight: FontWeight.w400,
@@ -59,7 +59,17 @@ class _AddressWidgetState extends State<AddressWidget> {
                         height: 1.h,
                       ),
                       DefaultText(
-                        text: "${translate(AppStrings.orderPhone)} ${widget.addressModel.phone}",
+                        text:
+                            "${translate(AppStrings.addressArea)}: ${widget.addressModel.area!.nameAr} - ${widget.addressModel.state!.nameAr}",
+                        fontSize: 10.sp,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      SizedBox(
+                        height: 1.h,
+                      ),
+                      DefaultText(
+                        text:
+                            "${translate(AppStrings.orderPhone)} ${widget.addressModel.phone}",
                         fontSize: 10.sp,
                         fontWeight: FontWeight.w400,
                       ),
@@ -75,8 +85,17 @@ class _AddressWidgetState extends State<AddressWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     DefaultText(
+                      text: "${widget.addressModel.address}",
+                      fontSize: 10.sp,
+                      maxLines: 1,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    SizedBox(
+                      height: 1.h,
+                    ),
+                    DefaultText(
                       text:
-                      "${widget.addressModel.address}, ${widget.addressModel.area!.nameAr}, ${widget.addressModel.state!.nameAr}",
+                          "${translate(AppStrings.addressArea)}: ${widget.addressModel.area!.nameAr} - ${widget.addressModel.state!.nameAr}",
                       fontSize: 10.sp,
                       fontWeight: FontWeight.w400,
                     ),
@@ -84,7 +103,8 @@ class _AddressWidgetState extends State<AddressWidget> {
                       height: 1.h,
                     ),
                     DefaultText(
-                      text: "${translate(AppStrings.orderPhone)} ${widget.addressModel.phone}",
+                      text:
+                          "${translate(AppStrings.orderPhone)} ${widget.addressModel.phone}",
                       fontSize: 10.sp,
                       fontWeight: FontWeight.w400,
                     ),

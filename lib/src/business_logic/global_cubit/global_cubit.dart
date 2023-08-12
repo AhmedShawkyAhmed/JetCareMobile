@@ -10,7 +10,6 @@ import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
 import 'package:jetcare/src/data/data_provider/remote/dio_helper.dart';
 import 'package:jetcare/src/data/network/requests/support_request.dart';
 import 'package:jetcare/src/data/network/responses/area_response.dart';
-import 'package:jetcare/src/data/network/responses/calendar_response.dart';
 import 'package:jetcare/src/data/network/responses/global_response.dart';
 import 'package:jetcare/src/data/network/responses/home_response.dart';
 import 'package:jetcare/src/data/network/responses/info_response.dart';
@@ -28,7 +27,6 @@ class GlobalCubit extends Cubit<GlobalState> {
   HomeResponse? homeResponse;
   InfoResponse? infoResponse;
   AreaResponse? areaResponse;
-  CalendarResponse? calendarResponse;
   PeriodResponse? periodResponse;
   GlobalResponse? globalResponse;
   SpaceResponse? spaceResponse;
@@ -107,34 +105,6 @@ class GlobalCubit extends Cubit<GlobalState> {
       printError(n.toString());
     } catch (e) {
       emit(AreaErrorState());
-      printError(e.toString());
-    }
-  }
-
-  Future getCalendar({required int areaId}) async {
-    days.clear();
-    try {
-      emit(CalendarLoadingState());
-      await DioHelper.getData(
-        url: EndPoints.getDatesMobile,
-        query: {
-          'areaId': areaId,
-        },
-      ).then((value) {
-        calendarResponse = CalendarResponse.fromJson(value.data);
-        printSuccess(
-            "Calendar Response ${calendarResponse!.status.toString()}");
-        for (int i = 0; i < calendarResponse!.calendar!.length; i++) {
-          days.add(calendarResponse!.calendar![i].day.toString());
-          dates.add(calendarResponse!.calendar![i].date.toString());
-        }
-        emit(CalendarSuccessState());
-      });
-    } on DioError catch (n) {
-      emit(CalendarErrorState());
-      printError(n.toString());
-    } catch (e) {
-      emit(CalendarErrorState());
       printError(e.toString());
     }
   }

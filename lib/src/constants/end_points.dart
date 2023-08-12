@@ -36,6 +36,7 @@ class EndPoints {
   static const saveNotification = "saveNotification";
   static const readNotification = "readNotification";
   static const getNotifications = "getNotifications";
+  static const getCalender = "getCalender";
   static const addToCart = "addToCart";
   static const deleteFromCart = "deleteFromCart";
   static const getMyCart = "getMyCart";

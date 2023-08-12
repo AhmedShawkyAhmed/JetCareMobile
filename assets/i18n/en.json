@@ -36,6 +36,7 @@
   "street": "Street Name",
   "enterStreet": "Enter Street Name",
   "area": "Area Name",
+  "addressArea": "Area",
   "district": "District Name",
   "enterDistrict": "Enter District Name",
   "location": "Location",
@@ -132,5 +133,6 @@
   "cart": "Cart",
   "addedToCart": "Item Added to Cart Successfully",
   "goToHome": "Continue Shopping",
-  "goToCart": "Go to Cart"
+  "goToCart": "Go to Cart",
+  "selectedDays": "The Selected Days Have Discount"
 }

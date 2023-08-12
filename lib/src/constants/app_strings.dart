@@ -104,6 +104,7 @@ class AppStrings {
   static const String selectAddress = "selectAddress";
   static const String selectTime = "selectTime";
   static const String delete = "delete";
+  static const String addressArea = "addressArea";
   static const String order = "order";
   static const String orderSpace = "orderSpace";
   static const String stopped = "stopped";
@@ -133,4 +134,5 @@ class AppStrings {
   static const String goToHome = "goToHome";
   static const String addedToCart = "addedToCart";
   static const String cart = "cart";
+  static const String selectedDays = "selectedDays";
 }
