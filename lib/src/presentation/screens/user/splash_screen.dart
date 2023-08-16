@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:jetcare/main.dart';
 import 'package:jetcare/src/business_logic/auth_cubit/auth_cubit.dart';
 import 'package:jetcare/src/business_logic/global_cubit/global_cubit.dart';
 import 'package:jetcare/src/constants/constants_methods.dart';
+import 'package:jetcare/src/constants/constants_variables.dart';
 import 'package:jetcare/src/constants/shared_preference_keys.dart';
 import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
 import 'package:jetcare/src/data/network/requests/auth_request.dart';
@@ -51,6 +53,10 @@ class _SplashScreenState extends State<SplashScreen> {
                       context, AppRouterNames.layout);
                 },
               );
+              AuthCubit.get(context).updateFCM(
+                id: globalAccountModel.id!,
+                fcm: fcmToken!,
+              );
             },
             disable: () {
               Navigator.pushNamedAndRemoveUntil(
@@ -68,6 +74,10 @@ class _SplashScreenState extends State<SplashScreen> {
                   Navigator.pushReplacementNamed(
                       context, AppRouterNames.crewLayout);
                 },
+              );
+              AuthCubit.get(context).updateFCM(
+                id: globalAccountModel.id!,
+                fcm: fcmToken!,
               );
             },
           );

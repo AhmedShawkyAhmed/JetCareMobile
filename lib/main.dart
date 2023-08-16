@@ -76,10 +76,9 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      printResponse('Notification${message.data}');
       if(Platform.isAndroid){
         NotificationService().showNotification(
-            id: int.parse(message.data['id']),
+            id: int.parse(message.data['id'] ?? "0"),
             showProgress: false,
             title: message.data['title'],
             body: message.data['text'],
