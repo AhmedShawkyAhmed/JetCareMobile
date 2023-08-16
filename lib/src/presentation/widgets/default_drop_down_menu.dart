@@ -103,6 +103,7 @@ class DefaultDropdown<T> extends StatelessWidget {
                     maxLines: 2,
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,
+                    textDirection: TextDirection.ltr,
                     style: dropdownTextStyle ??
                         TextStyle(
                           color:
@@ -165,6 +166,7 @@ class DefaultDropdown<T> extends StatelessWidget {
               child: Text(
                 hint ?? '',
                 maxLines: 2,
+                textDirection: TextDirection.ltr,
                 overflow: TextOverflow.ellipsis,
                 style: hintStyle ??
                     TextStyle(
@@ -192,6 +194,7 @@ class DefaultDropdown<T> extends StatelessWidget {
                             ? value.toString()
                             : itemAsString!(value),
                     maxLines: 2,
+                    textDirection: TextDirection.ltr,
                     overflow: TextOverflow.ellipsis,
                     style: selectedTextStyle ??
                         TextStyle(

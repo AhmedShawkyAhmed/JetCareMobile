@@ -134,5 +134,6 @@
   "addedToCart": "Item Added to Cart Successfully",
   "goToHome": "Continue Shopping",
   "goToCart": "Go to Cart",
-  "selectedDays": "The Selected Days Have Discount"
+  "selectedDays": "The Selected Days Have Discount",
+  "beforeDate": "you can't select date before today's date"
 }

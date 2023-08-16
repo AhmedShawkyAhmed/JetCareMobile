@@ -15,6 +15,7 @@ import 'package:jetcare/src/constants/constants_methods.dart';
 import 'package:jetcare/src/constants/constants_variables.dart';
 import 'package:jetcare/src/constants/shared_preference_keys.dart';
 import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
+import 'package:jetcare/src/data/models/address_model.dart';
 import 'package:jetcare/src/data/models/period_model.dart';
 import 'package:jetcare/src/data/network/requests/order_request.dart';
 import 'package:jetcare/src/presentation/router/app_router_argument.dart';
@@ -78,11 +79,17 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
     }
   }
 
-  List<bool> isChecked = List.generate(2000, (index) => false);
-
   DateTime date = DateTime.now();
   int selected = -1;
 
+
+  @override
+  void initState() {
+    discountAreas = AreaModel(id: -1);
+    selectedAddress = AddressModel(id: -1);
+    discountPeriods = [];
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -322,8 +329,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                                   .date
                                                   .toString()))
                                           ? () {
-                                              if (selectedAddress.area!.id ==
-                                                  -1) {
+                                              if (selectedAddress.area == null || selectedAddress.area!.id == -1) {
                                                 DefaultToast.showMyToast(
                                                     translate(AppStrings
                                                         .selectLocation));
@@ -355,7 +361,9 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                                 });
                                               }
                                             }
-                                          : null,
+                                          : (){
+                                        DefaultToast.showMyToast(translate(AppStrings.beforeDate));
+                                      },
                                       child: CalenderItemView(
                                         color: date.isBefore(DateTime.parse(
                                                 CalenderCubit.get(context)
@@ -426,7 +434,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                               return Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 5.w),
                                 child: DefaultDropdown<PeriodModel>(
-                                  hint: "             ${translate(AppStrings.chooseTime)}",
+                                  hint: "${translate(AppStrings.chooseTime)}             ",
                                   showSearchBox: true,
                                   itemAsString: (PeriodModel? u) =>
                                       "${u?.from} - ${u?.to}",
@@ -551,6 +559,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                   : 0))
                           .toString(),
                       price: widget.appRouterArgument.total.toString(),
+                      relationId: selectedPeriod.relationId!,
                       shipping: shipping.isEmpty
                           ? "0"
                           : (discountAreas.id == -1

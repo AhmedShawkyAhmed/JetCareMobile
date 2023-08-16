@@ -10,7 +10,7 @@ import 'package:jetcare/src/data/network/requests/order_summery.dart';
 
 AccountModel globalAccountModel = AccountModel();
 PeriodModel selectedPeriod = PeriodModel();
-AddressModel selectedAddress = AddressModel();
+AddressModel selectedAddress = AddressModel(id: -1);
 SpaceModel selectedSpace = SpaceModel();
 TextEditingController locationController = TextEditingController();
 TextEditingController verifyCodeController = TextEditingController();

@@ -135,4 +135,5 @@ class AppStrings {
   static const String addedToCart = "addedToCart";
   static const String cart = "cart";
   static const String selectedDays = "selectedDays";
+  static const String beforeDate = "beforeDate";
 }

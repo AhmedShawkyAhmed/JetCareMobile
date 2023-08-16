@@ -106,6 +106,7 @@ class OrderCubit extends Cubit<OrderState> {
           'addressId': orderRequest.addressId,
           'date': orderRequest.date,
           'price': orderRequest.price,
+          'relationId': orderRequest.relationId,
           'shipping': orderRequest.shipping,
           'total': orderRequest.total,
           'comment': orderRequest.comment,
