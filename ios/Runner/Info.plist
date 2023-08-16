@@ -44,6 +44,7 @@
 	<string>JetCare Require Location Access to Use Google Maps to add User Address Location</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>ITSAppUsesNonExemptEncryption</key><false/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
