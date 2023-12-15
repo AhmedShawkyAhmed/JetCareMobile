@@ -1,5 +1,5 @@
 class EndPoints {
-  static const baseUrl = "https://jetcare-api.ahmedshawky.fun/api/";
+  static const baseUrl = "https://jetcareApi.ahmedshawky.xyz/api/";
   static const imageDomain =
       "https://jetcare-api.ahmedshawky.fun/public/images/";
   static const login = "appLogin";
