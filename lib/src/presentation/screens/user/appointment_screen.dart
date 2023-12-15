@@ -1,9 +1,7 @@
 import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:intl/intl.dart';
 import 'package:jetcare/src/NotificationDownloadingService.dart';
 import 'package:jetcare/src/business_logic/address_cubit/address_cubit.dart';
 import 'package:jetcare/src/business_logic/calender_cubit/calender_cubit.dart';
@@ -11,7 +9,6 @@ import 'package:jetcare/src/business_logic/global_cubit/global_cubit.dart';
 import 'package:jetcare/src/business_logic/notification_cubit/notification_cubit.dart';
 import 'package:jetcare/src/business_logic/order_cubit/order_cubit.dart';
 import 'package:jetcare/src/constants/app_strings.dart';
-import 'package:jetcare/src/constants/constants_methods.dart';
 import 'package:jetcare/src/constants/constants_variables.dart';
 import 'package:jetcare/src/constants/shared_preference_keys.dart';
 import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
@@ -52,32 +49,6 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   TextEditingController quantityController = TextEditingController();
   final TextEditingController commentController = TextEditingController();
 
-  Future<void> selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialEntryMode: DatePickerEntryMode.calendarOnly,
-      initialDate: DateTime(now.year, now.month, now.day + 1),
-      firstDate: DateTime(now.year, now.month, now.day + 1),
-      lastDate: DateTime(2050),
-      builder: (BuildContext context, Widget? child) {
-        return Theme(
-          data: ThemeData.light().copyWith(
-            colorScheme: ColorScheme.fromSwatch(
-              primarySwatch: Colors.teal,
-              primaryColorDark: Colors.teal,
-              accentColor: Colors.teal,
-            ),
-            dialogBackgroundColor: Colors.white,
-          ),
-          child: child!,
-        );
-      },
-    );
-    if (picked != null) {
-      dateController.text = DateFormat('yyyy-MM-dd', 'en_US').format(picked);
-      printSuccess(dateController.text);
-    }
-  }
 
   DateTime date = DateTime.now();
   int selected = -1;
