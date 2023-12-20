@@ -1,7 +1,7 @@
 class EndPoints {
-  static const baseUrl = "https://jetcareApi.ahmedshawky.xyz/api/";
+  static const baseUrl = "https://api.jetcareeg.net/api/";
   static const imageDomain =
-      "https://jetcare-api.ahmedshawky.fun/public/images/";
+      "https://api.jetcareeg.net/public/images/";
   static const login = "appLogin";
   static const mail = "mail";
   static const register = "register";
