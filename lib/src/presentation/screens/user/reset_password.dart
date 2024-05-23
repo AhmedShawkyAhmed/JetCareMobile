@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/business_logic/auth_cubit/auth_cubit.dart';
-import 'package:jetcare/src/constants/app_strings.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_strings.dart';
+import 'package:jetcare/src/core/di/service_locator.dart';
+import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text_field.dart';
+import 'package:jetcare/src/core/shared/widgets/toast.dart';
 import 'package:jetcare/src/data/network/requests/auth_request.dart';
-import 'package:jetcare/src/presentation/router/app_router_argument.dart';
-import 'package:jetcare/src/presentation/router/app_router_names.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/indicator_view.dart';
-import 'package:jetcare/src/presentation/widgets/default_app_button.dart';
-import 'package:jetcare/src/presentation/widgets/default_text_field.dart';
-import 'package:jetcare/src/presentation/widgets/toast.dart';
 import 'package:sizer/sizer.dart';
 
 class ResetPassword extends StatefulWidget {
@@ -18,8 +20,8 @@ class ResetPassword extends StatefulWidget {
 
   const ResetPassword({
     required this.appRouterArgument,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<ResetPassword> createState() => _ResetPasswordState();
@@ -67,7 +69,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                 },
                 child: Icon(
                   password ? Icons.visibility : Icons.visibility_off,
-                  color: AppColors.pc,
+                  color: AppColors.primary,
                   size: 18.sp,
                 ),
               ),
@@ -84,7 +86,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                 },
                 child: Icon(
                   confirm ? Icons.visibility : Icons.visibility_off,
-                  color: AppColors.pc,
+                  color: AppColors.primary,
                   size: 18.sp,
                 ),
               ),
@@ -100,15 +102,14 @@ class _ResetPasswordState extends State<ResetPassword> {
                       translate(AppStrings.passwordMatched));
                 } else {
                   IndicatorView.showIndicator(context);
-                                Navigator.pop(context);
-                  AuthCubit.get(context).resetPassword(
+                  NavigationService.pop();
+                  AuthCubit(instance()).resetPassword(
                     authRequest: AuthRequest(
                       phone: widget.appRouterArgument.phone.toString(),
                       password: passwordController.text,
                     ),
                     afterSuccess: () {
-                      Navigator.pushNamedAndRemoveUntil(
-                        context,
+                      NavigationService.pushNamedAndRemoveUntil(
                         AppRouterNames.login,
                         (route) => false,
                       );
@@ -121,8 +122,7 @@ class _ResetPasswordState extends State<ResetPassword> {
               title: translate(AppStrings.cancel),
               buttonColor: AppColors.darkRed,
               onTap: () {
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
+                NavigationService.pushNamedAndRemoveUntil(
                   AppRouterNames.login,
                   (route) => false,
                 );

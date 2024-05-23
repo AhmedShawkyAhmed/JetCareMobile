@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/business_logic/app_cubit/app_cubit.dart';
-import 'package:jetcare/src/constants/app_strings.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_strings.dart';
 
 class CrewLayoutScreen extends StatefulWidget {
-  const CrewLayoutScreen({Key? key}) : super(key: key);
+  const CrewLayoutScreen({super.key});
 
   @override
   State<CrewLayoutScreen> createState() => _CrewLayoutScreenState();
@@ -22,16 +22,16 @@ class _CrewLayoutScreenState extends State<CrewLayoutScreen> {
         return Scaffold(
       backgroundColor: AppColors.mainColor,
           key: scaffoldKey,
-          body:  AppCubit.get(context).crewScreens[AppCubit.get(context).currentIndex],
+          body:  AppCubit().crewScreens[AppCubit().currentIndex],
           bottomNavigationBar: BottomNavigationBar(
             elevation: 0.0,
             backgroundColor: AppColors.mainColor,
-            selectedItemColor: AppColors.pc,
+            selectedItemColor: AppColors.primary,
             unselectedItemColor: AppColors.shade,
             type: BottomNavigationBarType.fixed,
-            currentIndex: AppCubit.get(context).currentIndex,
+            currentIndex: AppCubit().currentIndex,
             onTap: (index) {
-              AppCubit.get(context).changeIndex(index);
+              AppCubit().changeIndex(index);
             },
             items:  [
               BottomNavigationBarItem(

@@ -3,26 +3,26 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/business_logic/calender_cubit/calender_cubit.dart';
 import 'package:jetcare/src/business_logic/global_cubit/global_cubit.dart';
-import 'package:jetcare/src/constants/app_strings.dart';
-import 'package:jetcare/src/constants/constants_methods.dart';
-import 'package:jetcare/src/constants/constants_variables.dart';
+import 'package:jetcare/src/core/constants/app_strings.dart';
+import 'package:jetcare/src/core/constants/constants_variables.dart';
+import 'package:jetcare/src/core/di/service_locator.dart';
+import 'package:jetcare/src/core/shared/widgets/default_drop_down_menu.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
+import 'package:jetcare/src/core/shared/widgets/toast.dart';
 import 'package:jetcare/src/data/models/area_model.dart';
 import 'package:jetcare/src/data/models/period_model.dart';
 import 'package:jetcare/src/presentation/views/calender_item_view.dart';
-import 'package:jetcare/src/presentation/widgets/default_drop_down_menu.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
-import 'package:jetcare/src/presentation/widgets/toast.dart';
 import 'package:sizer/sizer.dart';
 
-import '../styles/app_colors.dart';
+import '../../core/constants/app_colors.dart';
 
 class CalenderView extends StatefulWidget {
-  AreaModel areaModel;
+  final AreaModel areaModel;
 
-  CalenderView({
+  const CalenderView({
     required this.areaModel,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<CalenderView> createState() => _CalenderViewState();
@@ -46,30 +46,30 @@ class _CalenderViewState extends State<CalenderView> {
                   children: [
                     InkWell(
                       onTap: () {
-                        CalenderCubit.get(context).getCalender(
-                          month: CalenderCubit.get(context)
+                        CalenderCubit(instance()).getCalender(
+                          month: CalenderCubit(instance())
                                       .calenderList
                                       .first
                                       .month ==
                                   12
                               ? 1
-                              : (CalenderCubit.get(context)
+                              : (CalenderCubit(instance())
                                       .calenderList
                                       .first
                                       .month! +
                                   1),
                           year:
-                              CalenderCubit.get(context)
+                              CalenderCubit(instance())
                                           .calenderList
                                           .first
                                           .month ==
                                       12
-                                  ? (CalenderCubit.get(context)
+                                  ? (CalenderCubit(instance())
                                           .calenderList
                                           .first
                                           .year! +
                                       1)
-                                  : CalenderCubit.get(context)
+                                  : CalenderCubit(instance())
                                       .calenderList
                                       .first
                                       .year!,
@@ -79,7 +79,7 @@ class _CalenderViewState extends State<CalenderView> {
                         padding: EdgeInsets.all(2.w),
                         decoration: BoxDecoration(
                           color: AppColors.white,
-                          border: Border.all(color: AppColors.pc),
+                          border: Border.all(color: AppColors.primary),
                           borderRadius: BorderRadius.circular(100),
                         ),
                         child: const Center(
@@ -87,41 +87,41 @@ class _CalenderViewState extends State<CalenderView> {
                             textDirection: TextDirection.ltr,
                             child: Icon(
                               Icons.arrow_forward_ios_rounded,
-                              color: AppColors.pc,
+                              color: AppColors.primary,
                             ),
                           ),
                         ),
                       ),
                     ),
                     DefaultText(
-                        text: CalenderCubit.get(context).calenderList.isEmpty
+                        text: CalenderCubit(instance()).calenderList.isEmpty
                             ? ""
-                            : "${CalenderCubit.get(context).calenderList.first.monthName} - ${CalenderCubit.get(context).calenderList.first.year!}"),
+                            : "${CalenderCubit(instance()).calenderList.first.monthName} - ${CalenderCubit(instance()).calenderList.first.year!}"),
                     InkWell(
                       onTap: () {
-                        CalenderCubit.get(context).getCalender(
-                          month: CalenderCubit.get(context)
+                        CalenderCubit(instance()).getCalender(
+                          month: CalenderCubit(instance())
                                       .calenderList
                                       .first
                                       .month ==
                                   1
                               ? 12
-                              : (CalenderCubit.get(context)
+                              : (CalenderCubit(instance())
                                       .calenderList
                                       .first
                                       .month! -
                                   1),
-                          year: CalenderCubit.get(context)
+                          year: CalenderCubit(instance())
                                       .calenderList
                                       .first
                                       .month ==
                                   1
-                              ? (CalenderCubit.get(context)
+                              ? (CalenderCubit(instance())
                                       .calenderList
                                       .first
                                       .year! -
                                   1)
-                              : CalenderCubit.get(context)
+                              : CalenderCubit(instance())
                                   .calenderList
                                   .first
                                   .year!,
@@ -131,13 +131,13 @@ class _CalenderViewState extends State<CalenderView> {
                         padding: EdgeInsets.all(2.w),
                         decoration: BoxDecoration(
                           color: AppColors.white,
-                          border: Border.all(color: AppColors.pc),
+                          border: Border.all(color: AppColors.primary),
                           borderRadius: BorderRadius.circular(100),
                         ),
                         child: const Center(
                           child: Icon(
                             Icons.arrow_back_ios_new_rounded,
-                            color: AppColors.pc,
+                            color: AppColors.primary,
                           ),
                         ),
                       ),
@@ -156,15 +156,16 @@ class _CalenderViewState extends State<CalenderView> {
                     mainAxisSpacing: 10,
                   ),
                   itemBuilder: (context, index) {
-                    return CalenderCubit.get(context).calenderList.isEmpty
+                    return CalenderCubit(instance()).calenderList.isEmpty
                         ? const SizedBox()
                         : InkWell(
                             onTap: () {
                               if (widget.areaModel.id == -1) {
-                                DefaultToast.showMyToast(translate(AppStrings.selectLocation));
+                                DefaultToast.showMyToast(
+                                    translate(AppStrings.selectLocation));
                               } else {
                                 setState(() {
-                                  discountPeriods = CalenderCubit.get(context)
+                                  discountPeriods = CalenderCubit(instance())
                                       .calenderList[index]
                                       .periods!;
                                   selected = index;
@@ -173,13 +174,13 @@ class _CalenderViewState extends State<CalenderView> {
                             },
                             child: CalenderItemView(
                               color: selected == index
-                                  ? AppColors.pc
-                                  : CalenderCubit.get(context)
+                                  ? AppColors.primary
+                                  : CalenderCubit(instance())
                                           .calenderList[index]
                                           .periods!
                                           .isEmpty
                                       ? null
-                                      : CalenderCubit.get(context)
+                                      : CalenderCubit(instance())
                                                   .calenderList[index]
                                                   .areas!
                                                   .first
@@ -187,16 +188,16 @@ class _CalenderViewState extends State<CalenderView> {
                                               widget.areaModel.id
                                           ? AppColors.gold
                                           : null,
-                              day: CalenderCubit.get(context)
+                              day: CalenderCubit(instance())
                                   .calenderList[index]
                                   .day
                                   .toString(),
                             ),
                           );
                   },
-                  itemCount: CalenderCubit.get(context).calenderList.isEmpty
+                  itemCount: CalenderCubit(instance()).calenderList.isEmpty
                       ? 0
-                      : CalenderCubit.get(context).calenderList.length,
+                      : CalenderCubit(instance()).calenderList.length,
                 ),
               ),
               DefaultText(
@@ -219,7 +220,7 @@ class _CalenderViewState extends State<CalenderView> {
                 height: 5.h,
                 child: BlocBuilder<GlobalCubit, GlobalState>(
                   builder: (context, state) {
-                    if (GlobalCubit.get(context).periodResponse?.periods ==
+                    if (GlobalCubit(instance()).periodResponse?.periods ==
                         null) {
                       return const SizedBox();
                     }
@@ -231,7 +232,7 @@ class _CalenderViewState extends State<CalenderView> {
                         itemAsString: (PeriodModel? u) =>
                             "${u?.from} - ${u?.to}",
                         items: discountPeriods.isEmpty
-                            ? GlobalCubit.get(context).periodResponse!.periods!
+                            ? GlobalCubit(instance()).periodResponse!.periods!
                             : discountPeriods,
                         onChanged: (val) {
                           setState(() {

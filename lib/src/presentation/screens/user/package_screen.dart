@@ -2,26 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/business_logic/cart_cubit/cart_cubit.dart';
 import 'package:jetcare/src/business_logic/details_cubit/details_cubit.dart';
-import 'package:jetcare/src/constants/app_strings.dart';
-import 'package:jetcare/src/constants/constants_methods.dart';
-import 'package:jetcare/src/constants/shared_preference_keys.dart';
-import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
-import 'package:jetcare/src/presentation/router/app_router_names.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_strings.dart';
+import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
+import 'package:jetcare/src/core/di/service_locator.dart';
+import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/services/cache_service.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text_field.dart';
+import 'package:jetcare/src/core/shared/widgets/toast.dart';
+import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/card_view.dart';
 import 'package:jetcare/src/presentation/views/indicator_view.dart';
 import 'package:jetcare/src/presentation/views/package_item_widget.dart';
-import 'package:jetcare/src/presentation/widgets/default_app_button.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
-import 'package:jetcare/src/presentation/widgets/default_text_field.dart';
-import 'package:jetcare/src/presentation/widgets/toast.dart';
 import 'package:sizer/sizer.dart';
 
 class PackageScreen extends StatefulWidget {
   const PackageScreen({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<PackageScreen> createState() => _PackageScreenState();
@@ -47,25 +49,25 @@ class _PackageScreenState extends State<PackageScreen> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5.w),
                 child: CardView(
-                  title: CacheHelper.getDataFromSharedPreference(
-                              key: SharedPreferenceKeys.language) ==
+                  title: CacheService.get(
+                              key: CacheKeys.language) ==
                           "ar"
-                      ? DetailsCubit.get(context)
+                      ? DetailsCubit(instance())
                           .packageResponse!
                           .packageModel!
                           .nameAr
-                      : DetailsCubit.get(context)
+                      : DetailsCubit(instance())
                           .packageResponse!
                           .packageModel!
                           .nameEn,
-                  image: DetailsCubit.get(context)
+                  image: DetailsCubit(instance())
                       .packageResponse!
                       .packageModel!
                       .image,
                   height: 19.h,
                   mainHeight: 25.h,
                   titleFont: 15.sp,
-                  colorMain: AppColors.pc.withOpacity(0.8),
+                  colorMain: AppColors.primary.withOpacity(0.8),
                   colorSub: AppColors.shade.withOpacity(0.4),
                   onTap: () {},
                 ),
@@ -76,17 +78,17 @@ class _PackageScreenState extends State<PackageScreen> {
                   padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
                   shrinkWrap: true,
                   itemCount:
-                      DetailsCubit.get(context).packageResponse!.items!.length,
+                      DetailsCubit(instance()).packageResponse!.items!.length,
                   itemBuilder: (context, index) {
                     return PackageItem(
-                      title: CacheHelper.getDataFromSharedPreference(
-                                  key: SharedPreferenceKeys.language) ==
+                      title: CacheService.get(
+                                  key: CacheKeys.language) ==
                               "ar"
-                          ? DetailsCubit.get(context)
+                          ? DetailsCubit(instance())
                               .packageResponse!
                               .items![index]
                               .nameAr!
-                          : DetailsCubit.get(context)
+                          : DetailsCubit(instance())
                               .packageResponse!
                               .items![index]
                               .nameEn!,
@@ -138,7 +140,7 @@ class _PackageScreenState extends State<PackageScreen> {
                         child: DefaultText(
                           align: TextAlign.end,
                           text:
-                              "${((DetailsCubit.get(context).packageResponse!.packageModel!.price)!.toInt() * (quantity == 0 ? 1 : quantity))} ${translate(AppStrings.currency)}",
+                              "${((DetailsCubit(instance()).packageResponse!.packageModel!.price)!.toInt() * (quantity == 0 ? 1 : quantity))} ${translate(AppStrings.currency)}",
                           maxLines: 1,
                         ),
                       ),
@@ -146,14 +148,14 @@ class _PackageScreenState extends State<PackageScreen> {
                   ],
                 ),
               ),
-              CacheHelper.getDataFromSharedPreference(
-                          key: SharedPreferenceKeys.password) ==
+              CacheService.get(
+                          key: CacheKeys.password) ==
                       null
                   ? DefaultAppButton(
                       title: translate(AppStrings.loginFirst),
                       onTap: () {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
+                        NavigationService.pushNamedAndRemoveUntil(
+
                           AppRouterNames.login,
                           (route) => false,
                         );
@@ -167,21 +169,21 @@ class _PackageScreenState extends State<PackageScreen> {
                               translate(AppStrings.enterQuantity));
                         } else {
                           IndicatorView.showIndicator(context);
-                          CartCubit.get(context).addToCart(
-                            packageId: DetailsCubit.get(context)
+                          CartCubit(instance()).addToCart(
+                            packageId: DetailsCubit(instance())
                                 .packageResponse!
                                 .packageModel!
                                 .id!,
                             count: quantity,
-                            price: (DetailsCubit.get(context)
+                            price: (DetailsCubit(instance())
                                     .packageResponse!
                                     .packageModel!
                                     .price)!
                                 .toDouble(),
                             afterSuccess: () {
                               quantityController.clear();
-                              Navigator.pushNamedAndRemoveUntil(
-                                context,
+                              NavigationService.pushNamedAndRemoveUntil(
+
                                 AppRouterNames.addedToCart,
                                 (route) => false,
                               );

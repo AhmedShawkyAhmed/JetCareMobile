@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:jetcare/src/constants/app_strings.dart';
-import 'package:jetcare/src/presentation/router/app_router_argument.dart';
-import 'package:jetcare/src/presentation/router/app_router_names.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_strings.dart';
+import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
-import 'package:jetcare/src/presentation/widgets/default_app_button.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
 class DisableAccountScreen extends StatelessWidget {
-  const DisableAccountScreen({Key? key}) : super(key: key);
+  const DisableAccountScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +38,7 @@ class DisableAccountScreen extends StatelessWidget {
             DefaultAppButton(
               title: translate(AppStrings.contactUs),
               onTap: () {
-                Navigator.pushNamed(
-                  context,
+                NavigationService.pushNamed(
                   AppRouterNames.contact,
                   arguments: AppRouterArgument(
                     type: "support",

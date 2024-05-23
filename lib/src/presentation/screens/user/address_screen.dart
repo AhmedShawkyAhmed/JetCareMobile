@@ -2,20 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/business_logic/address_cubit/address_cubit.dart';
-import 'package:jetcare/src/constants/app_strings.dart';
-import 'package:jetcare/src/presentation/router/app_router_argument.dart';
-import 'package:jetcare/src/presentation/router/app_router_names.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_strings.dart';
+import 'package:jetcare/src/core/di/service_locator.dart';
+import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
 import 'package:jetcare/src/presentation/views/address_widget.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/indicator_view.dart';
 import 'package:jetcare/src/presentation/views/loading_view.dart';
-import 'package:jetcare/src/presentation/widgets/default_app_button.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
 class AddressScreen extends StatelessWidget {
-  const AddressScreen({Key? key}) : super(key: key);
+  const AddressScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +29,11 @@ class AddressScreen extends StatelessWidget {
         child: const Center(
           child: Icon(
             Icons.refresh_outlined,
-            color: AppColors.pc,
+            color: AppColors.primary,
           ),
         ),
         onPressed: () {
-          AddressCubit.get(context).getMyAddresses(afterSuccess: () {});
+          AddressCubit(instance()).getMyAddresses(afterSuccess: () {});
         },
       ),
       body: BodyView(
@@ -48,10 +50,9 @@ class AddressScreen extends StatelessWidget {
                   title: translate(AppStrings.addAddress),
                   onTap: () {
                     IndicatorView.showIndicator(context);
-                    AddressCubit.get(context).getAllStates(afterSuccess: () {
-                      Navigator.pop(context);
-                      Navigator.pushNamed(
-                        context,
+                    AddressCubit(instance()).getAllStates(afterSuccess: () {
+                      NavigationService.pop();
+                      NavigationService.pushNamed(
                         AppRouterNames.addAddress,
                         arguments: AppRouterArgument(type: "new"),
                       );
@@ -69,7 +70,7 @@ class AddressScreen extends StatelessWidget {
                         height: 10.h,
                       );
                     });
-                  } else if (AddressCubit.get(context).addressList.isEmpty) {
+                  } else if (AddressCubit(instance()).addressList.isEmpty) {
                     return Center(
                       child: DefaultText(
                         text: translate(AppStrings.noAddress),
@@ -80,25 +81,24 @@ class AddressScreen extends StatelessWidget {
                     padding: EdgeInsets.symmetric(
                       horizontal: 5.w,
                     ),
-                    itemCount: AddressCubit.get(context).addressCount,
+                    itemCount: AddressCubit(instance()).addressCount,
                     itemBuilder: (context, index) {
                       return AddressWidget(
                         addressModelList: const [],
                         addressModel:
-                            AddressCubit.get(context).addressList[index],
+                            AddressCubit(instance()).addressList[index],
                         delete: () {
-                          AddressCubit.get(context).deleteAddress(
+                          AddressCubit(instance()).deleteAddress(
                               address:
-                                  AddressCubit.get(context).addressList[index]);
+                                  AddressCubit(instance()).addressList[index]);
                         },
                         edit: () {
-                          Navigator.pushNamed(
-                            context,
+                          NavigationService.pushNamed(
                             AppRouterNames.addAddress,
                             arguments: AppRouterArgument(
                               type: "edit",
                               addressModel:
-                                  AddressCubit.get(context).addressList[index],
+                                  AddressCubit(instance()).addressList[index],
                             ),
                           );
                         },

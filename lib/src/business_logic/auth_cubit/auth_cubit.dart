@@ -1,26 +1,27 @@
+import 'dart:math';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jetcare/main.dart';
-import 'package:jetcare/src/constants/constants_methods.dart';
-import 'package:jetcare/src/constants/constants_variables.dart';
-import 'package:jetcare/src/constants/end_points.dart';
-import 'package:jetcare/src/constants/shared_preference_keys.dart';
-import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
+import 'package:jetcare/src/core/constants/constants_variables.dart';
+import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
+import 'package:jetcare/src/core/network/api_consumer.dart';
+import 'package:jetcare/src/core/network/end_points.dart';
+import 'package:jetcare/src/core/services/cache_service.dart';
+import 'package:jetcare/src/core/shared/widgets/toast.dart';
+import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/data/network/requests/account_request.dart';
 import 'package:jetcare/src/data/network/responses/global_response.dart';
-import 'package:jetcare/src/presentation/widgets/toast.dart';
-import 'dart:math';
-import '../../data/data_provider/remote/dio_helper.dart';
+
 import '../../data/network/requests/auth_request.dart';
 import '../../data/network/responses/auth_response.dart';
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit() : super(AuthInitial());
-
-  static AuthCubit get(context) => BlocProvider.of(context);
+  AuthCubit(this.networkService) : super(AuthInitial());
+  ApiConsumer networkService;
   AuthResponse? authResponse, updateAccountResponse, registerResponse;
   GlobalResponse? globalResponse,
       checkPhoneResponse,
@@ -45,7 +46,7 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     try {
       emit(LoginLoadingState());
-      await DioHelper.postData(
+      await networkService.post(
         url: EndPoints.login,
         body: {
           'email': authRequest.phone,
@@ -59,19 +60,19 @@ class AuthCubit extends Cubit<AuthState> {
         } else {
           authResponse = AuthResponse.fromJson(value.data);
           globalAccountModel = authResponse!.accountModel!;
-          CacheHelper.saveDataSharedPreference(
-              key: SharedPreferenceKeys.phone,
+          CacheService.add(
+              key: CacheKeys.phone,
               value: authRequest.phone.toString());
-          CacheHelper.saveDataSharedPreference(
-              key: SharedPreferenceKeys.password,
+          CacheService.add(
+              key: CacheKeys.password,
               value: authRequest.password.toString());
           printSuccess("Auth Response ${authResponse!.status.toString()}");
           emit(LoginSuccessState());
           if (authResponse!.accountModel!.active != 1) {
             disable();
           } else {
-            CacheHelper.saveDataSharedPreference(
-                key: SharedPreferenceKeys.role,
+            CacheService.add(
+                key: CacheKeys.role,
                 value: authResponse!.accountModel!.role);
             if (authResponse!.accountModel!.role == "client") {
               client();
@@ -79,13 +80,13 @@ class AuthCubit extends Cubit<AuthState> {
               crew();
             }
           }
-          if (CacheHelper.getDataFromSharedPreference(
-              key: SharedPreferenceKeys.fcm) ==
+          if (CacheService.get(
+              key: CacheKeys.fcm) ==
               null) {
-            CacheHelper.saveDataSharedPreference(
-                key: SharedPreferenceKeys.fcm, value: fcmToken);
-          } else if (CacheHelper.getDataFromSharedPreference(
-              key: SharedPreferenceKeys.fcm) !=
+            CacheService.add(
+                key: CacheKeys.fcm, value: fcmToken);
+          } else if (CacheService.get(
+              key: CacheKeys.fcm) !=
               globalAccountModel.fcm) {
             updateFCM(
               id: globalAccountModel.id!,
@@ -94,7 +95,7 @@ class AuthCubit extends Cubit<AuthState> {
           }
         }
       });
-    } on DioError catch (n) {
+    } on DioException catch (n) {
       emit(LoginErrorState());
       printError(n.toString());
     } catch (e) {
@@ -109,7 +110,7 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     try {
       emit(FCMLoadingState());
-      await DioHelper.postData(
+      await networkService.post(
         url: EndPoints.updateFCM,
         body: {
           'id': id,
@@ -121,7 +122,7 @@ class AuthCubit extends Cubit<AuthState> {
             "FCM Response ${fcmResponse!.status.toString()}");
         emit(FCMSuccessState());
       });
-    } on DioError catch (n) {
+    } on DioException catch (n) {
       emit(FCMErrorState());
       printError(n.toString());
     } catch (e) {
@@ -136,7 +137,7 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     try {
       emit(ResetPasswordLoadingState());
-      await DioHelper.postData(
+      await networkService.post(
         url: EndPoints.resetPassword,
         body: {
           'phone': authRequest.phone,
@@ -149,7 +150,7 @@ class AuthCubit extends Cubit<AuthState> {
         emit(ResetPasswordSuccessState());
         afterSuccess();
       });
-    } on DioError catch (n) {
+    } on DioException catch (n) {
       emit(ResetPasswordErrorState());
       printError(n.toString());
     } catch (e) {
@@ -165,7 +166,7 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     try {
       emit(CheckEmailLoadingState());
-      await DioHelper.postData(
+      await networkService.post(
         url: EndPoints.checkEmail,
         body: {
           'email': email,
@@ -183,7 +184,7 @@ class AuthCubit extends Cubit<AuthState> {
         }
         emit(CheckEmailSuccessState());
       });
-    } on DioError catch (n) {
+    } on DioException catch (n) {
       emit(CheckEmailErrorState());
       printError(n.toString());
     } catch (e) {
@@ -198,7 +199,7 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     try {
       emit(RegisterLoadingState());
-      await DioHelper.postData(
+      await networkService.post(
         url: EndPoints.register,
         body: {
           'name': accountRequest.name,
@@ -210,18 +211,18 @@ class AuthCubit extends Cubit<AuthState> {
       ).then((value) {
         registerResponse = AuthResponse.fromJson(value.data);
         globalAccountModel = registerResponse!.accountModel!;
-        CacheHelper.saveDataSharedPreference(
-            key: SharedPreferenceKeys.phone,
+        CacheService.add(
+            key: CacheKeys.phone,
             value: accountRequest.email.toString());
-        CacheHelper.saveDataSharedPreference(
-            key: SharedPreferenceKeys.password,
+        CacheService.add(
+            key: CacheKeys.password,
             value: accountRequest.password.toString());
         printSuccess(
             "Register Response ${registerResponse!.status.toString()}");
         emit(RegisterSuccessState());
         afterSuccess();
       });
-    } on DioError catch (n) {
+    } on DioException catch (n) {
       emit(RegisterErrorState());
       printError(n.toString());
     } catch (e) {
@@ -236,7 +237,7 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     try {
       emit(UpdateLoadingState());
-      await DioHelper.postData(
+      await networkService.post(
         url: EndPoints.updateAccount,
         body: {
           'id': globalAccountModel.id,
@@ -247,15 +248,15 @@ class AuthCubit extends Cubit<AuthState> {
       ).then((value) {
         updateAccountResponse = AuthResponse.fromJson(value.data);
         globalAccountModel = updateAccountResponse!.accountModel!;
-        CacheHelper.saveDataSharedPreference(
-            key: SharedPreferenceKeys.phone,
+        CacheService.add(
+            key: CacheKeys.phone,
             value: updateAccountResponse!.accountModel!.phone.toString());
         printSuccess(
             "Update Account Response ${updateAccountResponse!.status.toString()}");
         emit(UpdateSuccessState());
         afterSuccess();
       });
-    } on DioError catch (n) {
+    } on DioException catch (n) {
       emit(UpdateErrorState());
       printError(n.toString());
     } catch (e) {
@@ -270,7 +271,7 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     try {
       emit(DeleteLoadingState());
-      await DioHelper.postData(
+      await networkService.post(
         url: EndPoints.deleteAccount,
         body: {
           'id': userId,
@@ -282,7 +283,7 @@ class AuthCubit extends Cubit<AuthState> {
         emit(DeleteSuccessState());
         afterSuccess();
       });
-    } on DioError catch (n) {
+    } on DioException catch (n) {
       emit(DeleteErrorState());
       printError(n.toString());
     } catch (e) {
@@ -298,7 +299,7 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     try {
       emit(SendEmailLoadingState());
-      await DioHelper.postData(
+      await networkService.post(
         url: EndPoints.mail,
         body: {
           'email': email,
@@ -316,7 +317,7 @@ class AuthCubit extends Cubit<AuthState> {
         }
         emit(SendEmailSuccessState());
       });
-    } on DioError catch (n) {
+    } on DioException catch (n) {
       emit(SendEmailErrorState());
       printError(n.toString());
     } catch (e) {

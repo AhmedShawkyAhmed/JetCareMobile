@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:jetcare/src/constants/app_strings.dart';
-import 'package:jetcare/src/presentation/router/app_router_names.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_strings.dart';
+import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
-import 'package:jetcare/src/presentation/widgets/default_app_button.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
 class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({Key? key}) : super(key: key);
+  const WelcomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +43,7 @@ class WelcomeScreen extends StatelessWidget {
             DefaultAppButton(
               title: translate(AppStrings.start),
               onTap: () {
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
+                NavigationService.pushNamedAndRemoveUntil(
                   AppRouterNames.layout,
                   (route) => false,
                 );

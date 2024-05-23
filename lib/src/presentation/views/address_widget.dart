@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:jetcare/src/constants/app_strings.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_strings.dart';
+import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
 import 'package:jetcare/src/data/models/address_model.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
-import 'package:jetcare/src/presentation/widgets/default_app_button.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
-// ignore: must_be_immutable
+
 class AddressWidget extends StatefulWidget {
   final AddressModel addressModel;
   final List<AddressModel> addressModelList;
-  VoidCallback edit, delete;
-  Color? color;
+  final VoidCallback edit, delete;
+  final Color? color;
 
-  AddressWidget({
+  const AddressWidget({
     required this.addressModel,
     required this.addressModelList,
     required this.delete,
     required this.edit,
     this.color,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<AddressWidget> createState() => _AddressWidgetState();

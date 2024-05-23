@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:jetcare/src/core/utils/shared_methods.dart';
 
 class NotificationService {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -43,6 +44,7 @@ class NotificationService {
   static Future onDidReceiveNotificationResponse(
       NotificationResponse response) async {
     var payload = response.payload;
+    printLog(payload);
     //Handle notification tapped logic here
     // if(payload != null) {
     //   NotificationsController.openNotification(NotificationsModel.fromJson(json.decode(payload)));

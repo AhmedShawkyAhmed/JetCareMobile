@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 
@@ -10,8 +10,8 @@ class LoadingView extends StatelessWidget {
   const LoadingView({
     this.width,
     this.height,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class LoadingView extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              color: AppColors.pc,
+              color: AppColors.primary,
             ),
           ),
         ),

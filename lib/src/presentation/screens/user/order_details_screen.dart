@@ -2,20 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:intl/intl.dart';
 import 'package:jetcare/src/business_logic/order_cubit/order_cubit.dart';
-import 'package:jetcare/src/constants/app_strings.dart';
-import 'package:jetcare/src/constants/constants_variables.dart';
-import 'package:jetcare/src/constants/shared_preference_keys.dart';
-import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
-import 'package:jetcare/src/presentation/router/app_router_argument.dart';
-import 'package:jetcare/src/presentation/router/app_router_names.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_strings.dart';
+import 'package:jetcare/src/core/constants/constants_variables.dart';
+import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
+import 'package:jetcare/src/core/di/service_locator.dart';
+import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
+import 'package:jetcare/src/core/services/cache_service.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
+import 'package:jetcare/src/core/shared/widgets/toast.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/card_view.dart';
 import 'package:jetcare/src/presentation/views/home_view.dart';
 import 'package:jetcare/src/presentation/views/summery_item.dart';
-import 'package:jetcare/src/presentation/widgets/default_app_button.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
-import 'package:jetcare/src/presentation/widgets/toast.dart';
 import 'package:sizer/sizer.dart';
 
 class OrderDetailsScreen extends StatefulWidget {
@@ -23,8 +25,8 @@ class OrderDetailsScreen extends StatefulWidget {
 
   const OrderDetailsScreen({
     required this.appRouterArgument,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<OrderDetailsScreen> createState() => _OrderDetailsScreenState();
@@ -38,7 +40,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
       body: BodyView(
         hasBack: true,
         widget: Padding(
-          padding: EdgeInsets.only(left: 5.w, right: 5.w,top: 5.h),
+          padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 5.h),
           child: widget.appRouterArgument.type == "package" ||
                   widget.appRouterArgument.type == "item"
               ? ListView(
@@ -47,14 +49,14 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         ? CardView(
                             image: widget
                                 .appRouterArgument.orderModel!.package!.image,
-                            title: CacheHelper.getDataFromSharedPreference(
-                                        key: SharedPreferenceKeys.language) ==
+                            title: CacheService.get(
+                                        key: CacheKeys.language) ==
                                     "ar"
                                 ? widget.appRouterArgument.orderModel!.package!
                                     .nameAr
                                 : widget.appRouterArgument.orderModel!.package!
                                     .nameEn,
-                            colorMain: AppColors.pc.withOpacity(0.8),
+                            colorMain: AppColors.primary.withOpacity(0.8),
                             colorSub: AppColors.shade.withOpacity(0.4),
                             height: 19.h,
                             mainHeight: 25.h,
@@ -64,14 +66,14 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         : CardView(
                             image: widget
                                 .appRouterArgument.orderModel!.item!.image,
-                            title: CacheHelper.getDataFromSharedPreference(
-                                        key: SharedPreferenceKeys.language) ==
+                            title: CacheService.get(
+                                        key: CacheKeys.language) ==
                                     "ar"
                                 ? widget
                                     .appRouterArgument.orderModel!.item!.nameAr
                                 : widget
                                     .appRouterArgument.orderModel!.item!.nameEn,
-                            colorMain: AppColors.pc.withOpacity(0.8),
+                            colorMain: AppColors.primary.withOpacity(0.8),
                             colorSub: AppColors.shade.withOpacity(0.4),
                             height: 19.h,
                             mainHeight: 25.h,
@@ -88,8 +90,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     ),
                     widget.appRouterArgument.type == "package"
                         ? DefaultText(
-                            text: CacheHelper.getDataFromSharedPreference(
-                                        key: SharedPreferenceKeys.language) ==
+                            text: CacheService.get(
+                                        key: CacheKeys.language) ==
                                     "ar"
                                 ? "${widget.appRouterArgument.orderModel!.package!.descriptionAr}"
                                 : "${widget.appRouterArgument.orderModel!.package!.descriptionEn}",
@@ -97,8 +99,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                             fontSize: 15.sp,
                           )
                         : DefaultText(
-                            text: CacheHelper.getDataFromSharedPreference(
-                                        key: SharedPreferenceKeys.language) ==
+                            text: CacheService.get(
+                                        key: CacheKeys.language) ==
                                     "ar"
                                 ? "${widget.appRouterArgument.orderModel!.item!.descriptionAr}"
                                 : "${widget.appRouterArgument.orderModel!.item!.descriptionEn}",
@@ -208,16 +210,15 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                 marginHorizontal: 0,
                                 buttonColor: AppColors.darkRed,
                                 onTap: () {
-                                  OrderCubit.get(context).rejectOrder(
+                                  OrderCubit(instance()).rejectOrder(
                                     orderId: widget
                                         .appRouterArgument.orderModel!.id!,
                                     afterSuccess: () {
-                                      Navigator.pushNamedAndRemoveUntil(
-                                        context,
+                                      NavigationService.pushNamedAndRemoveUntil(
                                         AppRouterNames.crewLayout,
                                         (route) => false,
                                       );
-                                      OrderCubit.get(context).getMyTasks();
+                                      OrderCubit(instance()).getMyTasks();
                                     },
                                   );
                                 },
@@ -230,7 +231,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                 marginHorizontal: 0,
                                 buttonColor: AppColors.darkBlue,
                                 onTap: () {
-                                  OrderCubit.get(context).updateOrderStatusUser(
+                                  OrderCubit(instance()).updateOrderStatusUser(
                                     orderId: widget
                                         .appRouterArgument.orderModel!.id!,
                                     status: "accepted",
@@ -240,14 +241,13 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                                 .status ==
                                             "accepted";
                                       });
-                                      Navigator.pushNamedAndRemoveUntil(
-                                        context,
+                                      NavigationService.pushNamedAndRemoveUntil(
                                         AppRouterNames.crewLayout,
                                         (route) => false,
                                       );
-                                      OrderCubit.get(context).getMyTasks();
+                                      OrderCubit(instance()).getMyTasks();
                                     },
-                                    afterCancel: (){},
+                                    afterCancel: () {},
                                   );
                                 },
                               ),
@@ -261,18 +261,17 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                       DefaultAppButton(
                         title: translate(AppStrings.complete),
                         onTap: () {
-                          OrderCubit.get(context).updateOrderStatusUser(
+                          OrderCubit(instance()).updateOrderStatusUser(
                             orderId: widget.appRouterArgument.orderModel!.id!,
                             status: "completed",
                             afterSuccess: () {
-                              OrderCubit.get(context).getMyTasks();
-                              Navigator.pushNamedAndRemoveUntil(
-                                context,
+                              OrderCubit(instance()).getMyTasks();
+                              NavigationService.pushNamedAndRemoveUntil(
                                 AppRouterNames.crewLayout,
                                 (route) => false,
                               );
                             },
-                            afterCancel: (){},
+                            afterCancel: () {},
                           );
                         },
                       ),
@@ -282,20 +281,19 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         title: translate(AppStrings.cancel),
                         buttonColor: AppColors.darkRed,
                         onTap: () {
-                          OrderCubit.get(context).updateOrderStatusUser(
+                          OrderCubit(instance()).updateOrderStatusUser(
                             orderId: widget.appRouterArgument.orderModel!.id!,
                             status: "canceled",
                             afterSuccess: () {
-                              Navigator.pushNamedAndRemoveUntil(
-                                context,
+                              NavigationService.pushNamedAndRemoveUntil(
                                 AppRouterNames.layout,
                                 (route) => false,
                               );
                               DefaultToast.showMyToast(
                                   translate(AppStrings.cancelOrder));
-                              OrderCubit.get(context).getMyOrders();
+                              OrderCubit(instance()).getMyOrders();
                             },
-                            afterCancel: (){},
+                            afterCancel: () {},
                           );
                         },
                       ),
@@ -307,16 +305,16 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
               : ListView(
                   children: [
                     CardView(
-                      image: widget
-                          .appRouterArgument.corporateModel!.item!.image,
-                      title: CacheHelper.getDataFromSharedPreference(
-                                  key: SharedPreferenceKeys.language) ==
+                      image:
+                          widget.appRouterArgument.corporateModel!.item!.image,
+                      title: CacheService.get(
+                                  key: CacheKeys.language) ==
                               "ar"
                           ? widget
                               .appRouterArgument.corporateModel!.item!.nameAr
                           : widget
                               .appRouterArgument.corporateModel!.item!.nameEn,
-                      colorMain: AppColors.pc.withOpacity(0.8),
+                      colorMain: AppColors.primary.withOpacity(0.8),
                       colorSub: AppColors.shade.withOpacity(0.4),
                       height: 19.h,
                       mainHeight: 25.h,
@@ -330,8 +328,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                       ),
                     ),
                     DefaultText(
-                      text: CacheHelper.getDataFromSharedPreference(
-                                  key: SharedPreferenceKeys.language) ==
+                      text: CacheService.get(
+                                  key: CacheKeys.language) ==
                               "ar"
                           ? "${widget.appRouterArgument.corporateModel!.item!.descriptionAr}"
                           : "${widget.appRouterArgument.corporateModel!.item!.descriptionEn}",

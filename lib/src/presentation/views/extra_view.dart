@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:jetcare/src/constants/app_strings.dart';
-import 'package:jetcare/src/constants/constants_methods.dart';
-import 'package:jetcare/src/constants/constants_variables.dart';
-import 'package:jetcare/src/constants/shared_preference_keys.dart';
-import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_strings.dart';
+import 'package:jetcare/src/core/constants/constants_variables.dart';
+import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
+import 'package:jetcare/src/core/services/cache_service.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
+import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/data/models/item_model.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
 class ExtraView extends StatefulWidget {
@@ -15,8 +16,8 @@ class ExtraView extends StatefulWidget {
 
   const ExtraView({
     required this.extras,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<ExtraView> createState() => _ExtraItemViewState();
@@ -44,9 +45,9 @@ class _ExtraItemViewState extends State<ExtraView> {
                 ),
                 child: DefaultText(
                   text: translate(AppStrings.save),
-                  textColor: AppColors.pc,
+                  textColor: AppColors.primary,
                   onTap: () {
-                    Navigator.pop(context);
+                    NavigationService.pop();
                   },
                 ),
               ),
@@ -89,8 +90,8 @@ class _ExtraItemViewState extends State<ExtraView> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 DefaultText(
-                                  text: CacheHelper.getDataFromSharedPreference(
-                                              key: SharedPreferenceKeys
+                                  text: CacheService.get(
+                                              key: CacheKeys
                                                   .language) ==
                                           "ar"
                                       ? widget.extras[index].nameAr ?? ""
@@ -135,7 +136,7 @@ class _ExtraItemViewState extends State<ExtraView> {
                                   printResponse(extrasPrice.toString());
                                 });
                               },
-                              activeColor: AppColors.pc,
+                              activeColor: AppColors.primary,
                             ),
                           ],
                         ),

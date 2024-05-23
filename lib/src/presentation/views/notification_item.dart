@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
 class NotificationItem extends StatefulWidget {
   final String title;
   final String message;
   final String createdAt;
-  VoidCallback onTap;
-  int isRead;
+  final VoidCallback onTap;
+  final int isRead;
   final int id;
 
-   NotificationItem({
+   const NotificationItem({
     required this.title,
     required this.message,
     required this.createdAt,
     required this.isRead,
     required this.id,
     required this.onTap,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<NotificationItem> createState() => _NotificationItemState();
@@ -38,7 +38,7 @@ class _NotificationItemState extends State<NotificationItem> {
           borderRadius: BorderRadius.circular(10),
           color: AppColors.darkGrey.withOpacity(0.5),
           border: Border.all(
-            color: widget.isRead == 0?AppColors.pc:AppColors.shade.withOpacity(0.2),
+            color: widget.isRead == 0?AppColors.primary:AppColors.shade.withOpacity(0.2),
           ),
         ),
         child: Row(
@@ -54,7 +54,7 @@ class _NotificationItemState extends State<NotificationItem> {
               ),
               child: Icon(
                 Icons.notifications_active,
-                color: AppColors.pc,
+                color: AppColors.primary,
                 size: 15.sp,
               ),
             ),

@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/business_logic/cart_cubit/cart_cubit.dart';
-import 'package:jetcare/src/constants/app_strings.dart';
-import 'package:jetcare/src/constants/constants_methods.dart';
-import 'package:jetcare/src/constants/shared_preference_keys.dart';
-import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
-import 'package:jetcare/src/presentation/router/app_router_argument.dart';
-import 'package:jetcare/src/presentation/router/app_router_names.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_strings.dart';
+import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
+import 'package:jetcare/src/core/di/service_locator.dart';
+import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
+import 'package:jetcare/src/core/services/cache_service.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text_field.dart';
+import 'package:jetcare/src/core/shared/widgets/toast.dart';
+import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/card_view.dart';
 import 'package:jetcare/src/presentation/views/indicator_view.dart';
-import 'package:jetcare/src/presentation/widgets/default_app_button.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
-import 'package:jetcare/src/presentation/widgets/default_text_field.dart';
-import 'package:jetcare/src/presentation/widgets/toast.dart';
 import 'package:sizer/sizer.dart';
 
 class ServiceScreen extends StatefulWidget {
@@ -22,8 +24,8 @@ class ServiceScreen extends StatefulWidget {
 
   const ServiceScreen({
     required this.appRouterArgument,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<ServiceScreen> createState() => _ServiceScreenState();
@@ -52,8 +54,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
                     Padding(
                       padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 5.h),
                       child: CardView(
-                        title: CacheHelper.getDataFromSharedPreference(
-                                    key: SharedPreferenceKeys.language) ==
+                        title: CacheService.get(
+                                    key: CacheKeys.language) ==
                                 "ar"
                             ? widget.appRouterArgument.itemModel!.nameAr
                             : widget.appRouterArgument.itemModel!.nameEn,
@@ -61,7 +63,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         height: 19.h,
                         mainHeight: 25.h,
                         titleFont: 15.sp,
-                        colorMain: AppColors.pc.withOpacity(0.8),
+                        colorMain: AppColors.primary.withOpacity(0.8),
                         colorSub: AppColors.shade.withOpacity(0.4),
                         onTap: () {},
                       ),
@@ -81,8 +83,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         padding: EdgeInsets.symmetric(horizontal: 5.w),
                         child: DefaultText(
                           maxLines: 17,
-                          text: CacheHelper.getDataFromSharedPreference(
-                                      key: SharedPreferenceKeys.language) ==
+                          text: CacheService.get(
+                                      key: CacheKeys.language) ==
                                   "ar"
                               ? widget.appRouterArgument.itemModel!.descriptionAr!
                               : widget
@@ -143,14 +145,14 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         ],
                       ),
                     ),
-                    CacheHelper.getDataFromSharedPreference(
-                                key: SharedPreferenceKeys.password) ==
+                    CacheService.get(
+                                key: CacheKeys.password) ==
                             null
                         ? DefaultAppButton(
                             title: translate(AppStrings.loginFirst),
                             onTap: () {
-                              Navigator.pushNamedAndRemoveUntil(
-                                context,
+                              NavigationService.pushNamedAndRemoveUntil(
+
                                 AppRouterNames.login,
                                 (route) => false,
                               );
@@ -163,15 +165,15 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                 DefaultToast.showMyToast(translate(AppStrings.enterQuantity));
                               }else{
                                 IndicatorView.showIndicator(context);
-                                CartCubit.get(context).addToCart(
+                                CartCubit(instance()).addToCart(
                                   itemId: widget.appRouterArgument.itemModel!.id,
                                   count: quantity,
                                   price: widget.appRouterArgument.itemModel!.price!
                                       .toDouble(),
                                   afterSuccess: () {
                                     quantityController.clear();
-                                    Navigator.pushNamedAndRemoveUntil(
-                                      context,
+                                    NavigationService.pushNamedAndRemoveUntil(
+
                                       AppRouterNames.addedToCart,
                                           (route) => false,
                                     );

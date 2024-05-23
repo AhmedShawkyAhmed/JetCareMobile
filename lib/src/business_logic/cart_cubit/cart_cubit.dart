@@ -1,19 +1,18 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jetcare/src/constants/constants_methods.dart';
-import 'package:jetcare/src/constants/constants_variables.dart';
-import 'package:jetcare/src/constants/end_points.dart';
-import 'package:jetcare/src/data/data_provider/remote/dio_helper.dart';
+import 'package:jetcare/src/core/constants/constants_variables.dart';
+import 'package:jetcare/src/core/network/api_consumer.dart';
+import 'package:jetcare/src/core/network/end_points.dart';
+import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/data/network/responses/cart_response.dart';
 import 'package:jetcare/src/data/network/responses/global_response.dart';
 
 part 'cart_state.dart';
 
 class CartCubit extends Cubit<CartState> {
-  CartCubit() : super(CartInitial());
-
-  static CartCubit get(context) => BlocProvider.of(context);
+  CartCubit(this.networkService) : super(CartInitial());
+  ApiConsumer networkService;
 
   CartResponse? cartResponse;
   GlobalResponse? addToCartResponse,deleteToCartResponse;
@@ -27,7 +26,7 @@ class CartCubit extends Cubit<CartState> {
       cart.clear();
       cartTotal = 0;
       emit(GetCartLoadingState());
-      await DioHelper.getData(url: EndPoints.getMyCart, query: {
+      await networkService.get(url: EndPoints.getMyCart, query: {
         "userId": userId,
       }).then((value) {
         printResponse(value.data.toString());
@@ -45,7 +44,7 @@ class CartCubit extends Cubit<CartState> {
         emit(GetCartSuccessState());
         afterSuccess();
       });
-    } on DioError catch (n) {
+    } on DioException catch (n) {
       emit(GetCartErrorState());
       printError(n.toString());
     } catch (e) {
@@ -63,7 +62,7 @@ class CartCubit extends Cubit<CartState> {
   }) async {
     try {
       emit(AddCartLoadingState());
-      await DioHelper.postData(
+      await networkService.post(
         url: EndPoints.addToCart,
         body: {
           'userId': globalAccountModel.id,
@@ -77,7 +76,7 @@ class CartCubit extends Cubit<CartState> {
         emit(AddCartSuccessState());
         afterSuccess();
       });
-    } on DioError catch (n) {
+    } on DioException catch (n) {
       emit(AddCartErrorState());
       printError(n.toString());
     } catch (e) {
@@ -92,7 +91,7 @@ class CartCubit extends Cubit<CartState> {
   }) async {
     try {
       emit(DeleteCartLoadingState());
-      await DioHelper.postData(
+      await networkService.post(
         url: EndPoints.deleteFromCart,
         body: {
           'id': id,
@@ -102,7 +101,7 @@ class CartCubit extends Cubit<CartState> {
         emit(DeleteCartSuccessState());
         afterSuccess();
       });
-    } on DioError catch (n) {
+    } on DioException catch (n) {
       emit(DeleteCartErrorState());
       printError(n.toString());
     } catch (e) {

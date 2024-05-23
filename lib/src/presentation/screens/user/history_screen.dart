@@ -2,21 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/business_logic/order_cubit/order_cubit.dart';
-import 'package:jetcare/src/constants/app_strings.dart';
-import 'package:jetcare/src/constants/shared_preference_keys.dart';
-import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
-import 'package:jetcare/src/presentation/router/app_router_argument.dart';
-import 'package:jetcare/src/presentation/router/app_router_names.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_strings.dart';
+import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
+import 'package:jetcare/src/core/di/service_locator.dart';
+import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
+import 'package:jetcare/src/core/services/cache_service.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/card_view.dart';
 import 'package:jetcare/src/presentation/views/cart_item.dart';
 import 'package:jetcare/src/presentation/views/loading_view.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
 class HistoryScreen extends StatefulWidget {
-  const HistoryScreen({Key? key}) : super(key: key);
+  const HistoryScreen({super.key});
 
   @override
   State<HistoryScreen> createState() => _HistoryScreenState();
@@ -28,7 +30,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => OrderCubit()
+      create: (context) => OrderCubit(instance())
         ..getMyOrders(),
       child: Scaffold(
         backgroundColor: AppColors.mainColor,
@@ -65,14 +67,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
               myOrder
                   ? BlocBuilder<OrderCubit, OrderState>(
                       builder: (context, state) {
-                        if (OrderCubit.get(context).historyResponse?.orders ==
+                        if (OrderCubit(instance()).historyResponse?.orders ==
                             null) {
                           return LoadingView(
                             width: 90.w,
                             height: 15.h,
                           );
                         }
-                        return OrderCubit.get(context)
+                        return OrderCubit(instance())
                                 .historyResponse!
                                 .orders!
                                 .isNotEmpty
@@ -80,18 +82,18 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 child: ListView.builder(
                                   padding: EdgeInsets.only(
                                       left: 3.w, right: 3.w, top: 2.h),
-                                  itemCount: OrderCubit.get(context)
+                                  itemCount: OrderCubit(instance())
                                       .historyResponse!
                                       .orders!
                                       .length,
                                   itemBuilder: (context, index) {
                                     return InkWell(
                                       onTap: () {
-                                        Navigator.pushNamed(
-                                          context,
+                                        NavigationService.pushNamed(
+
                                           AppRouterNames.confirmOrder,
                                           arguments: AppRouterArgument(
-                                            orderModel: OrderCubit.get(context)
+                                            orderModel: OrderCubit(instance())
                                                 .historyResponse!
                                                 .orders![index],
                                           ),
@@ -101,13 +103,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                         withDelete: false,
                                         onDelete: () {},
                                         name:
-                                            "# ${OrderCubit.get(context).historyResponse!.orders![index].id.toString()}",
-                                        count: OrderCubit.get(context)
+                                            "# ${OrderCubit(instance()).historyResponse!.orders![index].id.toString()}",
+                                        count: OrderCubit(instance())
                                             .historyResponse!
                                             .orders![index]
                                             .date
                                             .toString(),
-                                        price: OrderCubit.get(context)
+                                        price: OrderCubit(instance())
                                             .historyResponse!
                                             .orders![index]
                                             .total
@@ -127,7 +129,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     )
                   : BlocBuilder<OrderCubit, OrderState>(
                       builder: (context, state) {
-                        if (OrderCubit.get(context)
+                        if (OrderCubit(instance())
                                 .historyResponse
                                 ?.corporates ==
                             null) {
@@ -136,7 +138,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             height: 15.h,
                           );
                         }
-                        return OrderCubit.get(context)
+                        return OrderCubit(instance())
                                 .historyResponse!
                                 .corporates!
                                 .isNotEmpty
@@ -144,28 +146,28 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 child: ListView.builder(
                                   padding:
                                       EdgeInsets.only(left: 3.w, right: 3.w),
-                                  itemCount: OrderCubit.get(context)
+                                  itemCount: OrderCubit(instance())
                                       .historyResponse!
                                       .corporates!
                                       .length,
                                   itemBuilder: (context, index) {
                                     return CardView(
-                                      title: CacheHelper
-                                                  .getDataFromSharedPreference(
-                                                      key: SharedPreferenceKeys
+                                      title: CacheService
+                                                  .get(
+                                                      key: CacheKeys
                                                           .language) ==
                                               "ar"
-                                          ? OrderCubit.get(context)
+                                          ? OrderCubit(instance())
                                               .historyResponse!
                                               .corporates![index]
                                               .item!
                                               .nameAr
-                                          : OrderCubit.get(context)
+                                          : OrderCubit(instance())
                                               .historyResponse!
                                               .corporates![index]
                                               .item!
                                               .nameEn,
-                                      image: OrderCubit.get(context)
+                                      image: OrderCubit(instance())
                                           .historyResponse!
                                           .corporates![index]
                                           .item!
@@ -173,17 +175,17 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                       height: 15.h,
                                       mainHeight: 20.h,
                                       titleFont: 17.sp,
-                                      colorMain: AppColors.pc.withOpacity(0.8),
+                                      colorMain: AppColors.primary.withOpacity(0.8),
                                       colorSub:
                                           AppColors.shade.withOpacity(0.4),
                                       onTap: () {
-                                        Navigator.pushNamed(
-                                          context,
+                                        NavigationService.pushNamed(
+
                                           AppRouterNames.orderDetails,
                                           arguments: AppRouterArgument(
                                             type: "corporate",
                                             corporateModel:
-                                                OrderCubit.get(context)
+                                                OrderCubit(instance())
                                                     .historyResponse!
                                                     .corporates![index],
                                           ),

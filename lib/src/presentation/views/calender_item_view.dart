@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
 class CalenderItemView extends StatelessWidget {
   final String day;
-  Color? color;
+  final Color? color;
 
-  CalenderItemView({
-    Key? key,
+  const CalenderItemView({
+    super.key,
     required this.day,
     this.color,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

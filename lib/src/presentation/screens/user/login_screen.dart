@@ -2,23 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/business_logic/auth_cubit/auth_cubit.dart';
 import 'package:jetcare/src/business_logic/language_cubit/language_cubit.dart';
-import 'package:jetcare/src/constants/app_strings.dart';
-import 'package:jetcare/src/constants/shared_preference_keys.dart';
-import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_strings.dart';
+import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
+import 'package:jetcare/src/core/di/service_locator.dart';
+import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
+import 'package:jetcare/src/core/services/cache_service.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text_field.dart';
+import 'package:jetcare/src/core/shared/widgets/toast.dart';
 import 'package:jetcare/src/data/network/requests/auth_request.dart';
-import 'package:jetcare/src/presentation/router/app_router_argument.dart';
-import 'package:jetcare/src/presentation/router/app_router_names.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/indicator_view.dart';
-import 'package:jetcare/src/presentation/widgets/default_app_button.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
-import 'package:jetcare/src/presentation/widgets/default_text_field.dart';
-import 'package:jetcare/src/presentation/widgets/toast.dart';
 import 'package:sizer/sizer.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -45,21 +47,19 @@ class _LoginScreenState extends State<LoginScreen> {
                 Align(
                   alignment: Alignment.topRight,
                   child: InkWell(
-                    onTap: CacheHelper.getDataFromSharedPreference(
-                                key: SharedPreferenceKeys.language) ==
-                            "ar"
+                    onTap: CacheService.get(key: CacheKeys.language) == "ar"
                         ? () {
-                            LanguageCubit.get(context).toEnglish(
+                            LanguageCubit().toEnglish(
                               afterSuccess: () {
-                                Navigator.pushNamedAndRemoveUntil(context,
+                                NavigationService.pushNamedAndRemoveUntil(
                                     AppRouterNames.splash, (route) => false);
                               },
                             );
                           }
                         : () {
-                            LanguageCubit.get(context).toArabic(
+                            LanguageCubit().toArabic(
                               afterSuccess: () {
-                                Navigator.pushNamedAndRemoveUntil(context,
+                                NavigationService.pushNamedAndRemoveUntil(
                                     AppRouterNames.splash, (route) => false);
                               },
                             );
@@ -69,16 +69,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: 10.w,
                       height: 10.w,
                       decoration: BoxDecoration(
-                        color: AppColors.pc,
+                        color: AppColors.primary,
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: Center(
                         child: DefaultText(
-                          text: CacheHelper.getDataFromSharedPreference(
-                                      key: SharedPreferenceKeys.language) ==
-                                  "ar"
-                              ? "En"
-                              : "ع",
+                          text:
+                              CacheService.get(key: CacheKeys.language) == "ar"
+                                  ? "En"
+                                  : "ع",
                           fontSize: 13.sp,
                           align: TextAlign.center,
                         ),
@@ -111,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           translate(AppStrings.login),
                           style: TextStyle(
                             fontSize: 12.sp,
-                            color: singIn ? AppColors.pc : AppColors.white,
+                            color: singIn ? AppColors.primary : AppColors.white,
                           ),
                         ),
                       ),
@@ -129,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           translate(AppStrings.register),
                           style: TextStyle(
                             fontSize: 12.sp,
-                            color: singIn ? AppColors.white : AppColors.pc,
+                            color: singIn ? AppColors.white : AppColors.primary,
                           ),
                         ),
                       ),
@@ -169,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               password
                                   ? Icons.visibility
                                   : Icons.visibility_off,
-                              color: AppColors.pc,
+                              color: AppColors.primary,
                               size: 18.sp,
                             ),
                           ),
@@ -177,8 +176,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (singIn)
                         GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(
-                              context,
+                            NavigationService.pushNamed(
                               AppRouterNames.verify,
                             );
                           },
@@ -202,7 +200,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 5.h,
                         radius: 12,
                         isGradient: true,
-                        gradientColors: const [AppColors.pc, AppColors.pc2],
+                        gradientColors: const [
+                          AppColors.primary,
+                          AppColors.primaryLight
+                        ],
                         onTap: singIn
                             ? () {
                                 if (emailController.text == "") {
@@ -213,31 +214,28 @@ class _LoginScreenState extends State<LoginScreen> {
                                       translate(AppStrings.enterPassword));
                                 } else {
                                   IndicatorView.showIndicator(context);
-                                  AuthCubit.get(context).login(
+                                  AuthCubit(instance()).login(
                                     authRequest: AuthRequest(
                                       phone: emailController.text,
                                       password: passwordController.text,
                                     ),
                                     afterFail: () {
-                                      Navigator.pop(context);
+                                      NavigationService.pop();
                                     },
                                     disable: () {
-                                      Navigator.pushNamedAndRemoveUntil(
-                                        context,
+                                      NavigationService.pushNamedAndRemoveUntil(
                                         AppRouterNames.disable,
                                         (route) => false,
                                       );
                                     },
                                     client: () {
-                                      Navigator.pushNamedAndRemoveUntil(
-                                        context,
+                                      NavigationService.pushNamedAndRemoveUntil(
                                         AppRouterNames.layout,
                                         (route) => false,
                                       );
                                     },
                                     crew: () {
-                                      Navigator.pushNamedAndRemoveUntil(
-                                        context,
+                                      NavigationService.pushNamedAndRemoveUntil(
                                         AppRouterNames.crewLayout,
                                         (route) => false,
                                       );
@@ -247,14 +245,14 @@ class _LoginScreenState extends State<LoginScreen> {
                               }
                             : () {
                                 IndicatorView.showIndicator(context);
-                                AuthCubit.get(context).checkEmail(
+                                AuthCubit(instance()).checkEmail(
                                   email: emailController.text,
                                   notFound: () {
-                                    AuthCubit.get(context).sendEmail(
+                                    AuthCubit(instance()).sendEmail(
                                       email: emailController.text,
                                       success: () {
-                                        Navigator.pushNamedAndRemoveUntil(
-                                          context,
+                                        NavigationService
+                                            .pushNamedAndRemoveUntil(
                                           AppRouterNames.otp,
                                           (route) => true,
                                           arguments: AppRouterArgument(
@@ -264,7 +262,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         );
                                       },
                                       failed: () {
-                                        Navigator.pop(context);
+                                        NavigationService.pop();
                                         DefaultToast.showMyToast(
                                           translate(AppStrings.error),
                                         );
@@ -272,7 +270,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     );
                                   },
                                   found: () {
-                                    Navigator.pop(context);
+                                    NavigationService.pop();
                                     DefaultToast.showMyToast(
                                         translate(AppStrings.phoneExist));
                                   },
@@ -286,11 +284,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 5.h,
                           radius: 12,
                           isGradient: true,
-                          gradientColors: const [AppColors.pc, AppColors.pc2],
+                          gradientColors: const [
+                            AppColors.primary,
+                            AppColors.primaryLight
+                          ],
                           title: translate(AppStrings.guest),
                           onTap: () {
-                            Navigator.pushNamedAndRemoveUntil(
-                              context,
+                            NavigationService.pushNamedAndRemoveUntil(
                               AppRouterNames.home,
                               (route) => false,
                             );
@@ -300,7 +300,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const Divider(
-                  color: AppColors.pc,
+                  color: AppColors.primary,
                 ),
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,

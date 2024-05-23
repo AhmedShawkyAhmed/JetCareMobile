@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:sizer/sizer.dart';
 
 class IndicatorView {
@@ -13,7 +13,7 @@ class IndicatorView {
             width: 20.w,
             height: 20.w,
             child: const CircularProgressIndicator(
-              color: AppColors.pc,
+              color: AppColors.primary,
             ),
           ),
         );

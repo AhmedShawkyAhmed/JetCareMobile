@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:jetcare/src/business_logic/language_cubit/language_cubit.dart';
-import 'package:jetcare/src/constants/shared_preference_keys.dart';
-import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
-import 'package:jetcare/src/presentation/router/app_router_names.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
+import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/services/cache_service.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
 class LanguageAlert extends StatelessWidget {
-  const LanguageAlert({Key? key}) : super(key: key);
+  const LanguageAlert({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,38 +27,38 @@ class LanguageAlert extends StatelessWidget {
           children: [
             DefaultText(
               text: "العربية",
-              onTap: CacheHelper.getDataFromSharedPreference(
-                          key: SharedPreferenceKeys.language) ==
+              onTap: CacheService.get(
+                          key: CacheKeys.language) ==
                       "ar"
                   ? null
                   : () {
-                      LanguageCubit.get(context).toArabic(
+                      LanguageCubit().toArabic(
                         afterSuccess: () {
-                          Navigator.pushNamedAndRemoveUntil(context, AppRouterNames.splash, (route) => false);
+                          NavigationService.pushNamedAndRemoveUntil(AppRouterNames.splash, (route) => false);
                         },
                       );
                     },
-              textColor: CacheHelper.getDataFromSharedPreference(
-                          key: SharedPreferenceKeys.language) ==
+              textColor: CacheService.get(
+                          key: CacheKeys.language) ==
                       "ar"
                   ? AppColors.silver
                   : AppColors.white,
             ),
             DefaultText(
               text: "English",
-              onTap: CacheHelper.getDataFromSharedPreference(
-                          key: SharedPreferenceKeys.language) ==
+              onTap: CacheService.get(
+                          key: CacheKeys.language) ==
                       "ar"
                   ? () {
-                LanguageCubit.get(context).toEnglish(
+                LanguageCubit().toEnglish(
                   afterSuccess: () {
-                    Navigator.pushNamedAndRemoveUntil(context, AppRouterNames.splash, (route) => false);
+                    NavigationService.pushNamedAndRemoveUntil(AppRouterNames.splash, (route) => false);
                   },
                 );
               }
                   : null,
-              textColor: CacheHelper.getDataFromSharedPreference(
-                          key: SharedPreferenceKeys.language) ==
+              textColor: CacheService.get(
+                          key: CacheKeys.language) ==
                       "ar"
                   ? AppColors.white
                   : AppColors.silver,

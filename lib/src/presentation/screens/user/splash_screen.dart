@@ -2,80 +2,79 @@ import 'package:flutter/material.dart';
 import 'package:jetcare/main.dart';
 import 'package:jetcare/src/business_logic/auth_cubit/auth_cubit.dart';
 import 'package:jetcare/src/business_logic/global_cubit/global_cubit.dart';
-import 'package:jetcare/src/constants/constants_methods.dart';
-import 'package:jetcare/src/constants/constants_variables.dart';
-import 'package:jetcare/src/constants/shared_preference_keys.dart';
-import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/constants_variables.dart';
+import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
+import 'package:jetcare/src/core/di/service_locator.dart';
+import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/services/cache_service.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/data/network/requests/auth_request.dart';
-import 'package:jetcare/src/presentation/router/app_router_names.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:sizer/sizer.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({super.key});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   @override
   initState() {
-    if (CacheHelper.getDataFromSharedPreference(
-            key: SharedPreferenceKeys.language) ==
+    if (CacheService.get(
+            key: CacheKeys.language) ==
         null) {
-      CacheHelper.saveDataSharedPreference(
-          key: SharedPreferenceKeys.language, value: "ar");
+      CacheService.add(
+          key: CacheKeys.language, value: "ar");
     }
-    printResponse(CacheHelper.getDataFromSharedPreference(
-            key: SharedPreferenceKeys.phone) ??
+    printResponse(CacheService.get(
+            key: CacheKeys.phone) ??
         "");
-    CacheHelper.getDataFromSharedPreference(
-                key: SharedPreferenceKeys.password) ==
+    CacheService.get(
+                key: CacheKeys.password) ==
             null
-        ? GlobalCubit.get(context).navigate(
+        ? GlobalCubit(instance()).navigate(
             afterSuccess: () {
-              Navigator.pushReplacementNamed(context, AppRouterNames.login);
+              NavigationService.pushReplacementNamed(AppRouterNames.login);
             },
           )
-        : AuthCubit.get(context).login(
+        : AuthCubit(instance()).login(
             authRequest: AuthRequest(
-                phone: CacheHelper.getDataFromSharedPreference(
-                    key: SharedPreferenceKeys.phone),
-                password: CacheHelper.getDataFromSharedPreference(
-                    key: SharedPreferenceKeys.password)),
+                phone: CacheService.get(
+                    key: CacheKeys.phone),
+                password: CacheService.get(
+                    key: CacheKeys.password)),
             client: () {
-              GlobalCubit.get(context).navigate(
+              GlobalCubit(instance()).navigate(
                 afterSuccess: () {
-                  Navigator.pushReplacementNamed(
-                      context, AppRouterNames.layout);
+                  NavigationService.pushReplacementNamed(AppRouterNames.layout);
                 },
               );
-              AuthCubit.get(context).updateFCM(
+              AuthCubit(instance()).updateFCM(
                 id: globalAccountModel.id!,
                 fcm: fcmToken!,
               );
             },
             disable: () {
-              Navigator.pushNamedAndRemoveUntil(
-                context,
+              NavigationService.pushNamedAndRemoveUntil(
                 AppRouterNames.disable,
                 (route) => false,
               );
             },
             afterFail: () {
-              Navigator.pushReplacementNamed(context, AppRouterNames.login);
+              NavigationService.pushReplacementNamed(AppRouterNames.login);
             },
             crew: () {
-              GlobalCubit.get(context).navigate(
+              GlobalCubit(instance()).navigate(
                 afterSuccess: () {
-                  Navigator.pushReplacementNamed(
-                      context, AppRouterNames.crewLayout);
+                  NavigationService.pushReplacementNamed(
+                      AppRouterNames.crewLayout);
                 },
               );
-              AuthCubit.get(context).updateFCM(
+              AuthCubit(instance()).updateFCM(
                 id: globalAccountModel.id!,
                 fcm: fcmToken!,
               );

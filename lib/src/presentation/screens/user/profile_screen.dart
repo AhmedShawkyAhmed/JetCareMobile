@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/business_logic/auth_cubit/auth_cubit.dart';
-import 'package:jetcare/src/constants/app_strings.dart';
-import 'package:jetcare/src/constants/constants_variables.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_strings.dart';
+import 'package:jetcare/src/core/constants/constants_variables.dart';
+import 'package:jetcare/src/core/di/service_locator.dart';
+import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text_field.dart';
+import 'package:jetcare/src/core/shared/widgets/toast.dart';
 import 'package:jetcare/src/data/network/requests/account_request.dart';
-import 'package:jetcare/src/presentation/router/app_router_argument.dart';
-import 'package:jetcare/src/presentation/router/app_router_names.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/indicator_view.dart';
-import 'package:jetcare/src/presentation/widgets/default_app_button.dart';
-import 'package:jetcare/src/presentation/widgets/default_text_field.dart';
-import 'package:jetcare/src/presentation/widgets/toast.dart';
 import 'package:sizer/sizer.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -19,8 +21,8 @@ class ProfileScreen extends StatefulWidget {
 
   const ProfileScreen({
     required this.appRouterArgument,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -82,7 +84,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           DefaultToast.showMyToast(
                               translate(AppStrings.updateProfile));
                         } else {
-                          AuthCubit.get(context).updateAccount(
+                          AuthCubit(instance()).updateAccount(
                             accountRequest: AccountRequest(
                               name: nameController.text == ""
                                   ? null
@@ -100,7 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               emailController.clear();
                               DefaultToast.showMyToast(
                                   translate(AppStrings.saveData));
-                              Navigator.pop(context);
+                              NavigationService.pop();
                             },
                           );
                         }
@@ -138,7 +140,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       },
                       child: Icon(
                         password ? Icons.visibility : Icons.visibility_off,
-                        color: AppColors.pc,
+                        color: AppColors.primary,
                         size: 18.sp,
                       ),
                     ),
@@ -155,7 +157,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       },
                       child: Icon(
                         confirm ? Icons.visibility : Icons.visibility_off,
-                        color: AppColors.pc,
+                        color: AppColors.primary,
                         size: 18.sp,
                       ),
                     ),
@@ -183,7 +185,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               translate(AppStrings.passwordMatched));
                         } else {
                           IndicatorView.showIndicator(context);
-                          AuthCubit.get(context).register(
+                          AuthCubit(instance()).register(
                             accountRequest: AccountRequest(
                               name: nameController.text,
                               email: widget.appRouterArgument.phone.toString(),
@@ -192,9 +194,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               role: "client",
                             ),
                             afterSuccess: () {
-                              Navigator.pop(context);
-                              Navigator.pushNamedAndRemoveUntil(
-                                context,
+                              NavigationService.pop();
+                              NavigationService.pushNamedAndRemoveUntil(
                                 AppRouterNames.welcome,
                                 (route) => false,
                               );

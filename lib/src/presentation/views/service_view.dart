@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
-import 'package:jetcare/src/constants/shared_preference_keys.dart';
-import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
+import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
+import 'package:jetcare/src/core/services/cache_service.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/data/models/package_model.dart';
-import 'package:jetcare/src/presentation/router/app_router_argument.dart';
-import 'package:jetcare/src/presentation/router/app_router_names.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
 import 'package:jetcare/src/presentation/views/card_view.dart';
 import 'package:sizer/sizer.dart';
 
@@ -15,8 +16,8 @@ class ServiceView extends StatelessWidget {
   const ServiceView({
     required this.title,
     required this.packageList,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -63,8 +64,8 @@ class ServiceView extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 3.w),
                       child: Text(
-                        CacheHelper.getDataFromSharedPreference(
-                                    key: SharedPreferenceKeys.language) ==
+                        CacheService.get(
+                                    key: CacheKeys.language) ==
                                 "ar"
                             ? packageList[index].nameAr.toString()
                             : packageList[index].nameEn.toString(),
@@ -86,8 +87,7 @@ class ServiceView extends StatelessWidget {
                         itemBuilder: (context, position) {
                           return CardView(
                             onTap: () {
-                              Navigator.pushNamed(
-                                context,
+                              NavigationService.pushNamed(
                                 AppRouterNames.serviceDetails,
                                 arguments: AppRouterArgument(
                                   itemModel:
@@ -96,10 +96,10 @@ class ServiceView extends StatelessWidget {
                               );
                             },
                             width: 32.w,
-                            colorMain: AppColors.pc.withOpacity(0.8),
+                            colorMain: AppColors.primary.withOpacity(0.8),
                             colorSub: AppColors.shade.withOpacity(0.4),
-                            title: CacheHelper.getDataFromSharedPreference(
-                                        key: SharedPreferenceKeys.language) ==
+                            title: CacheService.get(
+                                        key: CacheKeys.language) ==
                                     "ar"
                                 ? packageList[index].items![position].nameAr
                                 : packageList[index].items![position].nameEn,

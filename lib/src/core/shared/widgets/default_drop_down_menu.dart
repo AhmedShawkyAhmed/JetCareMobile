@@ -1,11 +1,11 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:sizer/sizer.dart';
 
 class DefaultDropdown<T> extends StatelessWidget {
   const DefaultDropdown({
-    Key? key,
+    super.key,
     required this.items,
     this.selectedItem,
     this.hint,
@@ -33,7 +33,7 @@ class DefaultDropdown<T> extends StatelessWidget {
     this.selectedLeadingWidget,
     this.dropdownLeadingWidget,
     this.onBeforeChange,
-  }) : super(key: key);
+  });
   final List<T> items;
   final T? selectedItem;
   final String? hint;
@@ -66,7 +66,7 @@ class DefaultDropdown<T> extends StatelessWidget {
     var inputBorder = OutlineInputBorder(
       borderRadius: borderRadius ?? BorderRadius.circular(7),
       borderSide: BorderSide(
-        color: enabled ? AppColors.pc : const Color(0xff000000),
+        color: enabled ? AppColors.primary : const Color(0xff000000),
         width: 0.5,
       ),
     );
@@ -107,7 +107,7 @@ class DefaultDropdown<T> extends StatelessWidget {
                     style: dropdownTextStyle ??
                         TextStyle(
                           color:
-                              enabled ? AppColors.pc : const Color(0xff636363),
+                              enabled ? AppColors.primary : const Color(0xff636363),
                           fontSize: 12.sp,
                         ),
                   ),
@@ -133,13 +133,13 @@ class DefaultDropdown<T> extends StatelessWidget {
         icon: dropdownButtonBuilder ??
             Icon(
               Icons.keyboard_arrow_down,
-              color: enabled ? AppColors.pc : const Color(0xff636363),
+              color: enabled ? AppColors.primary : const Color(0xff636363),
               size: 12.sp,
             ),
         selectedIcon: dropdownButtonBuilder ??
             Icon(
               Icons.keyboard_arrow_down,
-              color: enabled ? AppColors.pc : const Color(0xff636363),
+              color: enabled ? AppColors.primary : const Color(0xff636363),
               size: 12.sp,
             ),
       ),
@@ -199,7 +199,7 @@ class DefaultDropdown<T> extends StatelessWidget {
                     style: selectedTextStyle ??
                         TextStyle(
                           color:
-                              enabled ? AppColors.pc : const Color(0xff636363),
+                              enabled ? AppColors.primary : const Color(0xff636363),
                           fontSize: 12.sp,
                         ),
                   ),

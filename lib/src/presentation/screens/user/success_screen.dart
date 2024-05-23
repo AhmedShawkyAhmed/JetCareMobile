@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/business_logic/app_cubit/app_cubit.dart';
 import 'package:jetcare/src/business_logic/order_cubit/order_cubit.dart';
-import 'package:jetcare/src/constants/app_strings.dart';
-import 'package:jetcare/src/presentation/router/app_router_argument.dart';
-import 'package:jetcare/src/presentation/router/app_router_names.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_strings.dart';
+import 'package:jetcare/src/core/di/service_locator.dart';
+import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
-import 'package:jetcare/src/presentation/widgets/default_app_button.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
 class SuccessScreen extends StatelessWidget {
@@ -16,8 +18,8 @@ class SuccessScreen extends StatelessWidget {
 
   const SuccessScreen({
     required this.appRouterArgument,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -59,15 +61,15 @@ class SuccessScreen extends StatelessWidget {
               title: translate(AppStrings.con),
               onTap: () {
                 if (appRouterArgument.type == "order") {
-                  AppCubit.get(context).changeIndex(0);
-                  Navigator.pushNamedAndRemoveUntil(
-                    context,
+                  AppCubit().changeIndex(0);
+                  NavigationService.pushNamedAndRemoveUntil(
+
                     AppRouterNames.layout,
                     (route) => false,
                   );
-                  OrderCubit.get(context).getMyOrders();
+                  OrderCubit(instance()).getMyOrders();
                 } else if (appRouterArgument.type == "support") {
-                  Navigator.pop(context);
+                  NavigationService.pop();
                 }
               },
             ),

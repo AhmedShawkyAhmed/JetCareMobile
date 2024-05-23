@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:sizer/sizer.dart';
 
 class PeriodView extends StatelessWidget {
   final String from, to;
-  String? unit;
-  Color? color;
+  final String? unit;
+  final Color? color;
 
-  PeriodView({
+  const PeriodView({
     required this.from,
     required this.to,
     this.unit,
     this.color,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +32,7 @@ class PeriodView extends StatelessWidget {
             fontWeight: FontWeight.w400,
             color: AppColors.white,
           ),
-          textDirection:TextDirection.ltr,
+          textDirection: TextDirection.ltr,
         ),
       ),
     );

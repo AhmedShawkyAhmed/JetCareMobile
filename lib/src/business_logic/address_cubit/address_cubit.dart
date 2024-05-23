@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jetcare/src/constants/constants_methods.dart';
-import 'package:jetcare/src/constants/constants_variables.dart';
-import 'package:jetcare/src/constants/end_points.dart';
-import 'package:jetcare/src/data/data_provider/remote/dio_helper.dart';
+import 'package:jetcare/src/core/constants/constants_variables.dart';
+import 'package:jetcare/src/core/network/api_consumer.dart';
+import 'package:jetcare/src/core/network/end_points.dart';
+import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/data/models/address_model.dart';
 import 'package:jetcare/src/data/models/area_model.dart';
 import 'package:jetcare/src/data/network/requests/address_request.dart';
@@ -16,9 +16,8 @@ import 'package:jetcare/src/data/network/responses/state_response.dart';
 part 'address_state.dart';
 
 class AddressCubit extends Cubit<AddressState> {
-  AddressCubit() : super(AddressInitial());
-
-  static AddressCubit get(context) => BlocProvider.of(context);
+  AddressCubit(this.networkService) : super(AddressInitial());
+  ApiConsumer networkService;
   AreaResponse? getAreaResponse;
   StatesResponse? allStatesResponse;
   AddressResponse? addressResponse, addAddressResponse;
@@ -30,10 +29,11 @@ class AddressCubit extends Cubit<AddressState> {
   List<AreaModel> areaList = [];
   List<int> areaId = [];
 
-  Future getAllStates({String? keyword,required VoidCallback afterSuccess}) async {
+  Future getAllStates(
+      {String? keyword, required VoidCallback afterSuccess}) async {
     try {
       emit(GetStatesLoading());
-      await DioHelper.getData(
+      await networkService.get(
         url: EndPoints.getAllStates,
         query: {
           "keyword": keyword,
@@ -47,7 +47,7 @@ class AddressCubit extends Cubit<AddressState> {
         emit(GetStatesSuccess());
         afterSuccess();
       });
-    } on DioError catch (n) {
+    } on DioException catch (n) {
       emit(GetStatesError());
       printError(n.toString());
     } catch (e) {
@@ -59,7 +59,7 @@ class AddressCubit extends Cubit<AddressState> {
   Future getAllAreas({int? stateId}) async {
     try {
       emit(AreaLodingState());
-      await DioHelper.getData(
+      await networkService.get(
         url: EndPoints.getAreasOfState,
         query: {
           "stateId": stateId,
@@ -74,7 +74,7 @@ class AddressCubit extends Cubit<AddressState> {
         }
         emit(AreaSuccessState());
       });
-    } on DioError catch (n) {
+    } on DioException catch (n) {
       emit(AreaErrorState());
       printError(n.toString());
     } catch (e) {
@@ -87,7 +87,7 @@ class AddressCubit extends Cubit<AddressState> {
     addressList.clear();
     try {
       emit(AddressLoadingState());
-      await DioHelper.getData(url: EndPoints.getMyAddresses, query: {
+      await networkService.get(url: EndPoints.getMyAddresses, query: {
         "userId": globalAccountModel.id,
       }).then((value) {
         addressResponse = AddressResponse.fromJson(value.data);
@@ -99,7 +99,7 @@ class AddressCubit extends Cubit<AddressState> {
         emit(AddressSuccessState());
         afterSuccess();
       });
-    } on DioError catch (n) {
+    } on DioException catch (n) {
       emit(AddressErrorState());
       printError(n.toString());
     } catch (e) {
@@ -114,7 +114,7 @@ class AddressCubit extends Cubit<AddressState> {
   }) async {
     try {
       emit(AddAddressLoadingState());
-      await DioHelper.postData(url: EndPoints.addAddress, body: {
+      await networkService.post(url: EndPoints.addAddress, body: {
         'userId': addressRequest.userId,
         'phone': addressRequest.phone,
         'address': addressRequest.address,
@@ -128,7 +128,7 @@ class AddressCubit extends Cubit<AddressState> {
             "Add Address Response ${addAddressResponse!.message.toString()}");
         afterSuccess();
       });
-    } on DioError catch (n) {
+    } on DioException catch (n) {
       emit(AddAddressErrorState());
       printError(n.toString());
     } catch (e) {
@@ -143,7 +143,7 @@ class AddressCubit extends Cubit<AddressState> {
   }) async {
     try {
       emit(EditAddressLoadingState());
-      await DioHelper.postData(url: EndPoints.updateAddress, body: {
+      await networkService.post(url: EndPoints.updateAddress, body: {
         'id': addressRequest.userId,
         'phone': addressRequest.phone,
         'address': addressRequest.address,
@@ -157,7 +157,7 @@ class AddressCubit extends Cubit<AddressState> {
             "Edit Address Response ${addAddressResponse!.message.toString()}");
         afterSuccess();
       });
-    } on DioError catch (n) {
+    } on DioException catch (n) {
       emit(EditAddressErrorState());
       printError(n.toString());
     } catch (e) {
@@ -171,7 +171,7 @@ class AddressCubit extends Cubit<AddressState> {
   }) async {
     try {
       emit(DeleteAddressLoadingState());
-      await DioHelper.postData(url: EndPoints.deleteAddress, body: {
+      await networkService.post(url: EndPoints.deleteAddress, body: {
         'id': address.id,
       }).then((value) {
         printResponse(value.data.toString());
@@ -182,7 +182,7 @@ class AddressCubit extends Cubit<AddressState> {
         addressCount -= 1;
         emit(DeleteAddressSuccessState());
       });
-    } on DioError catch (n) {
+    } on DioException catch (n) {
       emit(DeleteAddressErrorState());
       printError(n.toString());
     } catch (e) {

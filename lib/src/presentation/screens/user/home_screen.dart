@@ -4,22 +4,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/business_logic/global_cubit/global_cubit.dart';
 import 'package:jetcare/src/business_logic/notification_cubit/notification_cubit.dart';
-import 'package:jetcare/src/constants/app_strings.dart';
-import 'package:jetcare/src/constants/constants_variables.dart';
-import 'package:jetcare/src/presentation/router/app_router_names.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_strings.dart';
+import 'package:jetcare/src/core/constants/constants_variables.dart';
+import 'package:jetcare/src/core/di/service_locator.dart';
+import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
+import 'package:jetcare/src/core/shared/widgets/toast.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/home_view.dart';
 import 'package:jetcare/src/presentation/views/indicator_view.dart';
 import 'package:jetcare/src/presentation/views/service_view.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
-import 'package:jetcare/src/presentation/widgets/toast.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../views/card_view.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -29,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => GlobalCubit()..getHome(),
+      create: (context) => GlobalCubit(instance())..getHome(),
       child: Scaffold(
         backgroundColor: AppColors.mainColor,
         body: BodyView(
@@ -46,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
               return ListView(
                 padding: EdgeInsets.only(bottom: 4.h),
                 children: [
-                  if(globalAccountModel.name != null)...[
+                  if (globalAccountModel.name != null) ...[
                     Padding(
                       padding: EdgeInsets.only(
                           left: 5.w, right: 5.w, top: 2.h, bottom: 2.h),
@@ -55,18 +57,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           DefaultText(
-                            text: globalAccountModel.name??"زائر",
+                            text: globalAccountModel.name ?? "زائر",
                             fontSize: 15.sp,
                           ),
                           InkWell(
                             onTap: () {
                               IndicatorView.showIndicator(context);
-                              NotificationCubit.get(context).getNotifications(
+                              NotificationCubit(instance()).getNotifications(
                                 userId: globalAccountModel.id!,
                                 afterSuccess: () {
-                                  Navigator.pop(context);
-                                  Navigator.pushNamed(
-                                    context,
+                                  NavigationService.pop();
+                                  NavigationService.pushNamed(
                                     AppRouterNames.notification,
                                   );
                                 },
@@ -82,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Center(
                                 child: Icon(
                                   Icons.notifications_active,
-                                  color: AppColors.pc,
+                                  color: AppColors.primary,
                                   size: 15.sp,
                                 ),
                               ),
@@ -92,9 +93,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ],
-                  if (GlobalCubit.get(context).homeResponse?.adsModel != null)
+                  if (GlobalCubit(instance()).homeResponse?.adsModel != null)
                     CarouselSlider.builder(
-                      itemCount: GlobalCubit.get(context)
+                      itemCount: GlobalCubit(instance())
                               .homeResponse
                               ?.adsModel
                               ?.length ??
@@ -106,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: CardView(
                           height: 18.h,
                           onTap: () {
-                            if (GlobalCubit.get(context)
+                            if (GlobalCubit(instance())
                                     .homeResponse!
                                     .adsModel?[position]
                                     .link ==
@@ -114,8 +115,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               DefaultToast.showMyToast(
                                   translate(AppStrings.adLink));
                             } else {
-                              GlobalCubit.get(context).openUrl(
-                                GlobalCubit.get(context)
+                              GlobalCubit(instance()).openUrl(
+                                GlobalCubit(instance())
                                     .homeResponse!
                                     .adsModel![position]
                                     .link
@@ -123,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               );
                             }
                           },
-                          image: GlobalCubit.get(context)
+                          image: GlobalCubit(instance())
                               .homeResponse!
                               .adsModel![position]
                               .image
@@ -134,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         enableInfiniteScroll: true,
                         autoPlay: true,
                         viewportFraction: 1,
-                        height: GlobalCubit.get(context)
+                        height: GlobalCubit(instance())
                                 .homeResponse!
                                 .adsModel!
                                 .isEmpty
@@ -145,46 +146,46 @@ class _HomeScreenState extends State<HomeScreen> {
                   HomeView(
                     title: translate(AppStrings.corporate),
                     type: "corporate",
-                    visible: GlobalCubit.get(context)
+                    visible: GlobalCubit(instance())
                         .homeResponse!
                         .corporateModel!
                         .isNotEmpty,
                     itemList:
-                        GlobalCubit.get(context).homeResponse!.corporateModel,
+                        GlobalCubit(instance()).homeResponse!.corporateModel,
                   ),
                   HomeView(
                     title: translate(AppStrings.service),
                     type: "category",
-                    visible: GlobalCubit.get(context)
+                    visible: GlobalCubit(instance())
                         .homeResponse!
                         .categoryModel!
                         .isNotEmpty,
                     packageList:
-                        GlobalCubit.get(context).homeResponse!.categoryModel,
+                        GlobalCubit(instance()).homeResponse!.categoryModel,
                   ),
                   HomeView(
                     title: translate(AppStrings.offers),
                     type: "package",
-                    visible: GlobalCubit.get(context)
+                    visible: GlobalCubit(instance())
                         .homeResponse!
                         .packageModel!
                         .isNotEmpty,
                     packageList:
-                        GlobalCubit.get(context).homeResponse!.packageModel,
+                        GlobalCubit(instance()).homeResponse!.packageModel,
                   ),
                   HomeView(
                     title: translate(AppStrings.extras),
                     type: "extra",
-                    visible: GlobalCubit.get(context)
+                    visible: GlobalCubit(instance())
                         .homeResponse!
                         .extraModel!
                         .isNotEmpty,
-                    itemList: GlobalCubit.get(context).homeResponse!.extraModel,
+                    itemList: GlobalCubit(instance()).homeResponse!.extraModel,
                   ),
                   ServiceView(
                     title: translate(AppStrings.service),
                     packageList:
-                        GlobalCubit.get(context).homeResponse!.serviceModel!,
+                        GlobalCubit(instance()).homeResponse!.serviceModel!,
                   ),
                   SizedBox(
                     height: 2.h,

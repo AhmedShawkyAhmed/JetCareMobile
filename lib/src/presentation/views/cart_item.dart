@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:jetcare/src/constants/app_strings.dart';
-import 'package:jetcare/src/constants/end_points.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_strings.dart';
+import 'package:jetcare/src/core/network/end_points.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
 class CartItem extends StatelessWidget {
@@ -21,8 +21,8 @@ class CartItem extends StatelessWidget {
     required this.image,
     required this.withDelete,
     required this.onDelete,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

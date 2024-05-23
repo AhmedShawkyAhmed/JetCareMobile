@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/business_logic/auth_cubit/auth_cubit.dart';
-import 'package:jetcare/src/constants/app_strings.dart';
-import 'package:jetcare/src/presentation/router/app_router_argument.dart';
-import 'package:jetcare/src/presentation/router/app_router_names.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_strings.dart';
+import 'package:jetcare/src/core/di/service_locator.dart';
+import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text_field.dart';
+import 'package:jetcare/src/core/shared/widgets/toast.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/indicator_view.dart';
-import 'package:jetcare/src/presentation/widgets/default_app_button.dart';
-import 'package:jetcare/src/presentation/widgets/default_text_field.dart';
-import 'package:jetcare/src/presentation/widgets/toast.dart';
 import 'package:sizer/sizer.dart';
 
 class VerifyPhone extends StatelessWidget {
-  VerifyPhone({Key? key}) : super(key: key);
+  VerifyPhone({super.key});
 
   final TextEditingController emailController = TextEditingController();
 
@@ -51,15 +53,14 @@ class VerifyPhone extends StatelessWidget {
                     DefaultToast.showMyToast(translate(AppStrings.enterPhone));
                   } else {
                     IndicatorView.showIndicator(context);
-                    AuthCubit.get(context).checkEmail(
+                    AuthCubit(instance()).checkEmail(
                       email: emailController.text,
                       found: () {
-                        AuthCubit.get(context).sendEmail(
+                        AuthCubit(instance()).sendEmail(
                           email: emailController.text,
                           success: () {
-                            Navigator.pop(context);
-                            Navigator.pushNamed(
-                              context,
+                            NavigationService.pop();
+                            NavigationService.pushNamed(
                               AppRouterNames.otp,
                               arguments: AppRouterArgument(
                                 phone: emailController.text,
@@ -68,7 +69,7 @@ class VerifyPhone extends StatelessWidget {
                             );
                           },
                           failed: () {
-                            Navigator.pop(context);
+                            NavigationService.pop();
                             DefaultToast.showMyToast(
                               translate(AppStrings.error),
                             );
@@ -76,7 +77,7 @@ class VerifyPhone extends StatelessWidget {
                         );
                       },
                       notFound: () {
-                        Navigator.pop(context);
+                        NavigationService.pop();
                         DefaultToast.showMyToast(
                           translate(AppStrings.phoneNotExist),
                         );

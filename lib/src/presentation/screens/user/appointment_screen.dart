@@ -1,32 +1,35 @@
 import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:jetcare/src/NotificationDownloadingService.dart';
 import 'package:jetcare/src/business_logic/address_cubit/address_cubit.dart';
 import 'package:jetcare/src/business_logic/calender_cubit/calender_cubit.dart';
 import 'package:jetcare/src/business_logic/global_cubit/global_cubit.dart';
 import 'package:jetcare/src/business_logic/notification_cubit/notification_cubit.dart';
 import 'package:jetcare/src/business_logic/order_cubit/order_cubit.dart';
-import 'package:jetcare/src/constants/app_strings.dart';
-import 'package:jetcare/src/constants/constants_variables.dart';
-import 'package:jetcare/src/constants/shared_preference_keys.dart';
-import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_strings.dart';
+import 'package:jetcare/src/core/constants/constants_variables.dart';
+import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
+import 'package:jetcare/src/core/di/service_locator.dart';
+import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
+import 'package:jetcare/src/core/services/cache_service.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/services/notification_service.dart';
+import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/core/shared/widgets/default_drop_down_menu.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text_field.dart';
+import 'package:jetcare/src/core/shared/widgets/toast.dart';
 import 'package:jetcare/src/data/models/address_model.dart';
 import 'package:jetcare/src/data/models/period_model.dart';
 import 'package:jetcare/src/data/network/requests/order_request.dart';
-import 'package:jetcare/src/presentation/router/app_router_argument.dart';
-import 'package:jetcare/src/presentation/router/app_router_names.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
 import 'package:jetcare/src/presentation/views/address_widget.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/calender_item_view.dart';
 import 'package:jetcare/src/presentation/views/indicator_view.dart';
-import 'package:jetcare/src/presentation/widgets/default_app_button.dart';
-import 'package:jetcare/src/presentation/widgets/default_drop_down_menu.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
-import 'package:jetcare/src/presentation/widgets/default_text_field.dart';
-import 'package:jetcare/src/presentation/widgets/toast.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../data/models/area_model.dart';
@@ -36,8 +39,8 @@ class AppointmentScreen extends StatefulWidget {
 
   const AppointmentScreen({
     required this.appRouterArgument,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<AppointmentScreen> createState() => _AppointmentScreenState();
@@ -49,10 +52,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   TextEditingController quantityController = TextEditingController();
   final TextEditingController commentController = TextEditingController();
 
-
   DateTime date = DateTime.now();
   int selected = -1;
-
 
   @override
   void initState() {
@@ -61,6 +62,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
     discountPeriods = [];
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,9 +73,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
             SizedBox(
               height: 2.h,
             ),
-            if (CacheHelper.getDataFromSharedPreference(
-                    key: SharedPreferenceKeys.password) !=
-                null) ...[
+            if (CacheService.get(key: CacheKeys.password) != null) ...[
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5.w),
                 child: DefaultText(
@@ -83,19 +83,18 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
               ),
               BlocBuilder<AddressCubit, AddressState>(
                 builder: (context, state) {
-                  if (AddressCubit.get(context).addressList.isEmpty ||
-                      AddressCubit.get(context).addressResponse == null) {
+                  if (AddressCubit(instance()).addressList.isEmpty ||
+                      AddressCubit(instance()).addressResponse == null) {
                     return Center(
                       child: DefaultText(
                         text: translate(AppStrings.aAddress),
-                        textColor: AppColors.pc,
+                        textColor: AppColors.primary,
                         onTap: () {
                           IndicatorView.showIndicator(context);
-                          AddressCubit.get(context).getAllStates(
+                          AddressCubit(instance()).getAllStates(
                               afterSuccess: () {
-                            Navigator.pop(context);
-                            Navigator.pushNamed(
-                              context,
+                            NavigationService.pop();
+                            NavigationService.pushNamed(
                               AppRouterNames.addAddress,
                               arguments: AppRouterArgument(type: "new"),
                             );
@@ -110,7 +109,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                     ),
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: AddressCubit.get(context)
+                    itemCount: AddressCubit(instance())
                         .addressResponse!
                         .address!
                         .length,
@@ -118,22 +117,20 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                       return InkWell(
                         onTap: () {
                           setState(() {
-                            selectedAddress = AddressCubit.get(context)
+                            selectedAddress = AddressCubit(instance())
                                 .addressResponse!
                                 .address![index];
                           });
                         },
                         child: AddressWidget(
                           color: selectedAddress.id ==
-                                  AddressCubit.get(context)
-                                      .addressList[index]
-                                      .id
-                              ? AppColors.pc.withOpacity(0.5)
+                                  AddressCubit(instance()).addressList[index].id
+                              ? AppColors.primary.withOpacity(0.5)
                               : AppColors.shade.withOpacity(0.1),
                           addressModelList:
-                              AddressCubit.get(context).addressList,
+                              AddressCubit(instance()).addressList,
                           addressModel:
-                              AddressCubit.get(context).addressList[index],
+                              AddressCubit(instance()).addressList[index],
                           edit: () {},
                           delete: () {},
                         ),
@@ -169,30 +166,30 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                             children: [
                               InkWell(
                                 onTap: () {
-                                  CalenderCubit.get(context).getCalender(
-                                    month: CalenderCubit.get(context)
+                                  CalenderCubit(instance()).getCalender(
+                                    month: CalenderCubit(instance())
                                                 .calenderList
                                                 .first
                                                 .month ==
                                             12
                                         ? 1
-                                        : (CalenderCubit.get(context)
+                                        : (CalenderCubit(instance())
                                                 .calenderList
                                                 .first
                                                 .month! +
                                             1),
                                     year:
-                                        CalenderCubit.get(context)
+                                        CalenderCubit(instance())
                                                     .calenderList
                                                     .first
                                                     .month ==
                                                 12
-                                            ? (CalenderCubit.get(context)
+                                            ? (CalenderCubit(instance())
                                                     .calenderList
                                                     .first
                                                     .year! +
                                                 1)
-                                            : CalenderCubit.get(context)
+                                            : CalenderCubit(instance())
                                                 .calenderList
                                                 .first
                                                 .year!,
@@ -205,7 +202,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                   padding: EdgeInsets.all(2.w),
                                   decoration: BoxDecoration(
                                     color: AppColors.white,
-                                    border: Border.all(color: AppColors.pc),
+                                    border:
+                                        Border.all(color: AppColors.primary),
                                     borderRadius: BorderRadius.circular(100),
                                   ),
                                   child: Center(
@@ -213,43 +211,43 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                       angle: 180 * math.pi / 180,
                                       child: const Icon(
                                         Icons.arrow_forward_ios_rounded,
-                                        color: AppColors.pc,
+                                        color: AppColors.primary,
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
                               DefaultText(
-                                  text: CalenderCubit.get(context)
+                                  text: CalenderCubit(instance())
                                           .calenderList
                                           .isEmpty
                                       ? ""
-                                      : "${CalenderCubit.get(context).calenderList.first.monthName} - ${CalenderCubit.get(context).calenderList.first.year!}"),
+                                      : "${CalenderCubit(instance()).calenderList.first.monthName} - ${CalenderCubit(instance()).calenderList.first.year!}"),
                               InkWell(
                                 onTap: () {
-                                  CalenderCubit.get(context).getCalender(
-                                    month: CalenderCubit.get(context)
+                                  CalenderCubit(instance()).getCalender(
+                                    month: CalenderCubit(instance())
                                                 .calenderList
                                                 .first
                                                 .month ==
                                             1
                                         ? 12
-                                        : (CalenderCubit.get(context)
+                                        : (CalenderCubit(instance())
                                                 .calenderList
                                                 .first
                                                 .month! -
                                             1),
-                                    year: CalenderCubit.get(context)
+                                    year: CalenderCubit(instance())
                                                 .calenderList
                                                 .first
                                                 .month ==
                                             1
-                                        ? (CalenderCubit.get(context)
+                                        ? (CalenderCubit(instance())
                                                 .calenderList
                                                 .first
                                                 .year! -
                                             1)
-                                        : CalenderCubit.get(context)
+                                        : CalenderCubit(instance())
                                             .calenderList
                                             .first
                                             .year!,
@@ -262,13 +260,14 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                   padding: EdgeInsets.all(2.w),
                                   decoration: BoxDecoration(
                                     color: AppColors.white,
-                                    border: Border.all(color: AppColors.pc),
+                                    border:
+                                        Border.all(color: AppColors.primary),
                                     borderRadius: BorderRadius.circular(100),
                                   ),
                                   child: const Center(
                                     child: Icon(
                                       Icons.arrow_back_ios_new_rounded,
-                                      color: AppColors.pc,
+                                      color: AppColors.primary,
                                     ),
                                   ),
                                 ),
@@ -289,24 +288,27 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                               mainAxisSpacing: 10,
                             ),
                             itemBuilder: (context, index) {
-                              return CalenderCubit.get(context)
+                              return CalenderCubit(instance())
                                       .calenderList
                                       .isEmpty
                                   ? const SizedBox()
                                   : InkWell(
                                       onTap: date.isBefore(DateTime.parse(
-                                              CalenderCubit.get(context)
+                                              CalenderCubit(instance())
                                                   .calenderList[index]
                                                   .date
                                                   .toString()))
                                           ? () {
-                                              if (selectedAddress.area == null || selectedAddress.area!.id == -1) {
+                                              if (selectedAddress.area ==
+                                                      null ||
+                                                  selectedAddress.area!.id ==
+                                                      -1) {
                                                 DefaultToast.showMyToast(
                                                     translate(AppStrings
                                                         .selectLocation));
                                               } else {
                                                 setState(() {
-                                                  if (CalenderCubit.get(context)
+                                                  if (CalenderCubit(instance())
                                                       .calenderList[index]
                                                       .areas!
                                                       .isEmpty) {
@@ -314,41 +316,43 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                                         AreaModel(id: -1);
                                                   } else {
                                                     discountAreas =
-                                                        CalenderCubit.get(
-                                                                context)
+                                                        CalenderCubit(
+                                                                instance())
                                                             .calenderList[index]
                                                             .areas!
                                                             .first;
                                                   }
                                                   dateController.text =
-                                                      CalenderCubit.get(context)
+                                                      CalenderCubit(instance())
                                                           .calenderList[index]
                                                           .date!;
                                                   discountPeriods =
-                                                      CalenderCubit.get(context)
+                                                      CalenderCubit(instance())
                                                           .calenderList[index]
                                                           .periods!;
                                                   selected = index;
                                                 });
                                               }
                                             }
-                                          : (){
-                                        DefaultToast.showMyToast(translate(AppStrings.beforeDate));
-                                      },
+                                          : () {
+                                              DefaultToast.showMyToast(
+                                                  translate(
+                                                      AppStrings.beforeDate));
+                                            },
                                       child: CalenderItemView(
                                         color: date.isBefore(DateTime.parse(
-                                                CalenderCubit.get(context)
+                                                CalenderCubit(instance())
                                                     .calenderList[index]
                                                     .date
                                                     .toString()))
                                             ? selected == index
-                                                ? AppColors.pc
-                                                : CalenderCubit.get(context)
+                                                ? AppColors.primary
+                                                : CalenderCubit(instance())
                                                         .calenderList[index]
                                                         .periods!
                                                         .isEmpty
                                                     ? null
-                                                    : CalenderCubit.get(context)
+                                                    : CalenderCubit(instance())
                                                                 .calenderList[
                                                                     index]
                                                                 .areas!
@@ -361,19 +365,18 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                                             : null
                                                         : null
                                             : AppColors.shade.withOpacity(0.4),
-                                        day: CalenderCubit.get(context)
+                                        day: CalenderCubit(instance())
                                             .calenderList[index]
                                             .day
                                             .toString(),
                                       ),
                                     );
                             },
-                            itemCount:
-                                CalenderCubit.get(context).calenderList.isEmpty
-                                    ? 0
-                                    : CalenderCubit.get(context)
-                                        .calenderList
-                                        .length,
+                            itemCount: CalenderCubit(instance())
+                                    .calenderList
+                                    .isEmpty
+                                ? 0
+                                : CalenderCubit(instance()).calenderList.length,
                           ),
                         ),
                         DefaultText(
@@ -396,7 +399,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                           height: 5.h,
                           child: BlocBuilder<GlobalCubit, GlobalState>(
                             builder: (context, state) {
-                              if (GlobalCubit.get(context)
+                              if (GlobalCubit(instance())
                                       .periodResponse
                                       ?.periods ==
                                   null) {
@@ -405,16 +408,17 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                               return Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 5.w),
                                 child: DefaultDropdown<PeriodModel>(
-                                  hint: "${translate(AppStrings.chooseTime)}             ",
+                                  hint:
+                                      "${translate(AppStrings.chooseTime)}             ",
                                   showSearchBox: true,
                                   itemAsString: (PeriodModel? u) =>
                                       "${u?.from} - ${u?.to}",
                                   items: shipping.isEmpty
-                                      ? GlobalCubit.get(context)
+                                      ? GlobalCubit(instance())
                                           .periodResponse!
                                           .periods!
                                       : discountPeriods.isEmpty
-                                          ? GlobalCubit.get(context)
+                                          ? GlobalCubit(instance())
                                               .periodResponse!
                                               .periods!
                                           : discountPeriods,
@@ -483,7 +487,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
             Divider(
               endIndent: 10.w,
               indent: 10.w,
-              color: AppColors.pc,
+              color: AppColors.primary,
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.w),
@@ -516,7 +520,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                   DefaultToast.showMyToast(translate(AppStrings.selectTime));
                 } else {
                   IndicatorView.showIndicator(context);
-                  OrderCubit.get(context).createOrder(
+                  OrderCubit(instance()).createOrder(
                     orderRequest: OrderRequest(
                       total: ((double.parse(
                                   widget.appRouterArgument.total.toString())) +
@@ -547,14 +551,13 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                       cart: cart,
                     ),
                     afterSuccess: () {
-                      Navigator.pushReplacementNamed(
-                        context,
+                      NavigationService.pushReplacementNamed(
                         AppRouterNames.success,
                         arguments: AppRouterArgument(
                           type: "order",
                         ),
                       );
-                      NotificationCubit.get(context).saveNotification(
+                      NotificationCubit(instance()).saveNotification(
                         title: "الطلبات",
                         message: "تم إنشاء طلبك بنجاح و بإنتظار التأكيد",
                         afterSuccess: () {

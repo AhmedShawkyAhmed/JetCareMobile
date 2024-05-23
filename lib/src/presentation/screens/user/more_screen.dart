@@ -3,23 +3,25 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/business_logic/app_cubit/app_cubit.dart';
 import 'package:jetcare/src/business_logic/auth_cubit/auth_cubit.dart';
 import 'package:jetcare/src/business_logic/global_cubit/global_cubit.dart';
-import 'package:jetcare/src/constants/app_strings.dart';
-import 'package:jetcare/src/constants/constants_variables.dart';
-import 'package:jetcare/src/constants/shared_preference_keys.dart';
-import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_strings.dart';
+import 'package:jetcare/src/core/constants/constants_variables.dart';
+import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
+import 'package:jetcare/src/core/di/service_locator.dart';
+import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
+import 'package:jetcare/src/core/services/cache_service.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
 import 'package:jetcare/src/data/models/account_model.dart';
-import 'package:jetcare/src/presentation/router/app_router_argument.dart';
-import 'package:jetcare/src/presentation/router/app_router_names.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/language_alert.dart';
 import 'package:jetcare/src/presentation/views/more_item.dart';
-import 'package:jetcare/src/presentation/widgets/default_app_button.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
 class MoreScreen extends StatelessWidget {
-  const MoreScreen({Key? key}) : super(key: key);
+  const MoreScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -56,8 +58,8 @@ class MoreScreen extends StatelessWidget {
                 title: translate(AppStrings.account),
                 icon: Icons.person,
                 onTap: () {
-                  Navigator.pushNamed(
-                    context,
+                  NavigationService.pushNamed(
+
                     AppRouterNames.profile,
                     arguments: AppRouterArgument(
                       type: "profile",
@@ -70,7 +72,7 @@ class MoreScreen extends StatelessWidget {
                 title: translate(AppStrings.addresses),
                 icon: Icons.home_work,
                 onTap: () {
-                  Navigator.pushNamed(context, AppRouterNames.address);
+                  NavigationService.pushNamed(AppRouterNames.address);
                 },
               ),
             // MoreItem(
@@ -87,7 +89,7 @@ class MoreScreen extends StatelessWidget {
               title: translate(AppStrings.contactUs),
               icon: Icons.support,
               onTap: () {
-                Navigator.pushNamed(context, AppRouterNames.contact);
+                NavigationService.pushNamed( AppRouterNames.contact);
               },
             ),
             MoreItem(
@@ -107,11 +109,11 @@ class MoreScreen extends StatelessWidget {
               title: translate(AppStrings.terms),
               icon: Icons.note_alt_rounded,
               onTap: () {
-                Navigator.pushNamed(
-                  context,
+                NavigationService.pushNamed(
+
                   AppRouterNames.info,
                   arguments: AppRouterArgument(
-                    infoModel: GlobalCubit.get(context).infoResponse!.terms,
+                    infoModel: GlobalCubit(instance()).infoResponse!.terms,
                   ),
                 );
               },
@@ -120,11 +122,11 @@ class MoreScreen extends StatelessWidget {
               title: translate(AppStrings.about),
               icon: Icons.info,
               onTap: () {
-                Navigator.pushNamed(
-                  context,
+                NavigationService.pushNamed(
+
                   AppRouterNames.info,
                   arguments: AppRouterArgument(
-                    infoModel: GlobalCubit.get(context).infoResponse!.about,
+                    infoModel: GlobalCubit(instance()).infoResponse!.about,
                   ),
                 );
               },
@@ -133,13 +135,13 @@ class MoreScreen extends StatelessWidget {
               title: translate(AppStrings.logout),
               icon: Icons.logout_outlined,
               onTap: () {
-                CacheHelper.clearData();
+                CacheService.clear();
                 globalAccountModel = AccountModel();
-                AppCubit.get(context).currentIndex = 0;
-                CacheHelper.saveDataSharedPreference(
-                    key: SharedPreferenceKeys.language, value: "ar");
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
+                AppCubit().currentIndex = 0;
+                CacheService.add(
+                    key: CacheKeys.language, value: "ar");
+                NavigationService.pushNamedAndRemoveUntil(
+
                   AppRouterNames.login,
                   (route) => false,
                 );
@@ -181,12 +183,12 @@ class MoreScreen extends StatelessWidget {
                           fontSize: 13.sp,
                           textColor: AppColors.darkRed,
                           onTap: () {
-                            AuthCubit.get(context).deleteAccount(
+                            AuthCubit(instance()).deleteAccount(
                               userId: globalAccountModel.id.toString(),
                               afterSuccess: () {
-                                CacheHelper.clearData();
-                                Navigator.pushNamedAndRemoveUntil(
-                                  context,
+                                CacheService.clear();
+                                NavigationService.pushNamedAndRemoveUntil(
+
                                   AppRouterNames.login,
                                   (route) => false,
                                 );
@@ -199,7 +201,7 @@ class MoreScreen extends StatelessWidget {
                           align: TextAlign.center,
                           fontSize: 13.sp,
                           onTap: () {
-                            Navigator.pop(context);
+                            NavigationService.pop();
                           },
                         ),
                       ],

@@ -2,22 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/business_logic/cart_cubit/cart_cubit.dart';
-import 'package:jetcare/src/constants/app_strings.dart';
-import 'package:jetcare/src/constants/constants_variables.dart';
-import 'package:jetcare/src/constants/shared_preference_keys.dart';
-import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
-import 'package:jetcare/src/presentation/router/app_router_argument.dart';
-import 'package:jetcare/src/presentation/router/app_router_names.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_strings.dart';
+import 'package:jetcare/src/core/constants/constants_variables.dart';
+import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
+import 'package:jetcare/src/core/di/service_locator.dart';
+import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
+import 'package:jetcare/src/core/services/cache_service.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/cart_item.dart';
 import 'package:jetcare/src/presentation/views/indicator_view.dart';
-import 'package:jetcare/src/presentation/widgets/default_app_button.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
 class CartScreen extends StatefulWidget {
-  const CartScreen({Key? key}) : super(key: key);
+  const CartScreen({super.key});
 
   @override
   State<CartScreen> createState() => _CartScreenState();
@@ -27,7 +29,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => CartCubit()
+      create: (context) => CartCubit(instance())
         ..getMyCart(userId: globalAccountModel.id!, afterSuccess: () {}),
       child: Scaffold(
         backgroundColor: AppColors.mainColor,
@@ -37,7 +39,7 @@ class _CartScreenState extends State<CartScreen> {
             padding: EdgeInsets.only(top: 4.h),
             child: BlocBuilder<CartCubit, CartState>(
               builder: (context, state) {
-                if (CartCubit.get(context).cartResponse?.total == null) {
+                if (CartCubit(instance()).cartResponse?.total == null) {
                   return SizedBox(
                     width: 25.w,
                     height: 25.w,
@@ -46,7 +48,7 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   );
                 }
-                return CartCubit.get(context).cartResponse!.status != 200
+                return CartCubit(instance()).cartResponse!.status != 200
                     ? const Center(
                         child: DefaultText(
                           text: "لا يوجد عناصر",
@@ -64,7 +66,7 @@ class _CartScreenState extends State<CartScreen> {
                                 const Spacer(),
                                 DefaultText(
                                   text:
-                                      " ${CartCubit.get(context).cartResponse?.total.toString() ?? 0} ${translate(AppStrings.currency)}",
+                                      " ${CartCubit(instance()).cartResponse?.total.toString() ?? 0} ${translate(AppStrings.currency)}",
                                 ),
                               ],
                             ),
@@ -73,16 +75,16 @@ class _CartScreenState extends State<CartScreen> {
                             title: translate(AppStrings.con),
                             fontSize: 14.sp,
                             onTap: () {
-                              Navigator.pushNamed(
-                                  context, AppRouterNames.appointment,arguments: AppRouterArgument(total: CartCubit.get(context).cartResponse?.total.toString()));
+                              NavigationService.pushNamed(
+                                  AppRouterNames.appointment,arguments: AppRouterArgument(total: CartCubit(instance()).cartResponse?.total.toString()));
                             },
-                            textColor: AppColors.pc,
+                            textColor: AppColors.primary,
                             buttonColor: AppColors.white,
                           ),
                           ListView.builder(
                             physics: const ScrollPhysics(),
                             shrinkWrap: true,
-                            itemCount: CartCubit.get(context)
+                            itemCount: CartCubit(instance())
                                     .cartResponse
                                     ?.cart
                                     ?.length ??
@@ -90,90 +92,90 @@ class _CartScreenState extends State<CartScreen> {
                             itemBuilder: (context, index) {
                               return CartItem(
                                 withDelete: true,
-                                image: CartCubit.get(context)
+                                image: CartCubit(instance())
                                             .cartResponse!
                                             .cart![index]
                                             .package ==
                                         null
-                                    ? CartCubit.get(context)
+                                    ? CartCubit(instance())
                                             .cartResponse!
                                             .cart![index]
                                             .item
                                             ?.image ??
                                         "1674441185.jpg"
-                                    : CartCubit.get(context)
+                                    : CartCubit(instance())
                                         .cartResponse!
                                         .cart![index]
                                         .package!
                                         .image!,
-                                name: CartCubit.get(context)
+                                name: CartCubit(instance())
                                             .cartResponse!
                                             .cart![index]
                                             .package ==
                                         null
-                                    ? CacheHelper.getDataFromSharedPreference(
-                                    key: SharedPreferenceKeys.language) ==
+                                    ? CacheService.get(
+                                    key: CacheKeys.language) ==
                                     "ar"
-                                    ? CartCubit.get(context)
+                                    ? CartCubit(instance())
                                             .cartResponse!
                                             .cart![index]
                                             .item
                                             ?.nameAr ??
-                                        "" :CartCubit.get(context)
+                                        "" :CartCubit(instance())
                                     .cartResponse!
                                     .cart![index]
                                     .item
                                     ?.nameEn ??
                                     ""
-                                    : CacheHelper.getDataFromSharedPreference(
-                                    key: SharedPreferenceKeys.language) ==
+                                    : CacheService.get(
+                                    key: CacheKeys.language) ==
                                     "ar"
-                                    ? CartCubit.get(context)
+                                    ? CartCubit(instance())
                                     .cartResponse!
                                     .cart![index]
                                     .package!
-                                    .nameAr!:CartCubit.get(context)
+                                    .nameAr!:CartCubit(instance())
                                         .cartResponse!
                                         .cart![index]
                                         .package!
                                         .nameEn!,
-                                count: CartCubit.get(context)
+                                count: CartCubit(instance())
                                     .cartResponse!
                                     .cart![index]
                                     .count
                                     .toString(),
-                                price: CartCubit.get(context)
+                                price: CartCubit(instance())
                                     .cartResponse!
                                     .cart![index]
                                     .price
                                     .toString(),
                                 onDelete: () {
                                   IndicatorView.showIndicator(context);
-                                  CartCubit.get(context).deleteFromCart(
-                                    id: CartCubit.get(context)
+                                  CartCubit(instance()).deleteFromCart(
+                                    id: CartCubit(instance())
                                         .cartResponse!
                                         .cart![index]
                                         .id,
                                     afterSuccess: () {
                                       setState(() {
-                                        CartCubit.get(context)
+                                        CartCubit(instance())
                                             .cartResponse!
-                                            .total = (CartCubit.get(context)
+                                            .total = (CartCubit(instance())
                                                 .cartResponse!
                                                 .total!
                                                 .toInt() -
-                                            CartCubit.get(context)
+                                            CartCubit(instance())
                                                 .cartResponse!
                                                 .cart![index]
                                                 .price
                                                 .toInt());
                                         cart.removeAt(index);
                                       });
-                                      CartCubit.get(context)
+                                      CartCubit(instance())
                                           .cartResponse!
                                           .cart!
                                           .removeAt(index);
-                                      Navigator.pop(context);
+                                      NavigationService.pop();
                                     },
                                   );
                                 },

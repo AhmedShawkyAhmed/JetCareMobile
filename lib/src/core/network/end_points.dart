@@ -1,7 +1,9 @@
+import 'package:jetcare/src/core/utils/enums.dart';
+
 class EndPoints {
+  static const Environment environment = Environment.development;
   static const baseUrl = "https://api.jetcareeg.net/api/";
-  static const imageDomain =
-      "https://api.jetcareeg.net/public/images/";
+  static const imageDomain = "https://api.jetcareeg.net/public/images/";
   static const login = "appLogin";
   static const mail = "mail";
   static const register = "register";

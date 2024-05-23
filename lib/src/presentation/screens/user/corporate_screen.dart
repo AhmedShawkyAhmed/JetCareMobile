@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/business_logic/order_cubit/order_cubit.dart';
-import 'package:jetcare/src/constants/app_strings.dart';
-import 'package:jetcare/src/constants/constants_variables.dart';
-import 'package:jetcare/src/constants/shared_preference_keys.dart';
-import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_strings.dart';
+import 'package:jetcare/src/core/constants/constants_variables.dart';
+import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
+import 'package:jetcare/src/core/di/service_locator.dart';
+import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
+import 'package:jetcare/src/core/services/cache_service.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text_field.dart';
+import 'package:jetcare/src/core/shared/widgets/toast.dart';
 import 'package:jetcare/src/data/network/requests/corporate_request.dart';
-import 'package:jetcare/src/presentation/router/app_router_argument.dart';
-import 'package:jetcare/src/presentation/router/app_router_names.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/card_view.dart';
-import 'package:jetcare/src/presentation/widgets/default_app_button.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
-import 'package:jetcare/src/presentation/widgets/default_text_field.dart';
-import 'package:jetcare/src/presentation/widgets/toast.dart';
 import 'package:sizer/sizer.dart';
 
 class CorporateScreen extends StatelessWidget {
@@ -22,8 +24,8 @@ class CorporateScreen extends StatelessWidget {
 
   CorporateScreen({
     required this.appRouterArgument,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -38,10 +40,10 @@ class CorporateScreen extends StatelessWidget {
         widget: ListView(
           children: [
             Padding(
-              padding: EdgeInsets.only(left: 5.w,right: 5.w,top: 5.h),
+              padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 5.h),
               child: CardView(
-                title: CacheHelper.getDataFromSharedPreference(
-                            key: SharedPreferenceKeys.language) ==
+                title: CacheService.get(
+                            key: CacheKeys.language) ==
                         "ar"
                     ? appRouterArgument.itemModel!.nameAr
                     : appRouterArgument.itemModel!.nameEn,
@@ -49,7 +51,7 @@ class CorporateScreen extends StatelessWidget {
                 height: 19.h,
                 mainHeight: 25.h,
                 titleFont: 15.sp,
-                colorMain: AppColors.pc.withOpacity(0.8),
+                colorMain: AppColors.primary.withOpacity(0.8),
                 colorSub: AppColors.shade.withOpacity(0.4),
                 onTap: () {},
               ),
@@ -72,8 +74,8 @@ class CorporateScreen extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5.w),
                 child: DefaultText(
-                  text: CacheHelper.getDataFromSharedPreference(
-                              key: SharedPreferenceKeys.language) ==
+                  text: CacheService.get(
+                              key: CacheKeys.language) ==
                           "ar"
                       ? appRouterArgument.itemModel!.descriptionAr.toString()
                       : appRouterArgument.itemModel!.descriptionEn.toString(),
@@ -117,7 +119,7 @@ class CorporateScreen extends StatelessWidget {
                     DefaultToast.showMyToast(
                         translate(AppStrings.enterMessage));
                   } else {
-                    OrderCubit.get(context).corporateOrder(
+                    OrderCubit(instance()).corporateOrder(
                       corporateRequest: CorporateRequest(
                         userId: globalAccountModel.id!,
                         itemId: appRouterArgument.itemModel!.id!,
@@ -127,8 +129,7 @@ class CorporateScreen extends StatelessWidget {
                         message: messageController.text,
                       ),
                       afterSuccess: () {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
+                        NavigationService.pushNamedAndRemoveUntil(
                           AppRouterNames.success,
                           arguments: AppRouterArgument(
                             type: "order",

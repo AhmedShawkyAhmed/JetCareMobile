@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jetcare/src/constants/end_points.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
+import 'package:jetcare/src/core/network/end_points.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
 class CardView extends StatefulWidget {
@@ -20,8 +20,9 @@ class CardView extends StatefulWidget {
     this.statusColor,
     this.mainHeight,
     this.status = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
+
   final double? width, height, mainHeight;
   final double? titleFont, contentFont;
   final Color? colorMain, colorSub, textColor, statusColor;

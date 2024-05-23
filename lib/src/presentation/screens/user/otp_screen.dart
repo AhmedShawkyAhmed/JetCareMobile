@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/business_logic/auth_cubit/auth_cubit.dart';
-import 'package:jetcare/src/constants/app_strings.dart';
-import 'package:jetcare/src/constants/constants_methods.dart';
-import 'package:jetcare/src/constants/constants_variables.dart';
-import 'package:jetcare/src/presentation/router/app_router_argument.dart';
-import 'package:jetcare/src/presentation/router/app_router_names.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_strings.dart';
+import 'package:jetcare/src/core/constants/constants_variables.dart';
+import 'package:jetcare/src/core/di/service_locator.dart';
+import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
+import 'package:jetcare/src/core/shared/widgets/toast.dart';
+import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/indicator_view.dart';
-import 'package:jetcare/src/presentation/widgets/default_app_button.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
-import 'package:jetcare/src/presentation/widgets/toast.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:sizer/sizer.dart';
 
@@ -20,8 +22,8 @@ class OTPScreen extends StatelessWidget {
 
   const OTPScreen({
     required this.appRouterArgument,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -61,9 +63,9 @@ class OTPScreen extends StatelessWidget {
                   shape: PinCodeFieldShape.circle,
                   fieldHeight: 13.w,
                   fieldWidth: 13.w,
-                  activeColor: AppColors.pc,
-                  selectedColor: AppColors.pc,
-                  selectedFillColor: AppColors.pc,
+                  activeColor: AppColors.primary,
+                  selectedColor: AppColors.primary,
+                  selectedFillColor: AppColors.primary,
                   inactiveColor: AppColors.lightGrey,
                   errorBorderColor: AppColors.red,
                   inactiveFillColor: AppColors.lightGrey,
@@ -86,20 +88,19 @@ class OTPScreen extends StatelessWidget {
             DefaultText(
               text: translate(AppStrings.resend),
               fontSize: 13.sp,
-              textColor: AppColors.pc2,
+              textColor: AppColors.primaryLight,
               onTap: () {
-                // TODO: resend code
                 IndicatorView.showIndicator(context);
-                AuthCubit.get(context).sendEmail(
+                AuthCubit(instance()).sendEmail(
                   email: appRouterArgument.phone.toString(),
                   success: () {
-                    Navigator.pop(context);
+                    NavigationService.pop();
                     DefaultToast.showMyToast(
                       "تم إرسال كود التحقق",
                     );
                   },
                   failed: () {
-                    Navigator.pop(context);
+                    NavigationService.pop();
                     DefaultToast.showMyToast(
                       translate(AppStrings.error),
                     );
@@ -113,13 +114,12 @@ class OTPScreen extends StatelessWidget {
             DefaultAppButton(
               title: translate(AppStrings.verify),
               onTap: () async {
-                // TODO: verify
                 if (verifyCodeController.text != "") {
                   if (verifyCodeController.text == verifyCode.toString()) {
                     IndicatorView.showIndicator(context);
                     if (appRouterArgument.type == "resetPassword") {
-                      Navigator.pushNamed(
-                        context,
+                      NavigationService.pushNamed(
+
                         AppRouterNames.resetPassword,
                         arguments: AppRouterArgument(
                           phone: appRouterArgument.phone.toString(),
@@ -127,8 +127,8 @@ class OTPScreen extends StatelessWidget {
                         ),
                       );
                     } else {
-                      Navigator.pushNamed(
-                        context,
+                      NavigationService.pushNamed(
+
                         AppRouterNames.profile,
                         arguments: AppRouterArgument(
                           type: "register",

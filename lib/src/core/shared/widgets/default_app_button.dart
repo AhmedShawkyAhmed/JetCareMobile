@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:sizer/sizer.dart';
 
 class DefaultAppButton extends StatelessWidget {
@@ -47,8 +47,8 @@ class DefaultAppButton extends StatelessWidget {
     this.marginVertical,
     this.isGradient = false,
     this.haveShadow = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -65,12 +65,12 @@ class DefaultAppButton extends StatelessWidget {
               ? LinearGradient(
                   begin: begin ?? Alignment.centerLeft,
                   end: end ?? Alignment.centerRight,
-                  colors: gradientColors ?? [AppColors.pc2, AppColors.pc1],
+                  colors: gradientColors ?? [AppColors.primaryLight, AppColors.primaryDark],
                 )
               : LinearGradient(
                   colors: [
-                    buttonColor ?? AppColors.pc2,
-                    buttonColor ?? AppColors.pc1,
+                    buttonColor ?? AppColors.primaryLight,
+                    buttonColor ?? AppColors.primaryDark,
                   ],
                 ),
           boxShadow: [
@@ -85,7 +85,7 @@ class DefaultAppButton extends StatelessWidget {
                 : const BoxShadow(),
           ],
           borderRadius: BorderRadius.circular(radius ?? 12),
-          color: buttonColor ?? AppColors.pc,
+          color: buttonColor ?? AppColors.primary,
         ),
         child: Center(
           child: Text(

@@ -21,7 +21,7 @@ void printError(Object? object) {
   }
 }
 
-void printInfo(Object? object) {
+void printLog(Object? object) {
   String text = "$object";
   if (kDebugMode) {
     print('\x1B[34m$text\x1B[0m');

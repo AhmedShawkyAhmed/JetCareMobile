@@ -1,20 +1,22 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:jetcare/src/constants/app_strings.dart';
-import 'package:jetcare/src/constants/constants_methods.dart';
-import 'package:jetcare/src/constants/constants_variables.dart';
-import 'package:jetcare/src/constants/shared_preference_keys.dart';
-import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
-import 'package:jetcare/src/presentation/widgets/default_app_button.dart';
-import 'package:jetcare/src/presentation/widgets/toast.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_strings.dart';
+import 'package:jetcare/src/core/constants/constants_variables.dart';
+import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
+import 'package:jetcare/src/core/services/cache_service.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/core/shared/widgets/toast.dart';
+import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:sizer/sizer.dart';
 
 class MapScreen extends StatefulWidget {
-  const MapScreen({Key? key}) : super(key: key);
+  const MapScreen({super.key});
 
   @override
   State<MapScreen> createState() => _MapScreenState();
@@ -95,8 +97,8 @@ class _MapScreenState extends State<MapScreen> {
             },
           ),
           Align(
-            alignment: CacheHelper.getDataFromSharedPreference(
-                        key: SharedPreferenceKeys.language) ==
+            alignment: CacheService.get(
+                        key: CacheKeys.language) ==
                     "ar"
                 ? Alignment.topRight
                 : Alignment.topLeft,
@@ -107,7 +109,7 @@ class _MapScreenState extends State<MapScreen> {
               ),
               child: InkWell(
                 onTap: () {
-                  Navigator.pop(context);
+                  NavigationService.pop();
                 },
                 child: Container(
                   width: 10.w,
@@ -116,7 +118,7 @@ class _MapScreenState extends State<MapScreen> {
                     horizontal: 3.w,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.pc,
+                    color: AppColors.primary,
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Icon(
@@ -138,7 +140,7 @@ class _MapScreenState extends State<MapScreen> {
                   width: 13.w,
                   height: 13.w,
                   decoration: BoxDecoration(
-                    color: AppColors.pc,
+                    color: AppColors.primary,
                     borderRadius: BorderRadius.circular(100),
                   ),
                   child: Icon(
@@ -159,7 +161,7 @@ class _MapScreenState extends State<MapScreen> {
                   DefaultToast.showMyToast(
                       translate(AppStrings.selectLocation));
                 } else {
-                  Navigator.pop(context);
+                  NavigationService.pop();
                 }
               },
             ),

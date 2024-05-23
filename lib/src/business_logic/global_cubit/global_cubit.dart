@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jetcare/src/constants/constants_methods.dart';
-import 'package:jetcare/src/constants/end_points.dart';
-import 'package:jetcare/src/constants/shared_preference_keys.dart';
-import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
-import 'package:jetcare/src/data/data_provider/remote/dio_helper.dart';
+import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
+import 'package:jetcare/src/core/network/api_consumer.dart';
+import 'package:jetcare/src/core/network/end_points.dart';
+import 'package:jetcare/src/core/services/cache_service.dart';
+import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/data/network/requests/support_request.dart';
 import 'package:jetcare/src/data/network/responses/area_response.dart';
 import 'package:jetcare/src/data/network/responses/global_response.dart';
@@ -20,9 +20,8 @@ import 'package:url_launcher/url_launcher.dart';
 part 'global_state.dart';
 
 class GlobalCubit extends Cubit<GlobalState> {
-  GlobalCubit() : super(GlobalInitial());
-
-  static GlobalCubit get(context) => BlocProvider.of(context);
+  GlobalCubit(this.networkService) : super(GlobalInitial());
+  ApiConsumer networkService;
 
   HomeResponse? homeResponse;
   InfoResponse? infoResponse;
@@ -37,12 +36,12 @@ class GlobalCubit extends Cubit<GlobalState> {
       final result = await InternetAddress.lookup('example.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         printSuccess('Internet Connected');
-        CacheHelper.saveDataSharedPreference(
-            key: SharedPreferenceKeys.isConnected, value: true);
+        CacheService.add(
+            key: CacheKeys.isConnected, value: true);
       }
     } on SocketException catch (_) {
-      CacheHelper.saveDataSharedPreference(
-          key: SharedPreferenceKeys.isConnected, value: false);
+      CacheService.add(
+          key: CacheKeys.isConnected, value: false);
       printError('Internet Disconnected');
     }
   }
@@ -55,14 +54,14 @@ class GlobalCubit extends Cubit<GlobalState> {
   Future getHome() async {
     try {
       emit(HomeLoadingState());
-      await DioHelper.getData(
+      await networkService.get(
         url: EndPoints.getHome,
       ).then((value) {
         homeResponse = HomeResponse.fromJson(value.data);
         printSuccess("Home Response ${homeResponse!.status.toString()}");
         emit(HomeSuccessState());
       });
-    } on DioError catch (n) {
+    } on DioException catch (n) {
       emit(HomeErrorState());
       printError(n.toString());
     } catch (e) {
@@ -74,14 +73,14 @@ class GlobalCubit extends Cubit<GlobalState> {
   Future getInfo() async {
     try {
       emit(InfoLoadingState());
-      await DioHelper.getData(
+      await networkService.get(
         url: EndPoints.getAppInfo,
       ).then((value) {
         infoResponse = InfoResponse.fromJson(value.data);
         printSuccess("Info Response ${infoResponse!.status.toString()}");
         emit(InfoSuccessState());
       });
-    } on DioError catch (n) {
+    } on DioException catch (n) {
       emit(InfoErrorState());
       printError(n.toString());
     } catch (e) {
@@ -93,14 +92,14 @@ class GlobalCubit extends Cubit<GlobalState> {
   Future getArea() async {
     try {
       emit(AreaLoadingState());
-      await DioHelper.getData(
+      await networkService.get(
         url: EndPoints.getAreas,
       ).then((value) {
         areaResponse = AreaResponse.fromJson(value.data);
         printSuccess("Area Response ${areaResponse!.status.toString()}");
         emit(AreaSuccessState());
       });
-    } on DioError catch (n) {
+    } on DioException catch (n) {
       emit(AreaErrorState());
       printError(n.toString());
     } catch (e) {
@@ -112,14 +111,14 @@ class GlobalCubit extends Cubit<GlobalState> {
   Future getPeriods() async {
     try {
       emit(PeriodLoadingState());
-      await DioHelper.getData(
+      await networkService.get(
         url: EndPoints.getPeriods,
       ).then((value) {
         periodResponse = PeriodResponse.fromJson(value.data);
         printSuccess("Period Response ${periodResponse!.status.toString()}");
         emit(PeriodSuccessState());
       });
-    } on DioError catch (n) {
+    } on DioException catch (n) {
       emit(PeriodErrorState());
       printError(n.toString());
     } catch (e) {
@@ -131,14 +130,14 @@ class GlobalCubit extends Cubit<GlobalState> {
   Future getSpaces({required int packageId}) async {
     try {
       emit(SpaceLoadingState());
-      await DioHelper.getData(url: EndPoints.getSpaces, query: {
+      await networkService.get(url: EndPoints.getSpaces, query: {
         "packageId": packageId,
       }).then((value) {
         spaceResponse = SpaceResponse.fromJson(value.data);
         printSuccess("Space Response ${spaceResponse!.status.toString()}");
         emit(SpaceSuccessState());
       });
-    } on DioError catch (n) {
+    } on DioException catch (n) {
       emit(SpaceErrorState());
       printError(n.toString());
     } catch (e) {
@@ -153,7 +152,7 @@ class GlobalCubit extends Cubit<GlobalState> {
   }) async {
     try {
       emit(SupportLoadingState());
-      await DioHelper.postData(url: EndPoints.addSupport, body: {
+      await networkService.post(url: EndPoints.addSupport, body: {
         'name': supportRequest.name,
         'contact': supportRequest.contact,
         'message': supportRequest.message,
@@ -164,7 +163,7 @@ class GlobalCubit extends Cubit<GlobalState> {
         emit(SupportSuccessState());
         afterSuccess();
       });
-    } on DioError catch (n) {
+    } on DioException catch (n) {
       emit(SupportErrorState());
       printError(n.toString());
     } catch (e) {

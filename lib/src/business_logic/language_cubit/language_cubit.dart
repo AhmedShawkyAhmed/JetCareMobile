@@ -1,19 +1,17 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jetcare/main.dart';
-import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
+import 'package:jetcare/src/core/services/cache_service.dart';
 
 part 'language_state.dart';
 
 class LanguageCubit extends Cubit<LanguageState> {
   LanguageCubit() : super(LanguageInitial());
 
-  static LanguageCubit get(context) => BlocProvider.of(context);
-
   void toArabic({
     VoidCallback? afterSuccess,
   }) {
-    CacheHelper.saveDataSharedPreference(key: 'language', value: "ar");
+    CacheService.add(key: 'language', value: "ar");
     delegate.changeLocale(const Locale("ar"));
     emit(LanguageChangeState());
     afterSuccess!();
@@ -22,7 +20,7 @@ class LanguageCubit extends Cubit<LanguageState> {
   void toEnglish({
     VoidCallback? afterSuccess,
   }) {
-    CacheHelper.saveDataSharedPreference(key: 'language', value: "en");
+    CacheService.add(key: 'language', value: "en");
     delegate.changeLocale(const Locale("en"));
     emit(LanguageChangeState());
     afterSuccess!();

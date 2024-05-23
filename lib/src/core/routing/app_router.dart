@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:jetcare/src/constants/constants_methods.dart';
-import 'package:jetcare/src/presentation/router/app_animation.dart';
-import 'package:jetcare/src/presentation/router/app_router_argument.dart';
-import 'package:jetcare/src/presentation/router/app_router_names.dart';
+import 'package:jetcare/src/core/routing/app_animation.dart';
+import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
+import 'package:jetcare/src/presentation/screens/crew/crew_layout_screen.dart';
 import 'package:jetcare/src/presentation/screens/shared/disable_account_screen.dart';
 import 'package:jetcare/src/presentation/screens/shared/notification_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/add_address_screen.dart';
@@ -14,7 +14,6 @@ import 'package:jetcare/src/presentation/screens/user/category_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/confirm_order_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/contact_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/corporate_screen.dart';
-import 'package:jetcare/src/presentation/screens/crew/crew_layout_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/home_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/info_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/layout_screen.dart';
@@ -31,10 +30,15 @@ import 'package:jetcare/src/presentation/screens/user/success_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/verify_phone.dart';
 import 'package:jetcare/src/presentation/screens/user/welcome_screen.dart';
 
-class AppRouter {
+class AppRoutes {
   Route? onGenerateRoute(RouteSettings settings) {
-    printResponse(settings.name.toString());
-    switch (settings.name) {
+    AppRouterNames? navigatedRoute = AppRouterNames.values
+        .where((route) => route.path == settings.name)
+        .first;
+    if (settings.name == '/') {
+      navigatedRoute = AppRouterNames.splash;
+    }
+    switch (navigatedRoute) {
       case AppRouterNames.splash:
         return CustomPageRouteTransiton.fadeOut(
           page: const SplashScreen(),
@@ -181,10 +185,11 @@ class AppRouter {
         );
       case AppRouterNames.appointment:
         final AppRouterArgument appRouterArgument =
-        settings.arguments as AppRouterArgument;
+            settings.arguments as AppRouterArgument;
         return CustomPageRouteTransiton.fadeOut(
           page: AppointmentScreen(
-            appRouterArgument: appRouterArgument,),
+            appRouterArgument: appRouterArgument,
+          ),
         );
       default:
         return null;

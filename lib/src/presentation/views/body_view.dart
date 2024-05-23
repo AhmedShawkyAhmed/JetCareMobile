@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:sizer/sizer.dart';
 
 class BodyView extends StatelessWidget {
   const BodyView({
     required this.widget,
     this.hasBack = true,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
+
   final Widget widget;
   final bool hasBack;
 
@@ -30,7 +32,7 @@ class BodyView extends StatelessWidget {
               width: 32.w,
               height: 32.w,
               decoration: BoxDecoration(
-                color: AppColors.pc1.withOpacity(0.7),
+                color: AppColors.primaryDark.withOpacity(0.7),
                 borderRadius: const BorderRadius.only(
                   bottomRight: Radius.circular(100),
                 ),
@@ -43,7 +45,7 @@ class BodyView extends StatelessWidget {
               width: 25.w,
               height: 29.w,
               decoration: BoxDecoration(
-                color: AppColors.pc.withOpacity(0.7),
+                color: AppColors.primary.withOpacity(0.7),
                 borderRadius: const BorderRadius.only(
                   bottomRight: Radius.circular(100),
                 ),
@@ -56,7 +58,7 @@ class BodyView extends StatelessWidget {
               width: 18.w,
               height: 24.w,
               decoration: BoxDecoration(
-                color: AppColors.pc2.withOpacity(0.7),
+                color: AppColors.primaryLight.withOpacity(0.7),
                 borderRadius: const BorderRadius.only(
                   bottomRight: Radius.circular(100),
                 ),
@@ -69,7 +71,7 @@ class BodyView extends StatelessWidget {
               width: 32.w,
               height: 32.w,
               decoration: BoxDecoration(
-                color: AppColors.pc1.withOpacity(0.7),
+                color: AppColors.primaryDark.withOpacity(0.7),
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(100),
                 ),
@@ -82,7 +84,7 @@ class BodyView extends StatelessWidget {
               width: 26.w,
               height: 29.w,
               decoration: BoxDecoration(
-                color: AppColors.pc.withOpacity(0.7),
+                color: AppColors.primary.withOpacity(0.7),
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(100),
                 ),
@@ -95,7 +97,7 @@ class BodyView extends StatelessWidget {
               width: 19.w,
               height: 24.w,
               decoration: BoxDecoration(
-                color: AppColors.pc2.withOpacity(0.7),
+                color: AppColors.primaryLight.withOpacity(0.7),
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(100),
                 ),
@@ -121,7 +123,7 @@ class BodyView extends StatelessWidget {
                   ),
                   child: InkWell(
                     onTap: () {
-                      Navigator.pop(context);
+                      NavigationService.pop();
                     },
                     child: Container(
                       width: 10.w,
@@ -135,7 +137,7 @@ class BodyView extends StatelessWidget {
                       ),
                       child: Icon(
                         Icons.arrow_back_ios,
-                        color: AppColors.pc,
+                        color: AppColors.primary,
                         size: 20.sp,
                       ),
                     ),

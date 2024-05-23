@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
 class PackageItem extends StatelessWidget {
@@ -8,8 +8,8 @@ class PackageItem extends StatelessWidget {
 
   const PackageItem({
     required this.title,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class PackageItem extends StatelessWidget {
         children: [
           Icon(
             Icons.circle_rounded,
-            color: AppColors.pc,
+            color: AppColors.primary,
             size: 12.sp,
           ),
           SizedBox(width: 2.w),

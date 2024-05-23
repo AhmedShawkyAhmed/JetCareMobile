@@ -1,0 +1,31 @@
+enum AppRouterNames {
+  splash,
+  login,
+  otp,
+  home,
+  layout,
+  crewLayout,
+  welcome,
+  corporate,
+  orderDetails,
+  categoryDetails,
+  packageDetails,
+  serviceDetails,
+  info,
+  contact,
+  address,
+  addAddress,
+  map,
+  verify,
+  resetPassword,
+  success,
+  profile,
+  appointment,
+  disable,
+  confirmOrder,
+  notification,
+  cart,
+  addedToCart;
+
+  String get path => '/${name.toString()}';
+}

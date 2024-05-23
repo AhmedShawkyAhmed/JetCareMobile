@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/business_logic/global_cubit/global_cubit.dart';
-import 'package:jetcare/src/constants/app_strings.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_strings.dart';
+import 'package:jetcare/src/core/di/service_locator.dart';
+import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text_field.dart';
+import 'package:jetcare/src/core/shared/widgets/toast.dart';
 import 'package:jetcare/src/data/network/requests/support_request.dart';
-import 'package:jetcare/src/presentation/router/app_router_argument.dart';
-import 'package:jetcare/src/presentation/router/app_router_names.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
-import 'package:jetcare/src/presentation/widgets/default_app_button.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
-import 'package:jetcare/src/presentation/widgets/default_text_field.dart';
-import 'package:jetcare/src/presentation/widgets/toast.dart';
 import 'package:sizer/sizer.dart';
 
 class ContactScreen extends StatelessWidget {
-  ContactScreen({Key? key}) : super(key: key);
+  ContactScreen({super.key});
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController contactController = TextEditingController();
@@ -56,11 +58,11 @@ class ContactScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   DefaultText(
-                    text: "${translate(AppStrings.email)} : ${GlobalCubit.get(context).infoResponse!.contact!.contentAr}",
+                    text: "${translate(AppStrings.email)} : ${GlobalCubit(instance()).infoResponse!.contact!.contentAr}",
                     fontSize: 11.sp,
                   ),
                   DefaultText(
-                    text: "${translate(AppStrings.phone)} : ${GlobalCubit.get(context).infoResponse!.contact!.contentEn}",
+                    text: "${translate(AppStrings.phone)} : ${GlobalCubit(instance()).infoResponse!.contact!.contentEn}",
                     fontSize: 11.sp,
                   ),
                 ],
@@ -100,7 +102,7 @@ class ContactScreen extends StatelessWidget {
                     DefaultToast.showMyToast(
                         translate(AppStrings.enterMessage));
                   } else {
-                    GlobalCubit.get(context).support(
+                    GlobalCubit(instance()).support(
                       supportRequest: SupportRequest(
                         name: nameController.text,
                         contact: contactController.text,
@@ -108,8 +110,8 @@ class ContactScreen extends StatelessWidget {
                         message: messageController.text,
                       ),
                       afterSuccess: () {
-                        Navigator.pushReplacementNamed(
-                          context,
+                        NavigationService.pushReplacementNamed(
+
                           AppRouterNames.success,
                           arguments: AppRouterArgument(
                             type: "support",

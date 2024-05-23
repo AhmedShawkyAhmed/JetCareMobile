@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:simple_rich_text/simple_rich_text.dart';
 import 'package:sizer/sizer.dart';
 
@@ -26,8 +26,8 @@ class DefaultText extends StatelessWidget {
     this.onTap,
     this.align,
     this.letterSpacing = 0.0,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

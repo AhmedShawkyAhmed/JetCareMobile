@@ -3,20 +3,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jetcare/src/business_logic/address_cubit/address_cubit.dart';
-import 'package:jetcare/src/constants/app_strings.dart';
-import 'package:jetcare/src/constants/constants_variables.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_strings.dart';
+import 'package:jetcare/src/core/constants/constants_variables.dart';
+import 'package:jetcare/src/core/di/service_locator.dart';
+import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/core/shared/widgets/default_drop_down_menu.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text_field.dart';
+import 'package:jetcare/src/core/shared/widgets/toast.dart';
 import 'package:jetcare/src/data/models/area_model.dart';
 import 'package:jetcare/src/data/network/requests/address_request.dart';
-import 'package:jetcare/src/presentation/router/app_router_argument.dart';
-import 'package:jetcare/src/presentation/router/app_router_names.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/indicator_view.dart';
-import 'package:jetcare/src/presentation/widgets/default_app_button.dart';
-import 'package:jetcare/src/presentation/widgets/default_drop_down_menu.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
-import 'package:jetcare/src/presentation/widgets/default_text_field.dart';
-import 'package:jetcare/src/presentation/widgets/toast.dart';
 import 'package:sizer/sizer.dart';
 
 class AddAddressScreen extends StatefulWidget {
@@ -24,8 +26,8 @@ class AddAddressScreen extends StatefulWidget {
 
   const AddAddressScreen({
     required this.appRouterArguments,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<AddAddressScreen> createState() => _AddAddressScreenState();
@@ -81,10 +83,10 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
             ),
             BlocBuilder<AddressCubit, AddressState>(
               builder: (context, state) {
-                return AddressCubit.get(context).allStatesResponse == null || AddressCubit.get(context)
+                return AddressCubit(instance()).allStatesResponse == null || AddressCubit(instance())
                     .allStatesResponse!
                     .statesList == null ||
-                        AddressCubit.get(context)
+                        AddressCubit(instance())
                             .allStatesResponse!
                             .statesList!
                             .isEmpty
@@ -98,13 +100,13 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                           hint: translate(AppStrings.state),
                           showSearchBox: true,
                           itemAsString: (AreaModel? u) => u?.nameAr ?? "",
-                          items: AddressCubit.get(context)
+                          items: AddressCubit(instance())
                               .allStatesResponse!
                               .statesList!,
                           onChanged: (val) {
                             setState(() {
                               stateId = val!.id!;
-                              AddressCubit.get(context).getAllAreas(
+                              AddressCubit(instance()).getAllAreas(
                                   stateId: val.id == 0 ? 0 : val.id);
                             });
                           },
@@ -114,10 +116,10 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
             ),
             BlocBuilder<AddressCubit, AddressState>(
               builder: (context, state) {
-                return AddressCubit.get(context).getAreaResponse == null ||
-                        AddressCubit.get(context).getAreaResponse!.areas ==
+                return AddressCubit(instance()).getAreaResponse == null ||
+                        AddressCubit(instance()).getAreaResponse!.areas ==
                             null ||
-                        AddressCubit.get(context)
+                        AddressCubit(instance())
                             .getAreaResponse!
                             .areas!
                             .isEmpty
@@ -132,7 +134,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                           showSearchBox: true,
                           itemAsString: (AreaModel? u) => u?.nameAr ?? "",
                           items:
-                              AddressCubit.get(context).getAreaResponse!.areas!,
+                              AddressCubit(instance()).getAreaResponse!.areas!,
                           onChanged: (val) {
                             setState(() {
                               areaId = val!.id!;
@@ -160,13 +162,13 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.pushNamed(context, AppRouterNames.map);
+                      NavigationService.pushNamed(AppRouterNames.map);
                     },
                     child: Container(
                       width: 10.w,
                       height: 10.w,
                       decoration: BoxDecoration(
-                          color: AppColors.pc,
+                          color: AppColors.primary,
                           borderRadius: BorderRadius.circular(6)),
                       child: Icon(
                         Icons.location_on_rounded,
@@ -184,8 +186,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                     title: translate(AppStrings.save),
                     onTap: () {
                       IndicatorView.showIndicator(context);
-                      Navigator.pop(context);
-                      AddressCubit.get(context).updateAddress(
+                      NavigationService.pop();
+                      AddressCubit(instance()).updateAddress(
                         addressRequest: AddressRequest(
                           userId: widget.appRouterArguments.addressModel!.id!,
                           phone: phoneController.text,
@@ -196,10 +198,10 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                           longitude: addressLocation.longitude.toString(),
                         ),
                         afterSuccess: () {
-                          AddressCubit.get(context).getMyAddresses(
+                          AddressCubit(instance()).getMyAddresses(
                               afterSuccess: () {
-                            Navigator.pop(context);
-                            Navigator.pop(context);
+                            NavigationService.pop();
+                            NavigationService.pop();
                           });
                         },
                       );
@@ -222,8 +224,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                             translate(AppStrings.enterArea));
                       } else {
                         IndicatorView.showIndicator(context);
-                        Navigator.pop(context);
-                        AddressCubit.get(context).addAddress(
+                        NavigationService.pop();
+                        AddressCubit(instance()).addAddress(
                           addressRequest: AddressRequest(
                             userId: globalAccountModel.id!,
                             phone: phoneController.text,
@@ -234,10 +236,10 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                             longitude: addressLocation.longitude.toString(),
                           ),
                           afterSuccess: () {
-                            AddressCubit.get(context).getMyAddresses(
+                            AddressCubit(instance()).getMyAddresses(
                                 afterSuccess: () {
-                              Navigator.pop(context);
-                              Navigator.pop(context);
+                              NavigationService.pop();
+                              NavigationService.pop();
                             });
                           },
                         );

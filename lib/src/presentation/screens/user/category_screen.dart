@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/business_logic/details_cubit/details_cubit.dart';
-import 'package:jetcare/src/constants/app_strings.dart';
-import 'package:jetcare/src/constants/shared_preference_keys.dart';
-import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_strings.dart';
+import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
+import 'package:jetcare/src/core/di/service_locator.dart';
+import 'package:jetcare/src/core/services/cache_service.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/card_view.dart';
 import 'package:jetcare/src/presentation/views/home_view.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
 class CategoryScreen extends StatelessWidget {
   const CategoryScreen({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,35 +32,35 @@ class CategoryScreen extends StatelessWidget {
                 top: 5.h
               ),
               child: CardView(
-                title: CacheHelper.getDataFromSharedPreference(
-                            key: SharedPreferenceKeys.language) ==
+                title: CacheService.get(
+                            key: CacheKeys.language) ==
                         "ar"
-                    ? DetailsCubit.get(context)
+                    ? DetailsCubit(instance())
                         .categoryResponse!
                         .categoryModel!
                         .nameAr
-                    : DetailsCubit.get(context)
+                    : DetailsCubit(instance())
                         .categoryResponse!
                         .categoryModel!
                         .nameEn,
-                image: DetailsCubit.get(context)
+                image: DetailsCubit(instance())
                     .categoryResponse!
                     .categoryModel!
                     .image,
                 height: 19.h,
                 mainHeight: 25.h,
                 titleFont: 14.sp,
-                colorMain: AppColors.pc.withOpacity(0.8),
+                colorMain: AppColors.primary.withOpacity(0.8),
                 colorSub: AppColors.shade.withOpacity(0.4),
                 onTap: () {},
               ),
             ),
-            if (DetailsCubit.get(context)
+            if (DetailsCubit(instance())
                         .categoryResponse!
                         .categoryModel!
                         .descriptionAr !=
                     "" &&
-                DetailsCubit.get(context)
+                DetailsCubit(instance())
                         .categoryResponse!
                         .categoryModel!
                         .descriptionAr !=
@@ -68,15 +69,15 @@ class CategoryScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   DefaultText(
-                    text: CacheHelper.getDataFromSharedPreference(
-                                key: SharedPreferenceKeys.language) ==
+                    text: CacheService.get(
+                                key: CacheKeys.language) ==
                             "ar"
-                        ? DetailsCubit.get(context)
+                        ? DetailsCubit(instance())
                             .categoryResponse!
                             .categoryModel!
                             .descriptionAr
                             .toString()
-                        : DetailsCubit.get(context)
+                        : DetailsCubit(instance())
                             .categoryResponse!
                             .categoryModel!
                             .descriptionEn
@@ -89,12 +90,12 @@ class CategoryScreen extends StatelessWidget {
             HomeView(
               title: translate(AppStrings.package),
               type: "package",
-              visible: DetailsCubit.get(context)
+              visible: DetailsCubit(instance())
                   .categoryResponse!
                   .categoryModel!
                   .packages!
                   .isNotEmpty,
-              packageList: DetailsCubit.get(context)
+              packageList: DetailsCubit(instance())
                   .categoryResponse!
                   .categoryModel!
                   .packages,
@@ -105,12 +106,12 @@ class CategoryScreen extends StatelessWidget {
             HomeView(
               title: translate(AppStrings.items),
               type: "extra",
-              visible: DetailsCubit.get(context)
+              visible: DetailsCubit(instance())
                   .categoryResponse!
                   .categoryModel!
                   .items!
                   .isNotEmpty,
-              itemList: DetailsCubit.get(context)
+              itemList: DetailsCubit(instance())
                   .categoryResponse!
                   .categoryModel!
                   .items,

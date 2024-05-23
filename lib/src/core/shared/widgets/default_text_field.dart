@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:jetcare/src/constants/shared_preference_keys.dart';
-import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
+import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:sizer/sizer.dart';
 
 class DefaultTextField extends StatelessWidget {
@@ -53,8 +53,8 @@ class DefaultTextField extends StatelessWidget {
     this.marginVertical,
     this.direction,
     this.onChange,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -79,8 +79,8 @@ class DefaultTextField extends StatelessWidget {
         controller: controller,
         obscureText: password ?? false,
         obscuringCharacter: "*",
-        textDirection: CacheHelper.getDataFromSharedPreference(
-                    key: SharedPreferenceKeys.language) ==
+        textDirection: CacheService.get(
+                    key: CacheKeys.language) ==
                 "ar"
             ? TextDirection.rtl
             : TextDirection.ltr,
@@ -88,7 +88,7 @@ class DefaultTextField extends StatelessWidget {
           color: textColor ?? AppColors.darkGrey,
           fontSize: fontSize ?? 8.sp,
         ),
-        cursorColor: cursorColor ?? AppColors.pc,
+        cursorColor: cursorColor ?? AppColors.primary,
         maxLines: maxLine ?? 1,
         maxLength: maxLength,
         decoration: InputDecoration(
@@ -115,7 +115,7 @@ class DefaultTextField extends StatelessWidget {
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(radius ?? 10),
             borderSide: const BorderSide(
-              color: AppColors.pc,
+              color: AppColors.primary,
             ),
           ),
           prefixIcon: prefix,
@@ -127,8 +127,8 @@ class DefaultTextField extends StatelessWidget {
             fontSize: 8.sp,
           ),
           border: InputBorder.none,
-          hintTextDirection: CacheHelper.getDataFromSharedPreference(
-                      key: SharedPreferenceKeys.language) ==
+          hintTextDirection: CacheService.get(
+                      key: CacheKeys.language) ==
                   "ar"
               ? TextDirection.rtl
               : TextDirection.ltr,

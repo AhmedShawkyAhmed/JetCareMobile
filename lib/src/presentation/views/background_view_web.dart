@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:sizer/sizer.dart';
 
 class BackgroundViewWeb extends StatelessWidget {
-  const BackgroundViewWeb({required this.widget,Key? key}) : super(key: key);
+  const BackgroundViewWeb({required this.widget, super.key});
+
   final Widget widget;
 
   @override
@@ -23,7 +24,7 @@ class BackgroundViewWeb extends StatelessWidget {
             width: 100,
             height: 100,
             decoration: BoxDecoration(
-              color: AppColors.pc1.withOpacity(0.7),
+              color: AppColors.primaryDark.withOpacity(0.7),
               borderRadius: const BorderRadius.only(
                 bottomRight: Radius.circular(100),
               ),
@@ -36,7 +37,7 @@ class BackgroundViewWeb extends StatelessWidget {
             width: 80,
             height: 90,
             decoration: BoxDecoration(
-              color: AppColors.pc.withOpacity(0.7),
+              color: AppColors.primary.withOpacity(0.7),
               borderRadius: const BorderRadius.only(
                 bottomRight: Radius.circular(100),
               ),
@@ -49,7 +50,7 @@ class BackgroundViewWeb extends StatelessWidget {
             width: 70,
             height: 85,
             decoration: BoxDecoration(
-              color: AppColors.pc2.withOpacity(0.7),
+              color: AppColors.primaryLight.withOpacity(0.7),
               borderRadius: const BorderRadius.only(
                 bottomRight: Radius.circular(100),
               ),
@@ -62,7 +63,7 @@ class BackgroundViewWeb extends StatelessWidget {
             width: 100,
             height: 90,
             decoration: BoxDecoration(
-              color: AppColors.pc1.withOpacity(0.7),
+              color: AppColors.primaryDark.withOpacity(0.7),
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(100),
               ),
@@ -75,7 +76,7 @@ class BackgroundViewWeb extends StatelessWidget {
             width: 90,
             height: 85,
             decoration: BoxDecoration(
-              color: AppColors.pc.withOpacity(0.7),
+              color: AppColors.primary.withOpacity(0.7),
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(100),
               ),
@@ -88,7 +89,7 @@ class BackgroundViewWeb extends StatelessWidget {
             width: 70,
             height: 70,
             decoration: BoxDecoration(
-              color: AppColors.pc2.withOpacity(0.7),
+              color: AppColors.primaryLight.withOpacity(0.7),
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(100),
               ),

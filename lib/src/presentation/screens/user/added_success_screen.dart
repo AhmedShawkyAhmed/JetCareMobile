@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/business_logic/app_cubit/app_cubit.dart';
-import 'package:jetcare/src/constants/app_strings.dart';
-import 'package:jetcare/src/presentation/router/app_router_names.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_strings.dart';
+import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
-import 'package:jetcare/src/presentation/widgets/default_app_button.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
 class AddedSuccessScreen extends StatelessWidget {
-  const AddedSuccessScreen({Key? key}) : super(key: key);
+  const AddedSuccessScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +39,9 @@ class AddedSuccessScreen extends StatelessWidget {
             DefaultAppButton(
               title: translate(AppStrings.goToCart),
               onTap: () {
-                AppCubit.get(context).changeIndex(2);
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
+                AppCubit().changeIndex(2);
+                NavigationService.pushNamedAndRemoveUntil(
+
                   AppRouterNames.layout,
                       (route) => false,
                 );
@@ -49,9 +50,9 @@ class AddedSuccessScreen extends StatelessWidget {
             DefaultAppButton(
               title: translate(AppStrings.goToHome),
               onTap: () {
-                AppCubit.get(context).changeIndex(0);
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
+                AppCubit().changeIndex(0);
+                NavigationService.pushNamedAndRemoveUntil(
+
                   AppRouterNames.layout,
                       (route) => false,
                 );

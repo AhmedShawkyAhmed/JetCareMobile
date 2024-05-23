@@ -1,19 +1,18 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jetcare/src/constants/constants_methods.dart';
-import 'package:jetcare/src/constants/constants_variables.dart';
-import 'package:jetcare/src/constants/end_points.dart';
-import 'package:jetcare/src/data/data_provider/remote/dio_helper.dart';
+import 'package:jetcare/src/core/constants/constants_variables.dart';
+import 'package:jetcare/src/core/network/api_consumer.dart';
+import 'package:jetcare/src/core/network/end_points.dart';
+import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/data/network/responses/global_response.dart';
 import 'package:jetcare/src/data/network/responses/notification_response.dart';
 
 part 'notification_state.dart';
 
 class NotificationCubit extends Cubit<NotificationState> {
-  NotificationCubit() : super(NotificationInitial());
-
-  static NotificationCubit get(context) => BlocProvider.of(context);
+  NotificationCubit(this.networkService) : super(NotificationInitial());
+  ApiConsumer networkService;
 
   NotificationResponse? notificationResponse;
   GlobalResponse? readNotificationResponse;
@@ -24,7 +23,7 @@ class NotificationCubit extends Cubit<NotificationState> {
   }) async {
     try {
       emit(GetNotificationLoadingState());
-      await DioHelper.getData(url: EndPoints.getNotifications, query: {
+      await networkService.get(url: EndPoints.getNotifications, query: {
         "userId": userId,
       }).then((value) {
         notificationResponse = NotificationResponse.fromJson(value.data);
@@ -32,7 +31,7 @@ class NotificationCubit extends Cubit<NotificationState> {
         emit(GetNotificationSuccessState());
         afterSuccess();
       });
-    } on DioError catch (n) {
+    } on DioException catch (n) {
       emit(GetNotificationErrorState());
       printError(n.toString());
     } catch (e) {
@@ -47,7 +46,7 @@ class NotificationCubit extends Cubit<NotificationState> {
   }) async {
     try {
       emit(ReadNotificationLoadingState());
-      await DioHelper.getData(url: EndPoints.readNotification, query: {
+      await networkService.get(url: EndPoints.readNotification, query: {
         "id": id,
       }).then((value) {
         printResponse(value.data.toString());
@@ -55,7 +54,7 @@ class NotificationCubit extends Cubit<NotificationState> {
         emit(ReadNotificationSuccessState());
         afterSuccess();
       });
-    } on DioError catch (n) {
+    } on DioException catch (n) {
       emit(ReadNotificationErrorState());
       printError(n.toString());
     } catch (e) {
@@ -71,7 +70,7 @@ class NotificationCubit extends Cubit<NotificationState> {
   }) async {
     try {
       emit(SaveNotificationLoadingState());
-      await DioHelper.postData(
+      await networkService.post(
         url: EndPoints.saveNotification,
         body: {
           'userId': globalAccountModel.id,
@@ -83,7 +82,7 @@ class NotificationCubit extends Cubit<NotificationState> {
         emit(SaveNotificationSuccessState());
         afterSuccess();
       });
-    } on DioError catch (n) {
+    } on DioException catch (n) {
       emit(SaveNotificationErrorState());
       printError(n.toString());
     } catch (e) {

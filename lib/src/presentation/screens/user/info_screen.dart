@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:jetcare/src/constants/shared_preference_keys.dart';
-import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
-import 'package:jetcare/src/presentation/router/app_router_argument.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
+import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
+import 'package:jetcare/src/core/services/cache_service.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
 class InfoScreen extends StatelessWidget {
@@ -12,8 +12,8 @@ class InfoScreen extends StatelessWidget {
 
   const InfoScreen({
     required this.appRouterArgument,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +26,8 @@ class InfoScreen extends StatelessWidget {
               height: 5.h,
             ),
             DefaultText(
-              text: CacheHelper.getDataFromSharedPreference(
-                          key: SharedPreferenceKeys.language) ==
+              text: CacheService.get(
+                          key: CacheKeys.language) ==
                       "ar"
                   ? appRouterArgument.infoModel!.titleAr.toString()
                   : appRouterArgument.infoModel!.titleEn.toString(),
@@ -38,8 +38,8 @@ class InfoScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
               children: [
                 DefaultText(
-                  text: CacheHelper.getDataFromSharedPreference(
-                              key: SharedPreferenceKeys.language) ==
+                  text: CacheService.get(
+                              key: CacheKeys.language) ==
                           "ar"
                       ? appRouterArgument.infoModel!.contentAr.toString()
                       : appRouterArgument.infoModel!.contentEn.toString(),

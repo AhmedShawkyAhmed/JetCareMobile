@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
 
 customError() {
   ErrorWidget.builder = (FlutterErrorDetails error) {

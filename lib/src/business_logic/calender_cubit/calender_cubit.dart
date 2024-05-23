@@ -1,18 +1,18 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jetcare/src/core/network/api_consumer.dart';
 import 'package:jetcare/src/data/models/calender_model.dart';
 import 'package:jetcare/src/data/network/responses/calender_response.dart';
-import '../../constants/constants_methods.dart';
-import '../../constants/end_points.dart';
-import '../../data/data_provider/remote/dio_helper.dart';
+
+import '../../core/network/end_points.dart';
+import '../../core/utils/shared_methods.dart';
 
 part 'calender_state.dart';
 
 class CalenderCubit extends Cubit<CalenderState> {
-  CalenderCubit() : super(CalenderInitial());
-
-  static CalenderCubit get(context) => BlocProvider.of(context);
+  CalenderCubit(this.networkService) : super(CalenderInitial());
+  ApiConsumer networkService;
 
   CalenderResponse? calenderResponse;
   List<CalenderModel> calenderList = [];
@@ -23,7 +23,7 @@ class CalenderCubit extends Cubit<CalenderState> {
   }) async {
     try {
       emit(GetCalenderInitial());
-      await DioHelper.getData(
+      await networkService.get(
         url: EndPoints.getCalender,
         query: {
           "month": month ?? DateTime.now().month.toString(),
@@ -35,7 +35,7 @@ class CalenderCubit extends Cubit<CalenderState> {
         calenderList.addAll(calenderResponse!.calenderModel!);
         emit(GetCalenderSuccess());
       });
-    } on DioError catch (n) {
+    } on DioException catch (n) {
       emit(GetCalenderError());
       printError(n.toString());
     } catch (e) {

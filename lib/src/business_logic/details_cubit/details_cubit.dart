@@ -1,17 +1,16 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jetcare/src/constants/constants_methods.dart';
-import 'package:jetcare/src/constants/end_points.dart';
-import 'package:jetcare/src/data/data_provider/remote/dio_helper.dart';
+import 'package:jetcare/src/core/network/api_consumer.dart';
+import 'package:jetcare/src/core/network/end_points.dart';
+import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/data/network/responses/category_response.dart';
 
 part 'details_state.dart';
 
 class DetailsCubit extends Cubit<DetailsState> {
-  DetailsCubit() : super(DetailsInitial());
-
-  static DetailsCubit get(context) => BlocProvider.of(context);
+  DetailsCubit(this.networkService) : super(DetailsInitial());
+  ApiConsumer networkService;
 
   CategoryResponse? categoryResponse,packageResponse;
 
@@ -21,7 +20,7 @@ class DetailsCubit extends Cubit<DetailsState> {
   }) async {
     try {
       emit(DetailsLoadingState());
-      await DioHelper.getData(url: EndPoints.getCategoryDetails, query: {
+      await networkService.get(url: EndPoints.getCategoryDetails, query: {
         "id": id,
       }).then((value) {
         printResponse(value.data.toString());
@@ -31,7 +30,7 @@ class DetailsCubit extends Cubit<DetailsState> {
         emit(DetailsSuccessState());
         afterSuccess();
       });
-    } on DioError catch (n) {
+    } on DioException catch (n) {
       emit(DetailsErrorState());
       printError(n.toString());
     } catch (e) {
@@ -46,7 +45,7 @@ class DetailsCubit extends Cubit<DetailsState> {
   }) async {
     try {
       emit(PackageLoadingState());
-      await DioHelper.getData(url: EndPoints.getPackageDetails, query: {
+      await networkService.get(url: EndPoints.getPackageDetails, query: {
         "id": id,
       }).then((value) {
         packageResponse = CategoryResponse.fromJson(value.data);
@@ -55,7 +54,7 @@ class DetailsCubit extends Cubit<DetailsState> {
         emit(PackageSuccessState());
         afterSuccess();
       });
-    } on DioError catch (n) {
+    } on DioException catch (n) {
       emit(PackageErrorState());
       printError(n.toString());
     } catch (e) {

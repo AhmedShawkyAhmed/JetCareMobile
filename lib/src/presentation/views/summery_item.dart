@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:jetcare/src/constants/shared_preference_keys.dart';
-import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
-import 'package:jetcare/src/presentation/widgets/default_text.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
+import 'package:jetcare/src/core/services/cache_service.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
 class SummeryItem extends StatelessWidget {
@@ -15,8 +15,8 @@ class SummeryItem extends StatelessWidget {
     required this.sub,
     required this.visible,
     this.padding,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +45,8 @@ class SummeryItem extends StatelessWidget {
                     text: sub,
                     fontSize: 13.sp,
                     maxLines: 1,
-                    align: CacheHelper.getDataFromSharedPreference(
-                                key: SharedPreferenceKeys.language) ==
+                    align: CacheService.get(
+                                key: CacheKeys.language) ==
                             "ar"
                         ? TextAlign.left
                         : TextAlign.right,
@@ -59,7 +59,7 @@ class SummeryItem extends StatelessWidget {
                 vertical: 2.h,
               ),
               height: 1.sp,
-              color: AppColors.pc,
+              color: AppColors.primary,
             ),
           ],
         ),

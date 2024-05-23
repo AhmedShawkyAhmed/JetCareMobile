@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:jetcare/src/business_logic/details_cubit/details_cubit.dart';
-import 'package:jetcare/src/constants/shared_preference_keys.dart';
-import 'package:jetcare/src/data/data_provider/local/cache_helper.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
+import 'package:jetcare/src/core/di/service_locator.dart';
+import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
+import 'package:jetcare/src/core/services/cache_service.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/data/models/item_model.dart';
 import 'package:jetcare/src/data/models/package_model.dart';
-import 'package:jetcare/src/presentation/router/app_router_argument.dart';
-import 'package:jetcare/src/presentation/router/app_router_names.dart';
-import 'package:jetcare/src/presentation/styles/app_colors.dart';
 import 'package:jetcare/src/presentation/views/card_view.dart';
 import 'package:jetcare/src/presentation/views/indicator_view.dart';
 import 'package:jetcare/src/presentation/views/loading_view.dart';
@@ -26,8 +28,8 @@ class HomeView extends StatelessWidget {
     this.packageList,
     this.itemList,
     this.paddingWidth,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -73,40 +75,36 @@ class HomeView extends StatelessWidget {
                             onTap: () {
                               IndicatorView.showIndicator(context);
                               if (type == "corporate") {
-                                Navigator.pop(context);
-                                Navigator.pushNamed(
-                                  context,
+                                NavigationService.pop();
+                                NavigationService.pushNamed(
                                   AppRouterNames.corporate,
                                   arguments: AppRouterArgument(
                                     itemModel: itemList![index],
                                   ),
                                 );
                               } else if (type == "category") {
-                                DetailsCubit.get(context).getCategory(
+                                DetailsCubit(instance()).getCategory(
                                   id: packageList![index].id!,
                                   afterSuccess: () {
-                                    Navigator.pop(context);
-                                    Navigator.pushNamed(
-                                      context,
+                                    NavigationService.pop();
+                                    NavigationService.pushNamed(
                                       AppRouterNames.categoryDetails,
                                     );
                                   },
                                 );
                               } else if (type == "package") {
-                                DetailsCubit.get(context).getPackage(
+                                DetailsCubit(instance()).getPackage(
                                   id: packageList![index].id!,
                                   afterSuccess: () {
-                                    Navigator.pop(context);
-                                    Navigator.pushNamed(
-                                      context,
+                                    NavigationService.pop();
+                                    NavigationService.pushNamed(
                                       AppRouterNames.packageDetails,
                                     );
                                   },
                                 );
                               } else if (type == "extra") {
-                                Navigator.pop(context);
-                                Navigator.pushNamed(
-                                  context,
+                                NavigationService.pop();
+                                NavigationService.pushNamed(
                                   AppRouterNames.serviceDetails,
                                   arguments: AppRouterArgument(
                                     itemModel: itemList![index],
@@ -114,10 +112,10 @@ class HomeView extends StatelessWidget {
                                 );
                               }
                             },
-                            colorMain: AppColors.pc.withOpacity(0.8),
+                            colorMain: AppColors.primary.withOpacity(0.8),
                             colorSub: AppColors.shade.withOpacity(0.4),
-                            title: CacheHelper.getDataFromSharedPreference(
-                                        key: SharedPreferenceKeys.language) ==
+                            title: CacheService.get(
+                                        key: CacheKeys.language) ==
                                     "ar"
                                 ? packageList == null
                                     ? itemList![index].nameAr
