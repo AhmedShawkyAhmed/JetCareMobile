@@ -156,7 +156,7 @@ class _PackageScreenState extends State<PackageScreen> {
                       onTap: () {
                         NavigationService.pushNamedAndRemoveUntil(
 
-                          AppRouterNames.login,
+                          Routes.login,
                           (route) => false,
                         );
                       },
@@ -184,7 +184,7 @@ class _PackageScreenState extends State<PackageScreen> {
                               quantityController.clear();
                               NavigationService.pushNamedAndRemoveUntil(
 
-                                AppRouterNames.addedToCart,
+                                Routes.addedToCart,
                                 (route) => false,
                               );
                             },

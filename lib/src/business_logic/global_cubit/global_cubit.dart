@@ -172,9 +172,5 @@ class GlobalCubit extends Cubit<GlobalState> {
     }
   }
 
-  Future<void> openUrl(String url) async {
-    if (!await launchUrl(Uri.parse(url))) {
-      throw Exception('Could not launch $url');
-    }
-  }
+
 }

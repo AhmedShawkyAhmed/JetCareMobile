@@ -70,7 +70,7 @@ class CrewHistoryScreen extends StatelessWidget {
                             onTap: (){
                               NavigationService.pushNamed(
 
-                                AppRouterNames.confirmOrder,
+                                Routes.confirmOrder,
                                 arguments: AppRouterArgument(
                                   orderModel: OrderCubit(instance())
                                       .tasksResponse!

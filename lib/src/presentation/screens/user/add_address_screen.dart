@@ -162,7 +162,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                   ),
                   InkWell(
                     onTap: () {
-                      NavigationService.pushNamed(AppRouterNames.map);
+                      NavigationService.pushNamed(Routes.map);
                     },
                     child: Container(
                       width: 10.w,

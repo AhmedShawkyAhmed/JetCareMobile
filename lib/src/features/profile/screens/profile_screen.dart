@@ -196,7 +196,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             afterSuccess: () {
                               NavigationService.pop();
                               NavigationService.pushNamedAndRemoveUntil(
-                                AppRouterNames.welcome,
+                                Routes.welcome,
                                 (route) => false,
                               );
                             },

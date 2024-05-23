@@ -95,7 +95,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                               afterSuccess: () {
                             NavigationService.pop();
                             NavigationService.pushNamed(
-                              AppRouterNames.addAddress,
+                              Routes.addAddress,
                               arguments: AppRouterArgument(type: "new"),
                             );
                           });
@@ -552,7 +552,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                     ),
                     afterSuccess: () {
                       NavigationService.pushReplacementNamed(
-                        AppRouterNames.success,
+                        Routes.success,
                         arguments: AppRouterArgument(
                           type: "order",
                         ),

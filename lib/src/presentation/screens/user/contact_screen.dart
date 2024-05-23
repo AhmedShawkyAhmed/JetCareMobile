@@ -112,7 +112,7 @@ class ContactScreen extends StatelessWidget {
                       afterSuccess: () {
                         NavigationService.pushReplacementNamed(
 
-                          AppRouterNames.success,
+                          Routes.success,
                           arguments: AppRouterArgument(
                             type: "support",
                           ),

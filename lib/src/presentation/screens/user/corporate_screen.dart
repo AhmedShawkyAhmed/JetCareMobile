@@ -130,7 +130,7 @@ class CorporateScreen extends StatelessWidget {
                       ),
                       afterSuccess: () {
                         NavigationService.pushNamedAndRemoveUntil(
-                          AppRouterNames.success,
+                          Routes.success,
                           arguments: AppRouterArgument(
                             type: "order",
                           ),

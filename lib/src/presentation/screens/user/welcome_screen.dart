@@ -44,7 +44,7 @@ class WelcomeScreen extends StatelessWidget {
               title: translate(AppStrings.start),
               onTap: () {
                 NavigationService.pushNamedAndRemoveUntil(
-                  AppRouterNames.layout,
+                  Routes.layout,
                   (route) => false,
                 );
               },

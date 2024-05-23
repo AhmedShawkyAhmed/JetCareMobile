@@ -120,7 +120,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                               orderId: widget.appRouterArgument.orderModel!.id!,
                               afterSuccess: () {
                                 NavigationService.pushNamedAndRemoveUntil(
-                                  AppRouterNames.crewLayout,
+                                  Routes.crewLayout,
                                   (route) => false,
                                 );
                                 OrderCubit(instance()).getMyTasks();
@@ -146,7 +146,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                                       "accepted";
                                 });
                                 NavigationService.pushNamedAndRemoveUntil(
-                                  AppRouterNames.crewLayout,
+                                  Routes.crewLayout,
                                   (route) => false,
                                 );
                                 OrderCubit(instance()).getMyTasks();
@@ -171,7 +171,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                       afterSuccess: () {
                         OrderCubit(instance()).getMyTasks();
                         NavigationService.pushNamedAndRemoveUntil(
-                          AppRouterNames.crewLayout,
+                          Routes.crewLayout,
                           (route) => false,
                         );
                       },
@@ -240,7 +240,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                                       afterSuccess: () {
                                         AppCubit().changeIndex(0);
                                         NavigationService.pushReplacementNamed(
-                                            AppRouterNames.layout);
+                                            Routes.layout);
                                         NotificationCubit(instance())
                                             .saveNotification(
                                           title: "الطلبات",

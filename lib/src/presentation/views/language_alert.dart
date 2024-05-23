@@ -34,7 +34,7 @@ class LanguageAlert extends StatelessWidget {
                   : () {
                       LanguageCubit().toArabic(
                         afterSuccess: () {
-                          NavigationService.pushNamedAndRemoveUntil(AppRouterNames.splash, (route) => false);
+                          NavigationService.pushNamedAndRemoveUntil(Routes.splash, (route) => false);
                         },
                       );
                     },
@@ -52,7 +52,7 @@ class LanguageAlert extends StatelessWidget {
                   ? () {
                 LanguageCubit().toEnglish(
                   afterSuccess: () {
-                    NavigationService.pushNamedAndRemoveUntil(AppRouterNames.splash, (route) => false);
+                    NavigationService.pushNamedAndRemoveUntil(Routes.splash, (route) => false);
                   },
                 );
               }

@@ -39,7 +39,7 @@ class DisableAccountScreen extends StatelessWidget {
               title: translate(AppStrings.contactUs),
               onTap: () {
                 NavigationService.pushNamed(
-                  AppRouterNames.contact,
+                  Routes.contact,
                   arguments: AppRouterArgument(
                     type: "support",
                   )

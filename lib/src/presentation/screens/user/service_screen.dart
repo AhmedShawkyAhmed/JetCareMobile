@@ -153,7 +153,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                             onTap: () {
                               NavigationService.pushNamedAndRemoveUntil(
 
-                                AppRouterNames.login,
+                                Routes.login,
                                 (route) => false,
                               );
                             },
@@ -174,7 +174,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                     quantityController.clear();
                                     NavigationService.pushNamedAndRemoveUntil(
 
-                                      AppRouterNames.addedToCart,
+                                      Routes.addedToCart,
                                           (route) => false,
                                     );
                                   },

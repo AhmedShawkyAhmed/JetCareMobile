@@ -110,7 +110,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                     ),
                     afterSuccess: () {
                       NavigationService.pushNamedAndRemoveUntil(
-                        AppRouterNames.login,
+                        Routes.login,
                         (route) => false,
                       );
                     },
@@ -123,7 +123,7 @@ class _ResetPasswordState extends State<ResetPassword> {
               buttonColor: AppColors.darkRed,
               onTap: () {
                 NavigationService.pushNamedAndRemoveUntil(
-                  AppRouterNames.login,
+                  Routes.login,
                   (route) => false,
                 );
               },

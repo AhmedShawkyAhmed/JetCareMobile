@@ -66,7 +66,7 @@ class CrewHomeScreen extends StatelessWidget {
                             return InkWell(
                               onTap: () {
                                 NavigationService.pushNamed(
-                                  AppRouterNames.confirmOrder,
+                                  Routes.confirmOrder,
                                   arguments: AppRouterArgument(
                                     orderModel: OrderCubit(instance())
                                         .tasksResponse!

@@ -91,7 +91,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                       onTap: () {
                                         NavigationService.pushNamed(
 
-                                          AppRouterNames.confirmOrder,
+                                          Routes.confirmOrder,
                                           arguments: AppRouterArgument(
                                             orderModel: OrderCubit(instance())
                                                 .historyResponse!
@@ -181,7 +181,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                       onTap: () {
                                         NavigationService.pushNamed(
 
-                                          AppRouterNames.orderDetails,
+                                          Routes.orderDetails,
                                           arguments: AppRouterArgument(
                                             type: "corporate",
                                             corporateModel:

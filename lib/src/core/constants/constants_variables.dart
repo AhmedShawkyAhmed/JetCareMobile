@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:jetcare/src/data/models/account_model.dart';
+import 'package:jetcare/src/data/models/user_model.dart';
 import 'package:jetcare/src/data/models/address_model.dart';
 import 'package:jetcare/src/data/models/area_model.dart';
 import 'package:jetcare/src/data/models/item_model.dart';
@@ -8,7 +8,7 @@ import 'package:jetcare/src/data/models/period_model.dart';
 import 'package:jetcare/src/data/models/space_model.dart';
 import 'package:jetcare/src/data/network/requests/order_summery.dart';
 
-AccountModel globalAccountModel = AccountModel();
+UserModel globalAccountModel = UserModel();
 PeriodModel selectedPeriod = PeriodModel();
 AddressModel selectedAddress = AddressModel(id: -1);
 SpaceModel selectedSpace = SpaceModel();

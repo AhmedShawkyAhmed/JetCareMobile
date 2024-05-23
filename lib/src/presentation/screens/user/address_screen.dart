@@ -53,7 +53,7 @@ class AddressScreen extends StatelessWidget {
                     AddressCubit(instance()).getAllStates(afterSuccess: () {
                       NavigationService.pop();
                       NavigationService.pushNamed(
-                        AppRouterNames.addAddress,
+                        Routes.addAddress,
                         arguments: AppRouterArgument(type: "new"),
                       );
                     });
@@ -94,7 +94,7 @@ class AddressScreen extends StatelessWidget {
                         },
                         edit: () {
                           NavigationService.pushNamed(
-                            AppRouterNames.addAddress,
+                            Routes.addAddress,
                             arguments: AppRouterArgument(
                               type: "edit",
                               addressModel:

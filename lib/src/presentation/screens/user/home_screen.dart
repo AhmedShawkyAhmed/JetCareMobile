@@ -12,6 +12,7 @@ import 'package:jetcare/src/core/routing/app_router_names.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/widgets/default_text.dart';
 import 'package:jetcare/src/core/shared/widgets/toast.dart';
+import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/home_view.dart';
 import 'package:jetcare/src/presentation/views/indicator_view.dart';
@@ -68,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 afterSuccess: () {
                                   NavigationService.pop();
                                   NavigationService.pushNamed(
-                                    AppRouterNames.notification,
+                                    Routes.notification,
                                   );
                                 },
                               );
@@ -115,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               DefaultToast.showMyToast(
                                   translate(AppStrings.adLink));
                             } else {
-                              GlobalCubit(instance()).openUrl(
+                              openUrl(
                                 GlobalCubit(instance())
                                     .homeResponse!
                                     .adsModel![position]

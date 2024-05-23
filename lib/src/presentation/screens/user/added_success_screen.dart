@@ -42,7 +42,7 @@ class AddedSuccessScreen extends StatelessWidget {
                 AppCubit().changeIndex(2);
                 NavigationService.pushNamedAndRemoveUntil(
 
-                  AppRouterNames.layout,
+                  Routes.layout,
                       (route) => false,
                 );
               },
@@ -53,7 +53,7 @@ class AddedSuccessScreen extends StatelessWidget {
                 AppCubit().changeIndex(0);
                 NavigationService.pushNamedAndRemoveUntil(
 
-                  AppRouterNames.layout,
+                  Routes.layout,
                       (route) => false,
                 );
               },

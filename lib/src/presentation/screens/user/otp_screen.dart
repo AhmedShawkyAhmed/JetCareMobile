@@ -120,7 +120,7 @@ class OTPScreen extends StatelessWidget {
                     if (appRouterArgument.type == "resetPassword") {
                       NavigationService.pushNamed(
 
-                        AppRouterNames.resetPassword,
+                        Routes.resetPassword,
                         arguments: AppRouterArgument(
                           phone: appRouterArgument.phone.toString(),
                           type: "resetPassword",
@@ -129,7 +129,7 @@ class OTPScreen extends StatelessWidget {
                     } else {
                       NavigationService.pushNamed(
 
-                        AppRouterNames.profile,
+                        Routes.profile,
                         arguments: AppRouterArgument(
                           type: "register",
                           phone: appRouterArgument.phone.toString(),

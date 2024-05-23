@@ -64,7 +64,7 @@ class SuccessScreen extends StatelessWidget {
                   AppCubit().changeIndex(0);
                   NavigationService.pushNamedAndRemoveUntil(
 
-                    AppRouterNames.layout,
+                    Routes.layout,
                     (route) => false,
                   );
                   OrderCubit(instance()).getMyOrders();

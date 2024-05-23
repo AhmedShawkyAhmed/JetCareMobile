@@ -1,4 +1,4 @@
-enum AppRouterNames {
+enum Routes {
   splash,
   login,
   otp,

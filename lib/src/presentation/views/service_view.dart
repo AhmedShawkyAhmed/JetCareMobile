@@ -88,7 +88,7 @@ class ServiceView extends StatelessWidget {
                           return CardView(
                             onTap: () {
                               NavigationService.pushNamed(
-                                AppRouterNames.serviceDetails,
+                                Routes.serviceDetails,
                                 arguments: AppRouterArgument(
                                   itemModel:
                                       packageList[index].items![position],

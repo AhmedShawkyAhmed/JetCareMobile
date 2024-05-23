@@ -215,7 +215,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                         .appRouterArgument.orderModel!.id!,
                                     afterSuccess: () {
                                       NavigationService.pushNamedAndRemoveUntil(
-                                        AppRouterNames.crewLayout,
+                                        Routes.crewLayout,
                                         (route) => false,
                                       );
                                       OrderCubit(instance()).getMyTasks();
@@ -242,7 +242,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                             "accepted";
                                       });
                                       NavigationService.pushNamedAndRemoveUntil(
-                                        AppRouterNames.crewLayout,
+                                        Routes.crewLayout,
                                         (route) => false,
                                       );
                                       OrderCubit(instance()).getMyTasks();
@@ -267,7 +267,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                             afterSuccess: () {
                               OrderCubit(instance()).getMyTasks();
                               NavigationService.pushNamedAndRemoveUntil(
-                                AppRouterNames.crewLayout,
+                                Routes.crewLayout,
                                 (route) => false,
                               );
                             },
@@ -286,7 +286,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                             status: "canceled",
                             afterSuccess: () {
                               NavigationService.pushNamedAndRemoveUntil(
-                                AppRouterNames.layout,
+                                Routes.layout,
                                 (route) => false,
                               );
                               DefaultToast.showMyToast(

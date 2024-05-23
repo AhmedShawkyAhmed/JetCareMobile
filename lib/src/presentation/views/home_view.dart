@@ -77,7 +77,7 @@ class HomeView extends StatelessWidget {
                               if (type == "corporate") {
                                 NavigationService.pop();
                                 NavigationService.pushNamed(
-                                  AppRouterNames.corporate,
+                                  Routes.corporate,
                                   arguments: AppRouterArgument(
                                     itemModel: itemList![index],
                                   ),
@@ -88,7 +88,7 @@ class HomeView extends StatelessWidget {
                                   afterSuccess: () {
                                     NavigationService.pop();
                                     NavigationService.pushNamed(
-                                      AppRouterNames.categoryDetails,
+                                      Routes.categoryDetails,
                                     );
                                   },
                                 );
@@ -98,14 +98,14 @@ class HomeView extends StatelessWidget {
                                   afterSuccess: () {
                                     NavigationService.pop();
                                     NavigationService.pushNamed(
-                                      AppRouterNames.packageDetails,
+                                      Routes.packageDetails,
                                     );
                                   },
                                 );
                               } else if (type == "extra") {
                                 NavigationService.pop();
                                 NavigationService.pushNamed(
-                                  AppRouterNames.serviceDetails,
+                                  Routes.serviceDetails,
                                   arguments: AppRouterArgument(
                                     itemModel: itemList![index],
                                   ),

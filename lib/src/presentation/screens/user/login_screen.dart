@@ -52,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             LanguageCubit().toEnglish(
                               afterSuccess: () {
                                 NavigationService.pushNamedAndRemoveUntil(
-                                    AppRouterNames.splash, (route) => false);
+                                    Routes.splash, (route) => false);
                               },
                             );
                           }
@@ -60,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             LanguageCubit().toArabic(
                               afterSuccess: () {
                                 NavigationService.pushNamedAndRemoveUntil(
-                                    AppRouterNames.splash, (route) => false);
+                                    Routes.splash, (route) => false);
                               },
                             );
                           },
@@ -177,7 +177,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         GestureDetector(
                           onTap: () {
                             NavigationService.pushNamed(
-                              AppRouterNames.verify,
+                              Routes.verify,
                             );
                           },
                           child: Padding(
@@ -224,19 +224,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                     },
                                     disable: () {
                                       NavigationService.pushNamedAndRemoveUntil(
-                                        AppRouterNames.disable,
+                                        Routes.disable,
                                         (route) => false,
                                       );
                                     },
                                     client: () {
                                       NavigationService.pushNamedAndRemoveUntil(
-                                        AppRouterNames.layout,
+                                        Routes.layout,
                                         (route) => false,
                                       );
                                     },
                                     crew: () {
                                       NavigationService.pushNamedAndRemoveUntil(
-                                        AppRouterNames.crewLayout,
+                                        Routes.crewLayout,
                                         (route) => false,
                                       );
                                     },
@@ -253,7 +253,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       success: () {
                                         NavigationService
                                             .pushNamedAndRemoveUntil(
-                                          AppRouterNames.otp,
+                                          Routes.otp,
                                           (route) => true,
                                           arguments: AppRouterArgument(
                                             type: "register",
@@ -291,7 +291,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           title: translate(AppStrings.guest),
                           onTap: () {
                             NavigationService.pushNamedAndRemoveUntil(
-                              AppRouterNames.home,
+                              Routes.home,
                               (route) => false,
                             );
                           },

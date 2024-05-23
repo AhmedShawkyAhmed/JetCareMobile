@@ -1,4 +1,4 @@
-import 'package:jetcare/src/data/models/account_model.dart';
+import 'package:jetcare/src/data/models/user_model.dart';
 import 'package:jetcare/src/data/models/address_model.dart';
 import 'package:jetcare/src/data/models/calender_model.dart';
 import 'package:jetcare/src/data/models/cart_model.dart';
@@ -11,7 +11,7 @@ class OrderModel {
   String? status;
   String? createdAt, date, comment;
   num? total, price, shipping;
-  AccountModel? user, crew;
+  UserModel? user, crew;
   PeriodModel? period;
   AddressModel? address;
   PackageModel? package;
@@ -49,8 +49,8 @@ class OrderModel {
         comment: json['comment'] ?? "",
         createdAt: json['created_at'] ?? "",
         date: json['date'] ?? "",
-        user: json["user"] != null ? AccountModel.fromJson(json["user"]) : null,
-        crew: json["crew"] != null ? AccountModel.fromJson(json["crew"]) : null,
+        user: json["user"] != null ? UserModel.fromJson(json["user"]) : null,
+        crew: json["crew"] != null ? UserModel.fromJson(json["crew"]) : null,
         period: json["period"] != null
             ? PeriodModel.fromJson(json["period"])
             : null,

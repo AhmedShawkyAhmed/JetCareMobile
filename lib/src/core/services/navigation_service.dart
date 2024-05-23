@@ -11,7 +11,7 @@ class NavigationService {
 
   static BuildContext get context => navigatorKey.currentContext!;
 
-  static Future<dynamic> pushNamed(AppRouterNames routeName,
+  static Future<dynamic> pushNamed(Routes routeName,
       {Object? arguments,}) {
     return navigatorKey.currentState!.pushNamed(
       routeName.name,
@@ -19,7 +19,7 @@ class NavigationService {
     );
   }
 
-  static Future<dynamic> pushReplacementNamed(AppRouterNames routeName,
+  static Future<dynamic> pushReplacementNamed(Routes routeName,
       {Object? arguments,}) {
     return navigatorKey.currentState!.pushReplacementNamed(
       routeName.name,
@@ -28,7 +28,7 @@ class NavigationService {
   }
 
   static Future<dynamic> pushNamedAndRemoveUntil(
-    AppRouterNames routeName,
+    Routes routeName,
     bool Function(Route<dynamic>) predicate, {
     Object? arguments,
   }) {
@@ -60,7 +60,7 @@ class NavigationService {
   }
 
   static Future<dynamic> popAndPushNamed(
-    AppRouterNames routeName, {
+    Routes routeName, {
     Object? arguments,
   }) {
     return navigatorKey.currentState!.popAndPushNamed(

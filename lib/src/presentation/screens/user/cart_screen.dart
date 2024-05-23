@@ -76,7 +76,7 @@ class _CartScreenState extends State<CartScreen> {
                             fontSize: 14.sp,
                             onTap: () {
                               NavigationService.pushNamed(
-                                  AppRouterNames.appointment,arguments: AppRouterArgument(total: CartCubit(instance()).cartResponse?.total.toString()));
+                                  Routes.appointment,arguments: AppRouterArgument(total: CartCubit(instance()).cartResponse?.total.toString()));
                             },
                             textColor: AppColors.primary,
                             buttonColor: AppColors.white,
