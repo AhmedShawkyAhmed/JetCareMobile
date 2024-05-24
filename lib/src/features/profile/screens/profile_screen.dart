@@ -8,7 +8,7 @@ import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
 import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
 import 'package:jetcare/src/core/shared/widgets/default_text_field.dart';
 import 'package:jetcare/src/core/shared/widgets/toast.dart';
-import 'package:jetcare/src/features/auth/cubit/authenticate_cubit.dart';
+import 'package:jetcare/src/features/auth/cubit/auth_cubit.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:sizer/sizer.dart';
 
@@ -169,7 +169,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         update = !update;
                       });
                       if (!update) {
-                        AuthenticateCubit(instance()).register();
+                        AuthCubit(instance()).register();
                       }
                     },
                   ),

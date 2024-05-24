@@ -3,7 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:jetcare/src/core/network/dio_consumer.dart';
 import 'package:jetcare/src/core/network/dio_factory.dart';
 import 'package:jetcare/src/core/network/network_service.dart';
-import 'package:jetcare/src/features/auth/cubit/authenticate_cubit.dart';
+import 'package:jetcare/src/features/auth/cubit/auth_cubit.dart';
 import 'package:jetcare/src/features/auth/data/repo/auth_repo.dart';
 import 'package:jetcare/src/features/auth/service/auth_web_service.dart';
 import 'package:jetcare/src/features/layout/cubit/layout_cubit.dart';
@@ -27,7 +27,7 @@ Future<void> initAppModule() async {
   instance.registerFactory<SplashCubit>(() => SplashCubit());
   instance.registerFactory<LayoutCubit>(() => LayoutCubit());
   instance.registerFactory<ProfileCubit>(() => ProfileCubit(instance()));
-  instance.registerFactory<AuthenticateCubit>(() => AuthenticateCubit(instance()));
+  instance.registerFactory<AuthCubit>(() => AuthCubit(instance()));
   // --------------------- Repo
   instance.registerLazySingleton<AuthRepo>(() => AuthRepo(instance()));
   instance.registerLazySingleton<ProfileRepo>(() => ProfileRepo(instance()));

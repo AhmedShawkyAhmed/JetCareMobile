@@ -24,10 +24,10 @@ import 'package:jetcare/src/features/auth/data/requests/register_request.dart';
 import 'package:jetcare/src/features/profile/cubit/profile_cubit.dart';
 import 'package:jetcare/src/presentation/views/indicator_view.dart';
 
-part 'authenticate_state.dart';
+part 'auth_state.dart';
 
-class AuthenticateCubit extends Cubit<AuthenticateState> {
-  AuthenticateCubit(this.repo) : super(AuthenticateInitial());
+class AuthCubit extends Cubit<AuthState> {
+  AuthCubit(this.repo) : super(AuthenticateInitial());
   AuthRepo repo;
 
   num randomNumber = Random().nextInt(999999) + 100000;

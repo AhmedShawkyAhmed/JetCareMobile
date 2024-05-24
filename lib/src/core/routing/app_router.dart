@@ -6,7 +6,7 @@ import 'package:jetcare/src/core/routing/app_router_names.dart';
 import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
 import 'package:jetcare/src/core/utils/extensions.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
-import 'package:jetcare/src/features/auth/cubit/authenticate_cubit.dart';
+import 'package:jetcare/src/features/auth/cubit/auth_cubit.dart';
 import 'package:jetcare/src/features/auth/screens/login_screen.dart';
 import 'package:jetcare/src/features/disable/screens/deleted_account_screen.dart';
 import 'package:jetcare/src/features/disable/screens/disable_account_screen.dart';
@@ -63,7 +63,7 @@ class AppRoutes {
       case Routes.login:
         return CustomPageRouteTransiton.fadeOut(
           page: BlocProvider(
-            create: (context) => AuthenticateCubit(instance()),
+            create: (context) => AuthCubit(instance()),
             child: const LoginScreen(),
           ),
         );

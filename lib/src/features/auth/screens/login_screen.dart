@@ -10,7 +10,7 @@ import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
 import 'package:jetcare/src/core/shared/widgets/default_text.dart';
 import 'package:jetcare/src/core/shared/widgets/default_text_field.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
-import 'package:jetcare/src/features/auth/cubit/authenticate_cubit.dart';
+import 'package:jetcare/src/features/auth/cubit/auth_cubit.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:sizer/sizer.dart';
 
@@ -22,11 +22,11 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  late AuthenticateCubit cubit = BlocProvider.of(context);
+  late AuthCubit cubit = BlocProvider.of(context);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthenticateCubit, AuthenticateState>(
+    return BlocBuilder<AuthCubit, AuthState>(
       builder: (context, state) {
         return Scaffold(
           backgroundColor: AppColors.mainColor,
