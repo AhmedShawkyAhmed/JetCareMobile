@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jetcare/src/core/constants/constants_variables.dart';
-import 'package:jetcare/src/core/network/api_consumer.dart';
+import 'package:jetcare/src/core/network/network_service.dart';
 import 'package:jetcare/src/core/network/end_points.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/data/network/responses/cart_response.dart';
@@ -12,7 +12,7 @@ part 'cart_state.dart';
 
 class CartCubit extends Cubit<CartState> {
   CartCubit(this.networkService) : super(CartInitial());
-  ApiConsumer networkService;
+  NetworkService networkService;
 
   CartResponse? cartResponse;
   GlobalResponse? addToCartResponse,deleteToCartResponse;

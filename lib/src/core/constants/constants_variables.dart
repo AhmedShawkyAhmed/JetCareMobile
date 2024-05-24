@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:jetcare/src/data/models/user_model.dart';
+import 'package:jetcare/src/features/profile/data/models/user_model.dart';
 import 'package:jetcare/src/data/models/address_model.dart';
 import 'package:jetcare/src/data/models/area_model.dart';
 import 'package:jetcare/src/data/models/item_model.dart';

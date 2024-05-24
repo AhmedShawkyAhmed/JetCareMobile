@@ -1,4 +1,4 @@
-import 'package:jetcare/src/data/models/user_model.dart';
+import 'package:jetcare/src/features/profile/data/models/user_model.dart';
 import 'package:jetcare/src/data/models/address_model.dart';
 import 'package:jetcare/src/data/models/calender_model.dart';
 import 'package:jetcare/src/data/models/cart_model.dart';

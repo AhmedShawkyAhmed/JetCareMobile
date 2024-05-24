@@ -49,7 +49,7 @@ class AddressScreen extends StatelessWidget {
                   height: 5.h,
                   title: translate(AppStrings.addAddress),
                   onTap: () {
-                    IndicatorView.showIndicator(context);
+                    IndicatorView.showIndicator();
                     AddressCubit(instance()).getAllStates(afterSuccess: () {
                       NavigationService.pop();
                       NavigationService.pushNamed(

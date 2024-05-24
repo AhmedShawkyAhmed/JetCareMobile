@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jetcare/src/core/network/api_consumer.dart';
+import 'package:jetcare/src/core/network/network_service.dart';
 import 'package:jetcare/src/core/network/end_points.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/data/network/responses/category_response.dart';
@@ -10,7 +10,7 @@ part 'details_state.dart';
 
 class DetailsCubit extends Cubit<DetailsState> {
   DetailsCubit(this.networkService) : super(DetailsInitial());
-  ApiConsumer networkService;
+  NetworkService networkService;
 
   CategoryResponse? categoryResponse,packageResponse;
 

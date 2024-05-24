@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:sizer/sizer.dart';
 
 class IndicatorView {
-  static Future showIndicator(BuildContext context) async {
+  static Future showIndicator() async {
     showDialog<void>(
       barrierDismissible: false,
-      context: context,
+      context: NavigationService.context,
       builder: (BuildContext context) {
         return Center(
           child: SizedBox(

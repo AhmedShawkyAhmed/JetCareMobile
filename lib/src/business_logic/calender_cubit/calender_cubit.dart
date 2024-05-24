@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jetcare/src/core/network/api_consumer.dart';
+import 'package:jetcare/src/core/network/network_service.dart';
 import 'package:jetcare/src/data/models/calender_model.dart';
 import 'package:jetcare/src/data/network/responses/calender_response.dart';
 
@@ -12,7 +12,7 @@ part 'calender_state.dart';
 
 class CalenderCubit extends Cubit<CalenderState> {
   CalenderCubit(this.networkService) : super(CalenderInitial());
-  ApiConsumer networkService;
+  NetworkService networkService;
 
   CalenderResponse? calenderResponse;
   List<CalenderModel> calenderList = [];

@@ -10,7 +10,7 @@ import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
 import 'package:jetcare/src/core/shared/widgets/default_text_field.dart';
 import 'package:jetcare/src/core/shared/widgets/toast.dart';
-import 'package:jetcare/src/data/network/requests/auth_request.dart';
+import 'package:jetcare/src/features/auth/data/requests/login_request.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/indicator_view.dart';
 import 'package:sizer/sizer.dart';
@@ -101,11 +101,11 @@ class _ResetPasswordState extends State<ResetPassword> {
                   DefaultToast.showMyToast(
                       translate(AppStrings.passwordMatched));
                 } else {
-                  IndicatorView.showIndicator(context);
+                  IndicatorView.showIndicator();
                   NavigationService.pop();
                   AuthCubit(instance()).resetPassword(
-                    authRequest: AuthRequest(
-                      phone: widget.appRouterArgument.phone.toString(),
+                    authRequest: LoginRequest(
+                      email: widget.appRouterArgument.phone.toString(),
                       password: passwordController.text,
                     ),
                     afterSuccess: () {

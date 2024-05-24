@@ -4,12 +4,25 @@ class EndPoints {
   static const Environment environment = Environment.development;
   static const baseUrl = "https://api.jetcareeg.net/api/";
   static const imageDomain = "https://api.jetcareeg.net/public/images/";
-  static const login = "appLogin";
-  static const mail = "mail";
+
+// --------------------- new api
+  // ------------------- Auth
   static const register = "register";
+  static const login = "login";
+  static const resetPassword = "reset_password";
+  static const forgetPassword = "forget_password";
+  static const logout = "logout";
+
+  // ------------------- Profile
+  static const profile = "profile";
+  static const updateProfile = "update_profile";
+  static const updateFCM = "update_fcm";
+  static const deleteAccount = "delete_account";
+  static const restoreAccount = "restore_account";
+
+// ---------------------
+  static const mail = "mail";
   static const checkEmail = "checkEmail";
-  static const resetPassword = "resetPassword";
-  static const deleteAccount = "deleteAccount";
   static const getHome = "getHome";
   static const getAppInfo = "getAppInfo";
   static const getAllStates = "getAllStates";
@@ -42,5 +55,4 @@ class EndPoints {
   static const addToCart = "addToCart";
   static const deleteFromCart = "deleteFromCart";
   static const getMyCart = "getMyCart";
-  static const updateFCM = "updateFCM";
 }

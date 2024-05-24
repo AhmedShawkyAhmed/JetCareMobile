@@ -14,7 +14,7 @@ import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
 import 'package:jetcare/src/core/shared/widgets/default_text.dart';
-import 'package:jetcare/src/data/models/user_model.dart';
+import 'package:jetcare/src/features/profile/data/models/user_model.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/language_alert.dart';
 import 'package:jetcare/src/presentation/views/more_item.dart';

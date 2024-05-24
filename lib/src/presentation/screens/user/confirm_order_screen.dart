@@ -115,7 +115,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                           marginHorizontal: 0,
                           buttonColor: AppColors.darkRed,
                           onTap: () {
-                            IndicatorView.showIndicator(context);
+                            IndicatorView.showIndicator();
                             OrderCubit(instance()).rejectOrder(
                               orderId: widget.appRouterArgument.orderModel!.id!,
                               afterSuccess: () {
@@ -136,7 +136,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                           marginHorizontal: 0,
                           buttonColor: AppColors.darkBlue,
                           onTap: () {
-                            IndicatorView.showIndicator(context);
+                            IndicatorView.showIndicator();
                             OrderCubit(instance()).updateOrderStatus(
                               orderId: widget.appRouterArgument.orderModel!.id!,
                               status: "accepted",
@@ -164,7 +164,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                 DefaultAppButton(
                   title: translate(AppStrings.complete),
                   onTap: () {
-                    IndicatorView.showIndicator(context);
+                    IndicatorView.showIndicator();
                     OrderCubit(instance()).updateOrderStatus(
                       orderId: widget.appRouterArgument.orderModel!.id!,
                       status: "completed",
@@ -231,7 +231,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                                   DefaultToast.showMyToast(
                                       translate(AppStrings.enterCancelReason));
                                 } else {
-                                  IndicatorView.showIndicator(context);
+                                  IndicatorView.showIndicator();
                                   OrderCubit(instance()).updateOrderStatusUser(
                                       orderId: widget
                                           .appRouterArgument.orderModel!.id!,

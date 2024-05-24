@@ -185,7 +185,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                 ? DefaultAppButton(
                     title: translate(AppStrings.save),
                     onTap: () {
-                      IndicatorView.showIndicator(context);
+                      IndicatorView.showIndicator();
                       NavigationService.pop();
                       AddressCubit(instance()).updateAddress(
                         addressRequest: AddressRequest(
@@ -223,7 +223,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                         DefaultToast.showMyToast(
                             translate(AppStrings.enterArea));
                       } else {
-                        IndicatorView.showIndicator(context);
+                        IndicatorView.showIndicator();
                         NavigationService.pop();
                         AddressCubit(instance()).addAddress(
                           addressRequest: AddressRequest(

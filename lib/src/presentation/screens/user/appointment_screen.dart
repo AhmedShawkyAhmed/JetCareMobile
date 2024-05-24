@@ -90,7 +90,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                         text: translate(AppStrings.aAddress),
                         textColor: AppColors.primary,
                         onTap: () {
-                          IndicatorView.showIndicator(context);
+                          IndicatorView.showIndicator();
                           AddressCubit(instance()).getAllStates(
                               afterSuccess: () {
                             NavigationService.pop();
@@ -519,7 +519,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                     selectedPeriod.id == 0) {
                   DefaultToast.showMyToast(translate(AppStrings.selectTime));
                 } else {
-                  IndicatorView.showIndicator(context);
+                  IndicatorView.showIndicator();
                   OrderCubit(instance()).createOrder(
                     orderRequest: OrderRequest(
                       total: ((double.parse(

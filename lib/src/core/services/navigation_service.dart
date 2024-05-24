@@ -14,7 +14,7 @@ class NavigationService {
   static Future<dynamic> pushNamed(Routes routeName,
       {Object? arguments,}) {
     return navigatorKey.currentState!.pushNamed(
-      routeName.name,
+      routeName.path,
       arguments: arguments,
     );
   }
@@ -22,7 +22,7 @@ class NavigationService {
   static Future<dynamic> pushReplacementNamed(Routes routeName,
       {Object? arguments,}) {
     return navigatorKey.currentState!.pushReplacementNamed(
-      routeName.name,
+      routeName.path,
       arguments: arguments,
     );
   }
@@ -33,7 +33,7 @@ class NavigationService {
     Object? arguments,
   }) {
     return navigatorKey.currentState!.pushNamedAndRemoveUntil(
-      routeName.name,
+      routeName.path,
       predicate,
       arguments: arguments,
     );

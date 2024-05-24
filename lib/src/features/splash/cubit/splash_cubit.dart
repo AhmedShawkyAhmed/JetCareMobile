@@ -3,10 +3,12 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:jetcare/main.dart';
 import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
+import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/routing/app_router_names.dart';
 import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
+import 'package:jetcare/src/features/profile/cubit/profile_cubit.dart';
 
 part 'splash_state.dart';
 
@@ -24,10 +26,14 @@ class SplashCubit extends Cubit<SplashState> {
 
   Future<void> init() async {
     String? token = CacheService.get(key: CacheKeys.token);
-    await Future.delayed(const Duration(milliseconds: 200), () {
+    printLog("Token | $token");
+    await Future.delayed(const Duration(seconds: 2), () {
       if (token == null) {
-        NavigationService.pushReplacementNamed(Routes.login);
-      } else {}
+        NavigationService.pushNamedAndRemoveUntil(
+            Routes.login, (route) => false);
+      } else {
+        ProfileCubit(instance()).getProfile();
+      }
     });
   }
 }

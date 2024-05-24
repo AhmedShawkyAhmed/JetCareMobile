@@ -14,7 +14,7 @@ class DefaultHeadersInterceptor extends Interceptor {
   ) async {
     options.headers.addAll({
       'Accept': 'application/json',
-      'Content-Type': 'application/json;multipart/form-data',
+      'Content-Type': 'application/json',
       'Authorization': "Bearer ${CacheService.get(key: CacheKeys.token)}",
     });
     return handler.next(options);

@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jetcare/src/core/constants/constants_variables.dart';
-import 'package:jetcare/src/core/network/api_consumer.dart';
+import 'package:jetcare/src/core/network/network_service.dart';
 import 'package:jetcare/src/core/network/end_points.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/data/models/address_model.dart';
@@ -17,7 +17,7 @@ part 'address_state.dart';
 
 class AddressCubit extends Cubit<AddressState> {
   AddressCubit(this.networkService) : super(AddressInitial());
-  ApiConsumer networkService;
+  NetworkService networkService;
   AreaResponse? getAreaResponse;
   StatesResponse? allStatesResponse;
   AddressResponse? addressResponse, addAddressResponse;

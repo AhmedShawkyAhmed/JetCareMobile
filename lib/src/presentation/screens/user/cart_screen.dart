@@ -150,7 +150,7 @@ class _CartScreenState extends State<CartScreen> {
                                     .price
                                     .toString(),
                                 onDelete: () {
-                                  IndicatorView.showIndicator(context);
+                                  IndicatorView.showIndicator();
                                   CartCubit(instance()).deleteFromCart(
                                     id: CartCubit(instance())
                                         .cartResponse!

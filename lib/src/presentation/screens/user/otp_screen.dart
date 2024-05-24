@@ -90,7 +90,7 @@ class OTPScreen extends StatelessWidget {
               fontSize: 13.sp,
               textColor: AppColors.primaryLight,
               onTap: () {
-                IndicatorView.showIndicator(context);
+                IndicatorView.showIndicator();
                 AuthCubit(instance()).sendEmail(
                   email: appRouterArgument.phone.toString(),
                   success: () {
@@ -116,7 +116,7 @@ class OTPScreen extends StatelessWidget {
               onTap: () async {
                 if (verifyCodeController.text != "") {
                   if (verifyCodeController.text == verifyCode.toString()) {
-                    IndicatorView.showIndicator(context);
+                    IndicatorView.showIndicator();
                     if (appRouterArgument.type == "resetPassword") {
                       NavigationService.pushNamed(
 

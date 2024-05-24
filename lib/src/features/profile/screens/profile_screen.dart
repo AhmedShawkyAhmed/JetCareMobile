@@ -184,7 +184,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           DefaultToast.showMyToast(
                               translate(AppStrings.passwordMatched));
                         } else {
-                          IndicatorView.showIndicator(context);
+                          IndicatorView.showIndicator();
                           AuthCubit(instance()).register(
                             accountRequest: AccountRequest(
                               name: nameController.text,

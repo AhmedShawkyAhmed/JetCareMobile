@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jetcare/main.dart';
 import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
+import 'package:jetcare/src/core/routing/app_router_names.dart';
 import 'package:jetcare/src/core/services/cache_service.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/utils/enums.dart';
 
 part 'language_state.dart';
@@ -10,21 +12,24 @@ part 'language_state.dart';
 class LanguageCubit extends Cubit<LanguageState> {
   LanguageCubit() : super(LanguageInitial());
 
-  void toArabic({
-    VoidCallback? afterSuccess,
-  }) {
-    CacheService.add(key: CacheKeys.language, value: Languages.ar.name);
-    delegate.changeLocale(Locale(Languages.ar.name));
-    emit(LanguageChangeState());
-    afterSuccess!();
+  Future changeLanguage() async {
+    if (await CacheService.get(key: CacheKeys.language) == Languages.ar.name) {
+      await toEnglish();
+    } else {
+      await toArabic();
+    }
+    NavigationService.pushNamedAndRemoveUntil(Routes.splash, (route) => false);
   }
 
-  void toEnglish({
-    VoidCallback? afterSuccess,
-  }) {
-    CacheService.add(key: CacheKeys.language, value: Languages.en.name);
-    delegate.changeLocale(Locale(Languages.en.name));
+  Future toArabic() async {
+    await CacheService.add(key: CacheKeys.language, value: Languages.ar.name);
+    await delegate.changeLocale(Locale(Languages.ar.name));
     emit(LanguageChangeState());
-    afterSuccess!();
+  }
+
+  Future toEnglish() async {
+    await CacheService.add(key: CacheKeys.language, value: Languages.en.name);
+    await delegate.changeLocale(Locale(Languages.en.name));
+    emit(LanguageChangeState());
   }
 }

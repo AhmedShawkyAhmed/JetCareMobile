@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:jetcare/src/core/utils/shared_methods.dart';
-import 'package:jetcare/src/data/models/user_model.dart';
+import 'package:jetcare/src/features/profile/data/models/user_model.dart';
 
 class Globals {
   Globals._();

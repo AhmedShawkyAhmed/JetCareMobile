@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jetcare/main.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/shared/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
 class TestWidget extends StatelessWidget {
@@ -9,15 +10,13 @@ class TestWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 25.h,
+      height: 3.h,
       decoration: const BoxDecoration(color: AppColors.black),
       child: Center(
-        child: Text(
-          'Version ${packageInfo.version}',
-          style: TextStyle(
-                color: AppColors.white,
-                fontSize: 8.sp,
-              ),
+        child: DefaultText(
+          text: 'Version ${packageInfo.version}',
+          fontSize: 8.sp,
+          textColor: AppColors.white,
         ),
       ),
     );

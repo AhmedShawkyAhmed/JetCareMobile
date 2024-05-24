@@ -73,7 +73,7 @@ class HomeView extends StatelessWidget {
                           )
                         : CardView(
                             onTap: () {
-                              IndicatorView.showIndicator(context);
+                              IndicatorView.showIndicator();
                               if (type == "corporate") {
                                 NavigationService.pop();
                                 NavigationService.pushNamed(

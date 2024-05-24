@@ -1,4 +1,4 @@
-import '../../models/user_model.dart';
+import '../../../features/profile/data/models/user_model.dart';
 
 class AuthResponse {
   int? status;

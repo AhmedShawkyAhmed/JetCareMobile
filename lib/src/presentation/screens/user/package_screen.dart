@@ -168,7 +168,7 @@ class _PackageScreenState extends State<PackageScreen> {
                           DefaultToast.showMyToast(
                               translate(AppStrings.enterQuantity));
                         } else {
-                          IndicatorView.showIndicator(context);
+                          IndicatorView.showIndicator();
                           CartCubit(instance()).addToCart(
                             packageId: DetailsCubit(instance())
                                 .packageResponse!

@@ -3,7 +3,12 @@ enum Environment {
   production,
 }
 
-enum Languages{
+enum Languages {
   ar,
   en,
+}
+
+enum Roles {
+  client,
+  crew,
 }

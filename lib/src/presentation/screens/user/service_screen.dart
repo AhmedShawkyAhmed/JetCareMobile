@@ -164,7 +164,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                               if(quantity == 0){
                                 DefaultToast.showMyToast(translate(AppStrings.enterQuantity));
                               }else{
-                                IndicatorView.showIndicator(context);
+                                IndicatorView.showIndicator();
                                 CartCubit(instance()).addToCart(
                                   itemId: widget.appRouterArgument.itemModel!.id,
                                   count: quantity,

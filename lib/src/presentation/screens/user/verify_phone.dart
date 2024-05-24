@@ -52,7 +52,7 @@ class VerifyPhone extends StatelessWidget {
                   if (emailController.text == "") {
                     DefaultToast.showMyToast(translate(AppStrings.enterPhone));
                   } else {
-                    IndicatorView.showIndicator(context);
+                    IndicatorView.showIndicator();
                     AuthCubit(instance()).checkEmail(
                       email: emailController.text,
                       found: () {

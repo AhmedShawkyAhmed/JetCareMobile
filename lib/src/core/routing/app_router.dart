@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/routing/app_animation.dart';
 import 'package:jetcare/src/core/routing/app_router_names.dart';
 import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
+import 'package:jetcare/src/core/utils/extentions.dart';
+import 'package:jetcare/src/core/utils/shared_methods.dart';
+import 'package:jetcare/src/features/auth/cubit/authenticate_cubit.dart';
+import 'package:jetcare/src/features/auth/screens/login_screen.dart';
+import 'package:jetcare/src/features/profile/screens/profile_screen.dart';
 import 'package:jetcare/src/features/splash/cubit/splash_cubit.dart';
 import 'package:jetcare/src/features/splash/screens/splash_screen.dart';
 import 'package:jetcare/src/presentation/screens/crew/crew_layout_screen.dart';
@@ -20,12 +26,10 @@ import 'package:jetcare/src/presentation/screens/user/corporate_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/home_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/info_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/layout_screen.dart';
-import 'package:jetcare/src/presentation/screens/user/login_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/map_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/order_details_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/otp_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/package_screen.dart';
-import 'package:jetcare/src/features/profile/screens/profile_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/reset_password.dart';
 import 'package:jetcare/src/presentation/screens/user/service_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/success_screen.dart';
@@ -34,9 +38,9 @@ import 'package:jetcare/src/presentation/screens/user/welcome_screen.dart';
 
 class AppRoutes {
   Route? onGenerateRoute(RouteSettings settings) {
-    Routes? navigatedRoute = Routes.values
-        .where((route) => route.path == settings.name)
-        .first;
+    Routes? navigatedRoute =
+        Routes.values.firstWhereOrNull((route) => route.path == settings.name);
+    printSuccess(navigatedRoute);
     if (settings.name == '/') {
       navigatedRoute = Routes.splash;
     }
@@ -51,6 +55,17 @@ class AppRoutes {
       case Routes.welcome:
         return CustomPageRouteTransiton.fadeOut(
           page: const WelcomeScreen(),
+        );
+      case Routes.login:
+        return CustomPageRouteTransiton.fadeOut(
+          page: BlocProvider(
+            create: (context) => AuthenticateCubit(instance()),
+            child: const LoginScreen(),
+          ),
+        );
+      case Routes.disable:
+        return CustomPageRouteTransiton.fadeOut(
+          page: const DisableAccountScreen(),
         );
       case Routes.resetPassword:
         final AppRouterArgument appRouterArgument =
@@ -83,14 +98,6 @@ class AppRoutes {
           page: ConfirmOrderScreen(
             appRouterArgument: appRouterArgument,
           ),
-        );
-      case Routes.login:
-        return CustomPageRouteTransiton.fadeOut(
-          page: const LoginScreen(),
-        );
-      case Routes.disable:
-        return CustomPageRouteTransiton.fadeOut(
-          page: const DisableAccountScreen(),
         );
       case Routes.verify:
         return CustomPageRouteTransiton.fadeOut(

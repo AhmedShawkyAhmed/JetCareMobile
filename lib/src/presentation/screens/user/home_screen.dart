@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           InkWell(
                             onTap: () {
-                              IndicatorView.showIndicator(context);
+                              IndicatorView.showIndicator();
                               NotificationCubit(instance()).getNotifications(
                                 userId: globalAccountModel.id!,
                                 afterSuccess: () {

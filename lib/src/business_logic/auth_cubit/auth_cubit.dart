@@ -3,25 +3,22 @@ import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jetcare/main.dart';
 import 'package:jetcare/src/core/constants/constants_variables.dart';
 import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
-import 'package:jetcare/src/core/network/api_consumer.dart';
+import 'package:jetcare/src/core/network/network_service.dart';
 import 'package:jetcare/src/core/network/end_points.dart';
 import 'package:jetcare/src/core/services/cache_service.dart';
-import 'package:jetcare/src/core/shared/widgets/toast.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/data/network/requests/account_request.dart';
+import 'package:jetcare/src/data/network/responses/auth_response.dart';
 import 'package:jetcare/src/data/network/responses/global_response.dart';
-
-import '../../data/network/requests/auth_request.dart';
-import '../../data/network/responses/auth_response.dart';
+import 'package:jetcare/src/features/auth/data/requests/login_request.dart';
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit(this.networkService) : super(AuthInitial());
-  ApiConsumer networkService;
+  NetworkService networkService;
   AuthResponse? authResponse, updateAccountResponse, registerResponse;
   GlobalResponse? globalResponse,
       checkPhoneResponse,
@@ -35,73 +32,6 @@ class AuthCubit extends Cubit<AuthState> {
   void isPassword() {
     pass = !pass;
     emit(ChangePasswordState());
-  }
-
-  Future login({
-    required AuthRequest authRequest,
-    required VoidCallback client,
-    required VoidCallback crew,
-    required VoidCallback disable,
-    required VoidCallback afterFail,
-  }) async {
-    try {
-      emit(LoginLoadingState());
-      await networkService.post(
-        url: EndPoints.login,
-        body: {
-          'email': authRequest.phone,
-          'password': authRequest.password,
-        },
-      ).then((value) {
-        printResponse(value.data.toString());
-        if (value.data['status'].toString() != "200") {
-          afterFail();
-          DefaultToast.showMyToast(value.data['message'].toString());
-        } else {
-          authResponse = AuthResponse.fromJson(value.data);
-          globalAccountModel = authResponse!.accountModel!;
-          CacheService.add(
-              key: CacheKeys.phone,
-              value: authRequest.phone.toString());
-          CacheService.add(
-              key: CacheKeys.password,
-              value: authRequest.password.toString());
-          printSuccess("Auth Response ${authResponse!.status.toString()}");
-          emit(LoginSuccessState());
-          if (authResponse!.accountModel!.active != 1) {
-            disable();
-          } else {
-            CacheService.add(
-                key: CacheKeys.role,
-                value: authResponse!.accountModel!.role);
-            if (authResponse!.accountModel!.role == "client") {
-              client();
-            } else {
-              crew();
-            }
-          }
-          if (CacheService.get(
-              key: CacheKeys.fcm) ==
-              null) {
-            CacheService.add(
-                key: CacheKeys.fcm, value: fcmToken);
-          } else if (CacheService.get(
-              key: CacheKeys.fcm) !=
-              globalAccountModel.fcm) {
-            updateFCM(
-              id: globalAccountModel.id!,
-              fcm: fcmToken!,
-            );
-          }
-        }
-      });
-    } on DioException catch (n) {
-      emit(LoginErrorState());
-      printError(n.toString());
-    } catch (e) {
-      emit(LoginErrorState());
-      printError(e.toString());
-    }
   }
 
   Future updateFCM({
@@ -118,8 +48,7 @@ class AuthCubit extends Cubit<AuthState> {
         },
       ).then((value) {
         fcmResponse = GlobalResponse.fromJson(value.data);
-        printSuccess(
-            "FCM Response ${fcmResponse!.status.toString()}");
+        printSuccess("FCM Response ${fcmResponse!.status.toString()}");
         emit(FCMSuccessState());
       });
     } on DioException catch (n) {
@@ -132,7 +61,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future resetPassword({
-    required AuthRequest authRequest,
+    required LoginRequest authRequest,
     required VoidCallback afterSuccess,
   }) async {
     try {
@@ -140,7 +69,7 @@ class AuthCubit extends Cubit<AuthState> {
       await networkService.post(
         url: EndPoints.resetPassword,
         body: {
-          'phone': authRequest.phone,
+          'phone': authRequest.email,
           'password': authRequest.password,
         },
       ).then((value) {
@@ -212,11 +141,9 @@ class AuthCubit extends Cubit<AuthState> {
         registerResponse = AuthResponse.fromJson(value.data);
         globalAccountModel = registerResponse!.accountModel!;
         CacheService.add(
-            key: CacheKeys.phone,
-            value: accountRequest.email.toString());
+            key: CacheKeys.phone, value: accountRequest.email.toString());
         CacheService.add(
-            key: CacheKeys.password,
-            value: accountRequest.password.toString());
+            key: CacheKeys.password, value: accountRequest.password.toString());
         printSuccess(
             "Register Response ${registerResponse!.status.toString()}");
         emit(RegisterSuccessState());
