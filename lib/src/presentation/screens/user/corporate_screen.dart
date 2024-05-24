@@ -4,16 +4,15 @@ import 'package:jetcare/src/business_logic/order_cubit/order_cubit.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
 import 'package:jetcare/src/core/constants/constants_variables.dart';
-import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/routing/app_router_names.dart';
 import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
-import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
 import 'package:jetcare/src/core/shared/widgets/default_text.dart';
 import 'package:jetcare/src/core/shared/widgets/default_text_field.dart';
 import 'package:jetcare/src/core/shared/widgets/toast.dart';
+import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/data/network/requests/corporate_request.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/card_view.dart';
@@ -42,9 +41,7 @@ class CorporateScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 5.h),
               child: CardView(
-                title: CacheService.get(
-                            key: CacheKeys.language) ==
-                        "ar"
+                title: isArabic
                     ? appRouterArgument.itemModel!.nameAr
                     : appRouterArgument.itemModel!.nameEn,
                 image: appRouterArgument.itemModel!.image!,
@@ -74,9 +71,7 @@ class CorporateScreen extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5.w),
                 child: DefaultText(
-                  text: CacheService.get(
-                              key: CacheKeys.language) ==
-                          "ar"
+                  text: isArabic
                       ? appRouterArgument.itemModel!.descriptionAr.toString()
                       : appRouterArgument.itemModel!.descriptionEn.toString(),
                   fontSize: 12.sp,

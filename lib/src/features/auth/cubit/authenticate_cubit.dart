@@ -1,26 +1,26 @@
 import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/main.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
+import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
-import 'package:jetcare/src/core/network/network_service.dart';
-import 'package:jetcare/src/core/network/end_points.dart';
-import 'package:jetcare/src/core/network/network_base_model.dart';
+import 'package:jetcare/src/core/network/models/network_base_model.dart';
+import 'package:jetcare/src/core/network/models/network_exceptions.dart';
+import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/shared/widgets/toast.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
+import 'package:jetcare/src/features/auth/data/repo/auth_repo.dart';
 import 'package:jetcare/src/features/auth/data/requests/fcm_request.dart';
 import 'package:jetcare/src/features/auth/data/requests/login_request.dart';
 import 'package:jetcare/src/features/profile/cubit/profile_cubit.dart';
-import 'package:jetcare/src/features/profile/data/models/user_model.dart';
 import 'package:jetcare/src/presentation/views/indicator_view.dart';
 
 part 'authenticate_state.dart';
 
 class AuthenticateCubit extends Cubit<AuthenticateState> {
-  AuthenticateCubit(this.networkService) : super(AuthenticateInitial());
-  NetworkService networkService;
+  AuthenticateCubit(this.repo) : super(AuthenticateInitial());
+  AuthRepo repo;
 
   bool password = true;
   bool singIn = true;
@@ -38,54 +38,47 @@ class AuthenticateCubit extends Cubit<AuthenticateState> {
     }
     IndicatorView.showIndicator();
     emit(AuthenticateLoading());
-    try {
-      await networkService
-          .post(
-        url: EndPoints.login,
-        body: LoginRequest(
-          email: emailController.text,
-          password: passwordController.text,
-        ),
-      )
-          .then((value) async {
-        NetworkBaseModel<UserModel> response =
-            NetworkBaseModel.fromJson(value.data);
-        await updateFCM(id: response.data!.id!);
+    var response = await repo.login(
+      request: LoginRequest(
+        email: emailController.text,
+        password: passwordController.text,
+      ),
+    );
+    response.when(
+      success: (NetworkBaseModel response) async {
+        emit(AuthenticateSuccess());
+        CacheService.add(key: CacheKeys.token,value: response.data!.token);
+        if (fcmToken != null) {
+          await updateFCM(id: response.data!.id!);
+        }
         await ProfileCubit(instance()).getProfile();
-      });
-    } on DioException catch (n) {
-      printError(n.toString());
-      emit(AuthenticateFailure());
-    } catch (e) {
-      printError(e);
-      emit(AuthenticateFailure());
-    }
+      },
+      failure: (NetworkExceptions error) {
+        emit(AuthenticateFailure());
+        error.showError();
+      },
+    );
   }
 
   Future updateFCM({
     required int id,
   }) async {
-    try {
-      emit(FCMLoadingState());
-      await networkService
-          .post(
-        url: EndPoints.updateFCM,
-        body: FCMRequest(
-          id: id,
-          fcm: fcmToken!,
-        ),
-      )
-          .then((value) {
-        NetworkBaseModel response = NetworkBaseModel.fromJson(value.data);
-        printSuccess("FCM Response ${response.status}");
+    emit(FCMLoadingState());
+    var response = await repo.fcm(
+      request: FCMRequest(
+        id: id,
+        fcm: fcmToken!,
+      ),
+    );
+    response.when(
+      success: (NetworkBaseModel response) async {
         emit(FCMSuccessState());
-      });
-    } on DioException catch (n) {
-      emit(FCMErrorState());
-      printError(n.toString());
-    } catch (e) {
-      emit(FCMErrorState());
-      printError(e.toString());
-    }
+        printSuccess("FCM Response ${response.status}");
+      },
+      failure: (NetworkExceptions error) {
+        emit(FCMErrorState());
+        error.showError();
+      },
+    );
   }
 }

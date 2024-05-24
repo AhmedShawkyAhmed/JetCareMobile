@@ -22,6 +22,7 @@ enum Routes {
   profile,
   appointment,
   disable,
+  deleted,
   confirmOrder,
   notification,
   cart,

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:jetcare/src/business_logic/app_cubit/app_cubit.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
 import 'package:jetcare/src/core/routing/app_router_names.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
 import 'package:jetcare/src/core/shared/widgets/default_text.dart';
+import 'package:jetcare/src/features/layout/cubit/layout_cubit.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:sizer/sizer.dart';
 
@@ -39,7 +39,7 @@ class AddedSuccessScreen extends StatelessWidget {
             DefaultAppButton(
               title: translate(AppStrings.goToCart),
               onTap: () {
-                AppCubit().changeIndex(2);
+                LayoutCubit().changeIndex(2);
                 NavigationService.pushNamedAndRemoveUntil(
 
                   Routes.layout,
@@ -50,7 +50,7 @@ class AddedSuccessScreen extends StatelessWidget {
             DefaultAppButton(
               title: translate(AppStrings.goToHome),
               onTap: () {
-                AppCubit().changeIndex(0);
+                LayoutCubit().changeIndex(0);
                 NavigationService.pushNamedAndRemoveUntil(
 
                   Routes.layout,

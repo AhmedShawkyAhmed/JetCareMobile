@@ -5,6 +5,7 @@ import 'package:jetcare/src/core/routing/app_router_names.dart';
 import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
 import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/data/models/package_model.dart';
 import 'package:jetcare/src/presentation/views/card_view.dart';
 import 'package:sizer/sizer.dart';
@@ -64,9 +65,7 @@ class ServiceView extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 3.w),
                       child: Text(
-                        CacheService.get(
-                                    key: CacheKeys.language) ==
-                                "ar"
+                        isArabic
                             ? packageList[index].nameAr.toString()
                             : packageList[index].nameEn.toString(),
                         style: TextStyle(
@@ -98,9 +97,7 @@ class ServiceView extends StatelessWidget {
                             width: 32.w,
                             colorMain: AppColors.primary.withOpacity(0.8),
                             colorSub: AppColors.shade.withOpacity(0.4),
-                            title: CacheService.get(
-                                        key: CacheKeys.language) ==
-                                    "ar"
+                            title: isArabic
                                 ? packageList[index].items![position].nameAr
                                 : packageList[index].items![position].nameEn,
                             titleFont: 10.sp,

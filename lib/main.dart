@@ -10,7 +10,7 @@ import 'package:jetcare/src/core/services/bloc_observer.dart';
 import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/services/notification_service.dart';
 import 'package:jetcare/src/core/utils/enums.dart';
-import 'package:jetcare/src/presentation/screens/shared/error_screen.dart';
+import 'package:jetcare/src/features/disable/screens/error_screen.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 late LocalizationDelegate delegate;

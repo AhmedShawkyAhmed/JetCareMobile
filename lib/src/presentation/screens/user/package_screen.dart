@@ -49,9 +49,7 @@ class _PackageScreenState extends State<PackageScreen> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5.w),
                 child: CardView(
-                  title: CacheService.get(
-                              key: CacheKeys.language) ==
-                          "ar"
+                  title: isArabic
                       ? DetailsCubit(instance())
                           .packageResponse!
                           .packageModel!
@@ -81,9 +79,7 @@ class _PackageScreenState extends State<PackageScreen> {
                       DetailsCubit(instance()).packageResponse!.items!.length,
                   itemBuilder: (context, index) {
                     return PackageItem(
-                      title: CacheService.get(
-                                  key: CacheKeys.language) ==
-                              "ar"
+                      title: isArabic
                           ? DetailsCubit(instance())
                               .packageResponse!
                               .items![index]

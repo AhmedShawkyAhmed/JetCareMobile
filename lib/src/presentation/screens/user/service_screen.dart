@@ -54,9 +54,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                     Padding(
                       padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 5.h),
                       child: CardView(
-                        title: CacheService.get(
-                                    key: CacheKeys.language) ==
-                                "ar"
+                        title: isArabic
                             ? widget.appRouterArgument.itemModel!.nameAr
                             : widget.appRouterArgument.itemModel!.nameEn,
                         image: widget.appRouterArgument.itemModel!.image,
@@ -83,9 +81,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         padding: EdgeInsets.symmetric(horizontal: 5.w),
                         child: DefaultText(
                           maxLines: 17,
-                          text: CacheService.get(
-                                      key: CacheKeys.language) ==
-                                  "ar"
+                          text: isArabic
                               ? widget.appRouterArgument.itemModel!.descriptionAr!
                               : widget
                                   .appRouterArgument.itemModel!.descriptionEn!,

@@ -7,8 +7,8 @@ class EndPoints {
 
 // --------------------- new api
   // ------------------- Auth
-  static const register = "register";
   static const login = "login";
+  static const register = "register";
   static const resetPassword = "reset_password";
   static const forgetPassword = "forget_password";
   static const logout = "logout";

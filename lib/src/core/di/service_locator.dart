@@ -4,7 +4,12 @@ import 'package:jetcare/src/core/network/dio_consumer.dart';
 import 'package:jetcare/src/core/network/dio_factory.dart';
 import 'package:jetcare/src/core/network/network_service.dart';
 import 'package:jetcare/src/features/auth/cubit/authenticate_cubit.dart';
+import 'package:jetcare/src/features/auth/data/repo/auth_repo.dart';
+import 'package:jetcare/src/features/auth/service/auth_web_service.dart';
+import 'package:jetcare/src/features/layout/cubit/layout_cubit.dart';
 import 'package:jetcare/src/features/profile/cubit/profile_cubit.dart';
+import 'package:jetcare/src/features/profile/data/repo/profile_repo.dart';
+import 'package:jetcare/src/features/profile/service/profile_web_service.dart';
 import 'package:jetcare/src/features/splash/cubit/splash_cubit.dart';
 
 final instance = GetIt.instance;
@@ -20,18 +25,13 @@ Future<void> initAppModule() async {
 
   // --------------------- Cubit
   instance.registerFactory<SplashCubit>(() => SplashCubit());
+  instance.registerFactory<LayoutCubit>(() => LayoutCubit());
   instance.registerFactory<ProfileCubit>(() => ProfileCubit(instance()));
-  instance
-      .registerFactory<AuthenticateCubit>(() => AuthenticateCubit(instance()));
-  // instance.registerFactory<AppCubit>(() => AppCubit());
-  // instance.registerFactory<AddressCubit>(() => AddressCubit(instance()));
-  // instance.registerFactory<AuthCubit>(() => AuthCubit(instance()));
-  // instance.registerFactory<CalenderCubit>(() => CalenderCubit(instance()));
-  // instance.registerFactory<CartCubit>(() => CartCubit(instance()));
-  // instance.registerFactory<DetailsCubit>(() => DetailsCubit(instance()));
-  // instance.registerFactory<GlobalCubit>(() => GlobalCubit(instance()));
-  // instance.registerFactory<LanguageCubit>(() => LanguageCubit());
-  // instance
-  //     .registerFactory<NotificationCubit>(() => NotificationCubit(instance()));
-  // instance.registerFactory<OrderCubit>(() => OrderCubit(instance()));
+  instance.registerFactory<AuthenticateCubit>(() => AuthenticateCubit(instance()));
+  // --------------------- Repo
+  instance.registerLazySingleton<AuthRepo>(() => AuthRepo(instance()));
+  instance.registerLazySingleton<ProfileRepo>(() => ProfileRepo(instance()));
+  // --------------------- Web Service
+  instance.registerLazySingleton<AuthWebService>(() => AuthWebService(instance()));
+  instance.registerLazySingleton<ProfileWebService>(() => ProfileWebService(instance()));
 }

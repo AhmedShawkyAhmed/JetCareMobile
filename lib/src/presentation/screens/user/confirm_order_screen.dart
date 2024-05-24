@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:jetcare/src/business_logic/app_cubit/app_cubit.dart';
 import 'package:jetcare/src/business_logic/notification_cubit/notification_cubit.dart';
 import 'package:jetcare/src/business_logic/order_cubit/order_cubit.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
@@ -17,6 +16,8 @@ import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
 import 'package:jetcare/src/core/shared/widgets/default_text.dart';
 import 'package:jetcare/src/core/shared/widgets/default_text_field.dart';
 import 'package:jetcare/src/core/shared/widgets/toast.dart';
+import 'package:jetcare/src/core/utils/shared_methods.dart';
+import 'package:jetcare/src/features/layout/cubit/layout_cubit.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/cart_item.dart';
 import 'package:jetcare/src/presentation/views/indicator_view.dart';
@@ -238,7 +239,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                                       status: "canceled",
                                       reason: reasonController.text,
                                       afterSuccess: () {
-                                        AppCubit().changeIndex(0);
+                                        LayoutCubit().changeIndex(0);
                                         NavigationService.pushReplacementNamed(
                                             Routes.layout);
                                         NotificationCubit(instance())
@@ -300,16 +301,12 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                     name: widget.appRouterArgument.orderModel!.cart![index]
                                 .package ==
                             null
-                        ? CacheService.get(
-                                    key: CacheKeys.language) ==
-                                "ar"
+                        ? isArabic
                             ? widget.appRouterArgument.orderModel!.cart![index]
                                 .item!.nameAr!
                             : widget.appRouterArgument.orderModel!.cart![index]
                                 .item!.nameEn!
-                        : CacheService.get(
-                                    key: CacheKeys.language) ==
-                                "ar"
+                        : isArabic
                             ? widget.appRouterArgument.orderModel!.cart![index]
                                 .package!.nameAr!
                             : widget.appRouterArgument.orderModel!.cart![index]

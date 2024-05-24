@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
-import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
-import 'package:jetcare/src/core/services/cache_service.dart';
+import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:sizer/sizer.dart';
 
 class DefaultTextField extends StatelessWidget {
@@ -79,11 +78,7 @@ class DefaultTextField extends StatelessWidget {
         controller: controller,
         obscureText: password ?? false,
         obscuringCharacter: "*",
-        textDirection: CacheService.get(
-                    key: CacheKeys.language) ==
-                "ar"
-            ? TextDirection.rtl
-            : TextDirection.ltr,
+        textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
         style: TextStyle(
           color: textColor ?? AppColors.darkGrey,
           fontSize: fontSize ?? 8.sp,
@@ -127,15 +122,11 @@ class DefaultTextField extends StatelessWidget {
             fontSize: 8.sp,
           ),
           border: InputBorder.none,
-          hintTextDirection: CacheService.get(
-                      key: CacheKeys.language) ==
-                  "ar"
-              ? TextDirection.rtl
-              : TextDirection.ltr,
+          hintTextDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
           filled: true,
           fillColor: AppColors.white,
           contentPadding: EdgeInsets.only(
-            bottom:  5.sp,
+            bottom: 5.sp,
             left: 5.sp,
             right: 5.sp,
           ),

@@ -47,9 +47,7 @@ class DefaultText extends StatelessWidget {
           fontSize: fontSize ?? 14.sp,
           fontWeight: fontWeight ?? FontWeight.normal,
         ),
-        // textDirection: CacheHelper.getDataFromSharedPreference(
-        //             key: SharedPreferenceKeys.language) ==
-        //         "ar"
+        // textDirection: isArabic
         //     ? TextDirection.rtl
         //     : TextDirection.ltr,
         maxLines: maxLines ?? 1,

@@ -97,9 +97,7 @@ class _MapScreenState extends State<MapScreen> {
             },
           ),
           Align(
-            alignment: CacheService.get(
-                        key: CacheKeys.language) ==
-                    "ar"
+            alignment: isArabic
                 ? Alignment.topRight
                 : Alignment.topLeft,
             child: Padding(

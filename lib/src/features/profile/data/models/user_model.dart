@@ -1,3 +1,8 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'user_model.g.dart';
+
+@JsonSerializable()
 class UserModel {
   int? id;
   String? name;
@@ -5,6 +10,7 @@ class UserModel {
   String? email;
   num? rate;
   String? role;
+  String? token;
   int? active;
   int? archive;
 
@@ -15,29 +21,13 @@ class UserModel {
     this.email,
     this.rate,
     this.role,
+    this.token,
     this.active,
     this.archive,
   });
 
-  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-        id: json['id'] as int?,
-        name: json['name'] as String?,
-        phone: json['phone'] as String?,
-        email: json['email'] as String?,
-        rate: json['rate'] as num?,
-        role: json['role'] as String?,
-        active: json['active'] as int?,
-        archive: json['archive'] as int?,
-      );
+  factory UserModel.fromJson(Map<String, dynamic> json) =>
+      _$UserModelFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'phone': phone,
-        'email': email,
-        'rate': rate,
-        'role': role,
-        'active': active,
-        'archive': archive,
-      };
+  Map<String, dynamic> toJson() => _$UserModelToJson(this);
 }

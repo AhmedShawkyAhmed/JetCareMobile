@@ -29,6 +29,7 @@ class AppStrings {
   static const String about = "about";
   static const String logout = "logout";
   static const String deleteAccount = "deleteAccount";
+  static const String restoreAccount = "restoreAccount";
   static const String cancel = "cancel";
   static const String deleteAlert = "deleteAlert";
   static const String addAddress = "addAddress";
@@ -108,6 +109,7 @@ class AppStrings {
   static const String order = "order";
   static const String orderSpace = "orderSpace";
   static const String stopped = "stopped";
+  static const String deleted = "deleted";
   static const String tasks = "tasks";
   static const String history = "history";
   static const String noTasks = "noTasks";

@@ -1,3 +1,8 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'fcm_request.g.dart';
+
+@JsonSerializable()
 class FCMRequest {
   final int id;
   final String fcm;
@@ -7,13 +12,8 @@ class FCMRequest {
     required this.fcm,
   });
 
-  factory FCMRequest.fromJson(Map<String, dynamic> json) => FCMRequest(
-    id: json['id'] as int,
-    fcm: json['fcm'] as String,
-  );
+  factory FCMRequest.fromJson(Map<String, dynamic> json) =>
+      _$FCMRequestFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'fcm': fcm,
-  };
+  Map<String, dynamic> toJson() => _$FCMRequestToJson(this);
 }

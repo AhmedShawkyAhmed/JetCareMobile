@@ -4,14 +4,12 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/business_logic/language_cubit/language_cubit.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
-import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
 import 'package:jetcare/src/core/routing/app_router_names.dart';
-import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
 import 'package:jetcare/src/core/shared/widgets/default_text.dart';
 import 'package:jetcare/src/core/shared/widgets/default_text_field.dart';
-import 'package:jetcare/src/core/utils/enums.dart';
+import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/features/auth/cubit/authenticate_cubit.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:sizer/sizer.dart';
@@ -54,10 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           child: Center(
                             child: DefaultText(
-                              text: CacheService.get(key: CacheKeys.language) ==
-                                      Languages.ar.name
-                                  ? "En"
-                                  : "ع",
+                              text: isArabic ? "En" : "ع",
                               fontSize: 13.sp,
                               align: TextAlign.center,
                             ),

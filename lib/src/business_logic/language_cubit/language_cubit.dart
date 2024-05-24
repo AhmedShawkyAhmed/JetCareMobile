@@ -6,6 +6,7 @@ import 'package:jetcare/src/core/routing/app_router_names.dart';
 import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/utils/enums.dart';
+import 'package:jetcare/src/core/utils/shared_methods.dart';
 
 part 'language_state.dart';
 
@@ -13,7 +14,7 @@ class LanguageCubit extends Cubit<LanguageState> {
   LanguageCubit() : super(LanguageInitial());
 
   Future changeLanguage() async {
-    if (await CacheService.get(key: CacheKeys.language) == Languages.ar.name) {
+    if (isArabic) {
       await toEnglish();
     } else {
       await toArabic();

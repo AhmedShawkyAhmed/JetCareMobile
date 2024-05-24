@@ -90,10 +90,7 @@ class _ExtraItemViewState extends State<ExtraView> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 DefaultText(
-                                  text: CacheService.get(
-                                              key: CacheKeys
-                                                  .language) ==
-                                          "ar"
+                                  text: isArabic
                                       ? widget.extras[index].nameAr ?? ""
                                       : widget.extras[index].nameEn ?? "",
                                   textColor: AppColors.white,

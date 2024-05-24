@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:jetcare/src/business_logic/app_cubit/app_cubit.dart';
 import 'package:jetcare/src/business_logic/auth_cubit/auth_cubit.dart';
 import 'package:jetcare/src/business_logic/global_cubit/global_cubit.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
@@ -14,6 +13,8 @@ import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
 import 'package:jetcare/src/core/shared/widgets/default_text.dart';
+import 'package:jetcare/src/core/utils/enums.dart';
+import 'package:jetcare/src/features/layout/cubit/layout_cubit.dart';
 import 'package:jetcare/src/features/profile/data/models/user_model.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/language_alert.dart';
@@ -59,7 +60,6 @@ class MoreScreen extends StatelessWidget {
                 icon: Icons.person,
                 onTap: () {
                   NavigationService.pushNamed(
-
                     Routes.profile,
                     arguments: AppRouterArgument(
                       type: "profile",
@@ -89,7 +89,7 @@ class MoreScreen extends StatelessWidget {
               title: translate(AppStrings.contactUs),
               icon: Icons.support,
               onTap: () {
-                NavigationService.pushNamed( Routes.contact);
+                NavigationService.pushNamed(Routes.contact);
               },
             ),
             MoreItem(
@@ -110,7 +110,6 @@ class MoreScreen extends StatelessWidget {
               icon: Icons.note_alt_rounded,
               onTap: () {
                 NavigationService.pushNamed(
-
                   Routes.info,
                   arguments: AppRouterArgument(
                     infoModel: GlobalCubit(instance()).infoResponse!.terms,
@@ -123,7 +122,6 @@ class MoreScreen extends StatelessWidget {
               icon: Icons.info,
               onTap: () {
                 NavigationService.pushNamed(
-
                   Routes.info,
                   arguments: AppRouterArgument(
                     infoModel: GlobalCubit(instance()).infoResponse!.about,
@@ -137,11 +135,9 @@ class MoreScreen extends StatelessWidget {
               onTap: () {
                 CacheService.clear();
                 globalAccountModel = UserModel();
-                AppCubit().currentIndex = 0;
-                CacheService.add(
-                    key: CacheKeys.language, value: "ar");
+                LayoutCubit().currentIndex = 0;
+                CacheService.add(key: CacheKeys.language, value: Languages.ar.name);
                 NavigationService.pushNamedAndRemoveUntil(
-
                   Routes.login,
                   (route) => false,
                 );
@@ -188,7 +184,6 @@ class MoreScreen extends StatelessWidget {
                               afterSuccess: () {
                                 CacheService.clear();
                                 NavigationService.pushNamedAndRemoveUntil(
-
                                   Routes.login,
                                   (route) => false,
                                 );

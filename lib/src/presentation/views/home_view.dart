@@ -7,6 +7,7 @@ import 'package:jetcare/src/core/routing/app_router_names.dart';
 import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
 import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/data/models/item_model.dart';
 import 'package:jetcare/src/data/models/package_model.dart';
 import 'package:jetcare/src/presentation/views/card_view.dart';
@@ -114,9 +115,7 @@ class HomeView extends StatelessWidget {
                             },
                             colorMain: AppColors.primary.withOpacity(0.8),
                             colorSub: AppColors.shade.withOpacity(0.4),
-                            title: CacheService.get(
-                                        key: CacheKeys.language) ==
-                                    "ar"
+                            title: isArabic
                                 ? packageList == null
                                     ? itemList![index].nameAr
                                     : packageList![index].nameAr

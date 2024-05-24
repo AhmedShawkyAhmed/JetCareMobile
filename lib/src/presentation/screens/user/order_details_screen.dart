@@ -14,6 +14,7 @@ import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
 import 'package:jetcare/src/core/shared/widgets/default_text.dart';
 import 'package:jetcare/src/core/shared/widgets/toast.dart';
+import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/card_view.dart';
 import 'package:jetcare/src/presentation/views/home_view.dart';
@@ -49,9 +50,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         ? CardView(
                             image: widget
                                 .appRouterArgument.orderModel!.package!.image,
-                            title: CacheService.get(
-                                        key: CacheKeys.language) ==
-                                    "ar"
+                            title: isArabic
                                 ? widget.appRouterArgument.orderModel!.package!
                                     .nameAr
                                 : widget.appRouterArgument.orderModel!.package!
@@ -66,9 +65,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         : CardView(
                             image: widget
                                 .appRouterArgument.orderModel!.item!.image,
-                            title: CacheService.get(
-                                        key: CacheKeys.language) ==
-                                    "ar"
+                            title: isArabic
                                 ? widget
                                     .appRouterArgument.orderModel!.item!.nameAr
                                 : widget
@@ -90,18 +87,14 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     ),
                     widget.appRouterArgument.type == "package"
                         ? DefaultText(
-                            text: CacheService.get(
-                                        key: CacheKeys.language) ==
-                                    "ar"
+                            text: isArabic
                                 ? "${widget.appRouterArgument.orderModel!.package!.descriptionAr}"
                                 : "${widget.appRouterArgument.orderModel!.package!.descriptionEn}",
                             maxLines: 50,
                             fontSize: 15.sp,
                           )
                         : DefaultText(
-                            text: CacheService.get(
-                                        key: CacheKeys.language) ==
-                                    "ar"
+                            text: isArabic
                                 ? "${widget.appRouterArgument.orderModel!.item!.descriptionAr}"
                                 : "${widget.appRouterArgument.orderModel!.item!.descriptionEn}",
                             maxLines: 50,
@@ -307,9 +300,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     CardView(
                       image:
                           widget.appRouterArgument.corporateModel!.item!.image,
-                      title: CacheService.get(
-                                  key: CacheKeys.language) ==
-                              "ar"
+                      title: isArabic
                           ? widget
                               .appRouterArgument.corporateModel!.item!.nameAr
                           : widget
@@ -328,9 +319,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                       ),
                     ),
                     DefaultText(
-                      text: CacheService.get(
-                                  key: CacheKeys.language) ==
-                              "ar"
+                      text: isArabic
                           ? "${widget.appRouterArgument.corporateModel!.item!.descriptionAr}"
                           : "${widget.appRouterArgument.corporateModel!.item!.descriptionEn}",
                       maxLines: 50,

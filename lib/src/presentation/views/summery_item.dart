@@ -3,6 +3,8 @@ import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
 import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/shared/widgets/default_text.dart';
+import 'package:jetcare/src/core/utils/enums.dart';
+import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:sizer/sizer.dart';
 
 class SummeryItem extends StatelessWidget {
@@ -45,9 +47,7 @@ class SummeryItem extends StatelessWidget {
                     text: sub,
                     fontSize: 13.sp,
                     maxLines: 1,
-                    align: CacheService.get(
-                                key: CacheKeys.language) ==
-                            "ar"
+                    align: isArabic
                         ? TextAlign.left
                         : TextAlign.right,
                   ),

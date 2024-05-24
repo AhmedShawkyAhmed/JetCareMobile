@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jetcare/src/business_logic/language_cubit/language_cubit.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
-import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
-import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/shared/widgets/default_text.dart';
-import 'package:jetcare/src/core/utils/enums.dart';
+import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:sizer/sizer.dart';
 
 class LanguageAlert extends StatelessWidget {
@@ -26,29 +24,21 @@ class LanguageAlert extends StatelessWidget {
           children: [
             DefaultText(
               text: "العربية",
-              onTap:
-                  CacheService.get(key: CacheKeys.language) == Languages.ar.name
-                      ? null
-                      : () {
-                          LanguageCubit().changeLanguage();
-                        },
-              textColor:
-                  CacheService.get(key: CacheKeys.language) == Languages.ar.name
-                      ? AppColors.silver
-                      : AppColors.white,
+              onTap: isArabic
+                  ? null
+                  : () {
+                      LanguageCubit().changeLanguage();
+                    },
+              textColor: isArabic ? AppColors.silver : AppColors.white,
             ),
             DefaultText(
               text: "English",
-              onTap:
-                  CacheService.get(key: CacheKeys.language) == Languages.ar.name
-                      ? () {
-                          LanguageCubit().changeLanguage();
-                        }
-                      : null,
-              textColor:
-                  CacheService.get(key: CacheKeys.language) == Languages.ar.name
-                      ? AppColors.white
-                      : AppColors.silver,
+              onTap: isArabic
+                  ? () {
+                      LanguageCubit().changeLanguage();
+                    }
+                  : null,
+              textColor: isArabic ? AppColors.white : AppColors.silver,
             ),
           ],
         ),

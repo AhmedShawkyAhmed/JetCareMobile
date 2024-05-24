@@ -7,6 +7,7 @@ import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/shared/widgets/default_text.dart';
+import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/card_view.dart';
 import 'package:jetcare/src/presentation/views/home_view.dart';
@@ -32,9 +33,7 @@ class CategoryScreen extends StatelessWidget {
                 top: 5.h
               ),
               child: CardView(
-                title: CacheService.get(
-                            key: CacheKeys.language) ==
-                        "ar"
+                title: isArabic
                     ? DetailsCubit(instance())
                         .categoryResponse!
                         .categoryModel!
@@ -69,9 +68,7 @@ class CategoryScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   DefaultText(
-                    text: CacheService.get(
-                                key: CacheKeys.language) ==
-                            "ar"
+                    text: isArabic
                         ? DetailsCubit(instance())
                             .categoryResponse!
                             .categoryModel!

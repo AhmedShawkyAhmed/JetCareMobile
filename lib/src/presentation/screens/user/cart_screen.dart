@@ -5,14 +5,13 @@ import 'package:jetcare/src/business_logic/cart_cubit/cart_cubit.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
 import 'package:jetcare/src/core/constants/constants_variables.dart';
-import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/routing/app_router_names.dart';
 import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
-import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
 import 'package:jetcare/src/core/shared/widgets/default_text.dart';
+import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/cart_item.dart';
 import 'package:jetcare/src/presentation/views/indicator_view.dart';
@@ -75,8 +74,12 @@ class _CartScreenState extends State<CartScreen> {
                             title: translate(AppStrings.con),
                             fontSize: 14.sp,
                             onTap: () {
-                              NavigationService.pushNamed(
-                                  Routes.appointment,arguments: AppRouterArgument(total: CartCubit(instance()).cartResponse?.total.toString()));
+                              NavigationService.pushNamed(Routes.appointment,
+                                  arguments: AppRouterArgument(
+                                      total: CartCubit(instance())
+                                          .cartResponse
+                                          ?.total
+                                          .toString()));
                             },
                             textColor: AppColors.primary,
                             buttonColor: AppColors.white,
@@ -113,32 +116,30 @@ class _CartScreenState extends State<CartScreen> {
                                             .cart![index]
                                             .package ==
                                         null
-                                    ? CacheService.get(
-                                    key: CacheKeys.language) ==
-                                    "ar"
-                                    ? CartCubit(instance())
+                                    ? isArabic
+                                        ? CartCubit(instance())
+                                                .cartResponse!
+                                                .cart![index]
+                                                .item
+                                                ?.nameAr ??
+                                            ""
+                                        : CartCubit(instance())
+                                                .cartResponse!
+                                                .cart![index]
+                                                .item
+                                                ?.nameEn ??
+                                            ""
+                                    : isArabic
+                                        ? CartCubit(instance())
                                             .cartResponse!
                                             .cart![index]
-                                            .item
-                                            ?.nameAr ??
-                                        "" :CartCubit(instance())
-                                    .cartResponse!
-                                    .cart![index]
-                                    .item
-                                    ?.nameEn ??
-                                    ""
-                                    : CacheService.get(
-                                    key: CacheKeys.language) ==
-                                    "ar"
-                                    ? CartCubit(instance())
-                                    .cartResponse!
-                                    .cart![index]
-                                    .package!
-                                    .nameAr!:CartCubit(instance())
-                                        .cartResponse!
-                                        .cart![index]
-                                        .package!
-                                        .nameEn!,
+                                            .package!
+                                            .nameAr!
+                                        : CartCubit(instance())
+                                            .cartResponse!
+                                            .cart![index]
+                                            .package!
+                                            .nameEn!,
                                 count: CartCubit(instance())
                                     .cartResponse!
                                     .cart![index]

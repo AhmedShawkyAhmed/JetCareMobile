@@ -1,7 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
+import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'enums.dart';
 
 
 void printSuccess(Object? object,{Type? runtimeType}) {
@@ -35,13 +39,13 @@ void printError(Object? object,{Type? runtimeType}) {
 void printLog(Object? object,{Type? runtimeType}) {
   String line = "${object?.toString()}";
   String? className;
-  if(runtimeType != null) className = "\x1B[1;4m${runtimeType.toString()}:\x1B[0m";
+  if(runtimeType != null) className = "\x1B[1;34m${runtimeType.toString()}:\x1B[0m";
   if (kDebugMode) {
     if(Platform.isIOS) {
       if(runtimeType != null) className = "${runtimeType.toString()}:";
       debugPrint('${className?? ''} $line');
     } else {
-      debugPrint('${className??''} \x1B[0m$line\x1B[0m');
+      debugPrint('${className??''} \x1B[34m$line\x1B[0m');
     }
   }
 }
@@ -74,4 +78,6 @@ Future<void> openUrl(String url) async {
     throw Exception('Could not launch $url');
   }
 }
+
+bool isArabic = CacheService.get(key: CacheKeys.language) == Languages.ar.name;
 

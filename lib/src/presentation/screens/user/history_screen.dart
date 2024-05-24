@@ -4,13 +4,12 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/business_logic/order_cubit/order_cubit.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
-import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/routing/app_router_names.dart';
 import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
-import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/widgets/default_text.dart';
+import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/card_view.dart';
 import 'package:jetcare/src/presentation/views/cart_item.dart';
@@ -30,8 +29,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => OrderCubit(instance())
-        ..getMyOrders(),
+      create: (context) => OrderCubit(instance())..getMyOrders(),
       child: Scaffold(
         backgroundColor: AppColors.mainColor,
         body: BodyView(
@@ -90,7 +88,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                     return InkWell(
                                       onTap: () {
                                         NavigationService.pushNamed(
-
                                           Routes.confirmOrder,
                                           arguments: AppRouterArgument(
                                             orderModel: OrderCubit(instance())
@@ -152,11 +149,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                       .length,
                                   itemBuilder: (context, index) {
                                     return CardView(
-                                      title: CacheService
-                                                  .get(
-                                                      key: CacheKeys
-                                                          .language) ==
-                                              "ar"
+                                      title: isArabic
                                           ? OrderCubit(instance())
                                               .historyResponse!
                                               .corporates![index]
@@ -175,12 +168,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                       height: 15.h,
                                       mainHeight: 20.h,
                                       titleFont: 17.sp,
-                                      colorMain: AppColors.primary.withOpacity(0.8),
+                                      colorMain:
+                                          AppColors.primary.withOpacity(0.8),
                                       colorSub:
                                           AppColors.shade.withOpacity(0.4),
                                       onTap: () {
                                         NavigationService.pushNamed(
-
                                           Routes.orderDetails,
                                           arguments: AppRouterArgument(
                                             type: "corporate",
