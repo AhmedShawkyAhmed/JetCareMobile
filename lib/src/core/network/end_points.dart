@@ -7,8 +7,11 @@ class EndPoints {
 
 // --------------------- new api
   // ------------------- Auth
+  static const mail = "mail";
+  static const checkEmail = "check_email";
   static const login = "login";
   static const register = "register";
+  static const updateFCM = "update_fcm";
   static const resetPassword = "reset_password";
   static const forgetPassword = "forget_password";
   static const logout = "logout";
@@ -16,13 +19,10 @@ class EndPoints {
   // ------------------- Profile
   static const profile = "profile";
   static const updateProfile = "update_profile";
-  static const updateFCM = "update_fcm";
   static const deleteAccount = "delete_account";
   static const restoreAccount = "restore_account";
 
 // ---------------------
-  static const mail = "mail";
-  static const checkEmail = "checkEmail";
   static const getHome = "getHome";
   static const getAppInfo = "getAppInfo";
   static const getAllStates = "getAllStates";

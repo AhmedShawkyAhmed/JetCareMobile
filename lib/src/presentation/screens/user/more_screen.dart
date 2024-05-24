@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:jetcare/src/business_logic/auth_cubit/auth_cubit.dart';
 import 'package:jetcare/src/business_logic/global_cubit/global_cubit.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
@@ -179,16 +178,17 @@ class MoreScreen extends StatelessWidget {
                           fontSize: 13.sp,
                           textColor: AppColors.darkRed,
                           onTap: () {
-                            AuthCubit(instance()).deleteAccount(
-                              userId: globalAccountModel.id.toString(),
-                              afterSuccess: () {
-                                CacheService.clear();
-                                NavigationService.pushNamedAndRemoveUntil(
-                                  Routes.login,
-                                  (route) => false,
-                                );
-                              },
-                            );
+                            // TODO delete account
+                            // AuthCubit(instance()).deleteAccount(
+                            //   userId: globalAccountModel.id.toString(),
+                            //   afterSuccess: () {
+                            //     CacheService.clear();
+                            //     NavigationService.pushNamedAndRemoveUntil(
+                            //       Routes.login,
+                            //       (route) => false,
+                            //     );
+                            //   },
+                            // );
                           },
                         ),
                         DefaultText(

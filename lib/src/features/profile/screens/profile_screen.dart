@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:jetcare/src/business_logic/auth_cubit/auth_cubit.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
 import 'package:jetcare/src/core/constants/constants_variables.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
-import 'package:jetcare/src/core/routing/app_router_names.dart';
 import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
-import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
 import 'package:jetcare/src/core/shared/widgets/default_text_field.dart';
 import 'package:jetcare/src/core/shared/widgets/toast.dart';
-import 'package:jetcare/src/data/network/requests/account_request.dart';
+import 'package:jetcare/src/features/auth/cubit/authenticate_cubit.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
-import 'package:jetcare/src/presentation/views/indicator_view.dart';
 import 'package:sizer/sizer.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -84,27 +80,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           DefaultToast.showMyToast(
                               translate(AppStrings.updateProfile));
                         } else {
-                          AuthCubit(instance()).updateAccount(
-                            accountRequest: AccountRequest(
-                              name: nameController.text == ""
-                                  ? null
-                                  : nameController.text,
-                              phone: phoneController.text == ""
-                                  ? null
-                                  : phoneController.text,
-                              email: emailController.text == ""
-                                  ? null
-                                  : emailController.text,
-                            ),
-                            afterSuccess: () {
-                              nameController.clear();
-                              phoneController.clear();
-                              emailController.clear();
-                              DefaultToast.showMyToast(
-                                  translate(AppStrings.saveData));
-                              NavigationService.pop();
-                            },
-                          );
+                          // TODO update profile
+                          // AuthCubit(instance()).updateAccount(
+                          //   accountRequest: AccountRequest(
+                          //     name: nameController.text == ""
+                          //         ? null
+                          //         : nameController.text,
+                          //     phone: phoneController.text == ""
+                          //         ? null
+                          //         : phoneController.text,
+                          //     email: emailController.text == ""
+                          //         ? null
+                          //         : emailController.text,
+                          //   ),
+                          //   afterSuccess: () {
+                          //     nameController.clear();
+                          //     phoneController.clear();
+                          //     emailController.clear();
+                          //     DefaultToast.showMyToast(
+                          //         translate(AppStrings.saveData));
+                          //     NavigationService.pop();
+                          //   },
+                          // );
                         }
                       }
                     },
@@ -172,36 +169,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         update = !update;
                       });
                       if (!update) {
-                        if (nameController.text == "" &&
-                            widget.appRouterArgument.phone.toString() == "" &&
-                            emailController.text == "" &&
-                            passwordController.text == "" &&
-                            confirmPasswordController.text == "") {
-                          DefaultToast.showMyToast(
-                              translate(AppStrings.enterData));
-                        } else if (passwordController.text !=
-                            confirmPasswordController.text) {
-                          DefaultToast.showMyToast(
-                              translate(AppStrings.passwordMatched));
-                        } else {
-                          IndicatorView.showIndicator();
-                          AuthCubit(instance()).register(
-                            accountRequest: AccountRequest(
-                              name: nameController.text,
-                              email: widget.appRouterArgument.phone.toString(),
-                              phone: phoneController.text,
-                              password: passwordController.text,
-                              role: "client",
-                            ),
-                            afterSuccess: () {
-                              NavigationService.pop();
-                              NavigationService.pushNamedAndRemoveUntil(
-                                Routes.welcome,
-                                (route) => false,
-                              );
-                            },
-                          );
-                        }
+                        AuthenticateCubit(instance()).register();
                       }
                     },
                   ),

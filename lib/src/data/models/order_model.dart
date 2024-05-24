@@ -1,10 +1,10 @@
-import 'package:jetcare/src/features/profile/data/models/user_model.dart';
 import 'package:jetcare/src/data/models/address_model.dart';
 import 'package:jetcare/src/data/models/calender_model.dart';
 import 'package:jetcare/src/data/models/cart_model.dart';
 import 'package:jetcare/src/data/models/item_model.dart';
 import 'package:jetcare/src/data/models/package_model.dart';
 import 'package:jetcare/src/data/models/period_model.dart';
+import 'package:jetcare/src/features/profile/data/models/user_model.dart';
 
 class OrderModel {
   int? id;

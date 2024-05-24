@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:jetcare/src/business_logic/details_cubit/details_cubit.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
-import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/routing/app_router_names.dart';
 import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
-import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/data/models/item_model.dart';
