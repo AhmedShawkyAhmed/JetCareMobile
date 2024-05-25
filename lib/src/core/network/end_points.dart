@@ -7,7 +7,8 @@ class EndPoints {
 
 // --------------------- new api
   // ------------------- Auth
-  static const mail = "mail";
+  static const verifyEmail = "verify_email";
+  static const validateCode = "validate_code";
   static const checkEmail = "check_email";
   static const login = "login";
   static const register = "register";

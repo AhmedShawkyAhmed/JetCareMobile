@@ -5,6 +5,8 @@
   "phone": "رقم الهاتف",
   "password": "كلمة المرور",
   "verify": "تحقق",
+  "wrongCode": "كود التحقق خطأ",
+  "codeReSent": "تم إعادة إرسال كود التحقق",
   "enterPhone": "أدخل رقم الهاتف",
   "enterPassword": "أدخل كلمة المرور",
   "phoneExist": "رقم الهاتف مسجل من قبل",

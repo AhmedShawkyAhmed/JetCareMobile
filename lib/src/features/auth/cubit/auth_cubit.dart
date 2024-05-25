@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +11,8 @@ import 'package:jetcare/src/core/network/models/network_base_model.dart';
 import 'package:jetcare/src/core/network/models/network_exceptions.dart';
 import 'package:jetcare/src/core/routing/app_router_names.dart';
 import 'package:jetcare/src/core/routing/arguments/otp_arguments.dart';
+import 'package:jetcare/src/core/routing/arguments/password_arguments.dart';
+import 'package:jetcare/src/core/routing/arguments/register_arguments.dart';
 import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/globals.dart';
@@ -33,8 +35,6 @@ class AuthCubit extends Cubit<AuthState> {
   AuthCubit(this.repo) : super(AuthenticateInitial());
   AuthRepo repo;
 
-  num randomNumber = Random().nextInt(999999) + 100000;
-  int verifyCode = 0;
   bool password = true;
   bool singIn = true;
   bool confirm = true;
@@ -57,10 +57,9 @@ class AuthCubit extends Cubit<AuthState> {
     );
     response.when(
       success: (NetworkBaseModel response) async {
-        verifyCode = randomNumber.toInt();
         if (type == OTPTypes.register) {
           if (response.status == 200) {
-            sendEmail(type: type);
+            verifyEmail(type: type);
           } else {
             NavigationService.pop();
             DefaultToast.showMyToast(
@@ -68,13 +67,13 @@ class AuthCubit extends Cubit<AuthState> {
             );
           }
         } else {
-          if (response.status == 200) {
+          if (response.status == 202) {
+            verifyEmail(type: type);
+          } else {
             NavigationService.pop();
             DefaultToast.showMyToast(
               translate(AppStrings.phoneNotExist),
             );
-          } else {
-            sendEmail(type: type);
           }
         }
         emit(CheckEmailSuccessState());
@@ -87,35 +86,87 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  Future sendEmail({
+  Future verifyEmail({
     required OTPTypes type,
+    String? email,
   }) async {
-    emit(SendEmailLoadingState());
-    var response = await repo.mail(
+    emit(VerifyEmailLoadingState());
+    if (type == OTPTypes.resend) {
+      IndicatorView.showIndicator();
+    }
+    var response = await repo.verifyEmail(
       request: MailRequest(
-        email: emailController.text,
-        code: verifyCode,
+        email: email ?? emailController.text,
       ),
     );
     response.when(
       success: (NetworkBaseModel response) async {
-        NavigationService.pushNamedAndRemoveUntil(
-          Routes.otp,
-          (route) => false,
-          arguments: OtpArguments(
-            email: emailController.text,
-            verificationCode: verifyCode.toString(),
-            type: type,
-          ),
-        );
-        emit(SendEmailSuccessState());
+        if (type == OTPTypes.resend) {
+          NavigationService.pop();
+          DefaultToast.showMyToast(translate(AppStrings.codeReSent));
+        } else {
+          NavigationService.pushNamedAndRemoveUntil(
+            Routes.otp,
+            (route) => false,
+            arguments: OtpArguments(
+              email: emailController.text,
+              type: type,
+            ),
+          );
+        }
+        emit(VerifyEmailSuccessState());
       },
       failure: (NetworkExceptions error) {
         NavigationService.pop();
         DefaultToast.showMyToast(
           translate(AppStrings.error),
         );
-        emit(SendEmailFailureState());
+        emit(VerifyEmailFailureState());
+        error.showError();
+      },
+    );
+  }
+
+  Future validateCode({
+    required OTPTypes type,
+    required String email,
+    required String code,
+  }) async {
+    if (code.isEmpty) {
+      DefaultToast.showMyToast(translate(AppStrings.enterCode));
+      return;
+    }
+    IndicatorView.showIndicator();
+    emit(ValidateCodeLoadingState());
+    var response = await repo.validateCode(
+      request: MailRequest(
+        email: email,
+        code: int.parse(code),
+      ),
+    );
+    response.when(
+      success: (NetworkBaseModel response) async {
+        if (type == OTPTypes.resetPassword) {
+          NavigationService.pushNamed(
+            Routes.resetPassword,
+            arguments: PasswordArguments(
+              email: email,
+            ),
+          );
+        } else {
+          NavigationService.pushNamed(
+            Routes.register,
+            arguments: RegisterArguments(
+              email: email,
+            ),
+          );
+        }
+        emit(ValidateCodeSuccessState());
+      },
+      failure: (NetworkExceptions error) {
+        NavigationService.pop();
+        DefaultToast.showMyToast(translate(AppStrings.wrongCode));
+        emit(ValidateCodeFailureState());
         error.showError();
       },
     );
@@ -161,7 +212,7 @@ class AuthCubit extends Cubit<AuthState> {
     if (request.name.isEmpty &&
         request.phone.isEmpty &&
         request.password.isEmpty &&
-        request.confirmPassword.isEmpty) {
+        request.confirmPassword!.isEmpty) {
       DefaultToast.showMyToast(translate(AppStrings.enterData));
       return;
     } else if (request.password != request.confirmPassword) {
@@ -191,7 +242,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future resetPassword({
     required String email,
-}) async {
+  }) async {
     if (email == "") {
       DefaultToast.showMyToast(translate(AppStrings.enterEmail));
       return;

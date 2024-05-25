@@ -5,6 +5,8 @@ class AppStrings {
   static const String phone = "phone";
   static const String password = "password";
   static const String verify = "verify";
+  static const String wrongCode = "wrongCode";
+  static const String codeReSent = "codeReSent";
   static const String enterPhone = "enterPhone";
   static const String enterPassword = "enterPassword";
   static const String save = "save";

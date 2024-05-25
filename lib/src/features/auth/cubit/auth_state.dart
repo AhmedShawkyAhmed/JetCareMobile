@@ -15,9 +15,13 @@ class CheckEmailLoadingState extends AuthState {}
 class CheckEmailSuccessState extends AuthState {}
 class CheckEmailFailureState extends AuthState {}
 
-class SendEmailLoadingState extends AuthState {}
-class SendEmailSuccessState extends AuthState {}
-class SendEmailFailureState extends AuthState {}
+class VerifyEmailLoadingState extends AuthState {}
+class VerifyEmailSuccessState extends AuthState {}
+class VerifyEmailFailureState extends AuthState {}
+
+class ValidateCodeLoadingState extends AuthState {}
+class ValidateCodeSuccessState extends AuthState {}
+class ValidateCodeFailureState extends AuthState {}
 
 class ResetPasswordLoadingState extends AuthState {}
 class ResetPasswordSuccessState extends AuthState {}

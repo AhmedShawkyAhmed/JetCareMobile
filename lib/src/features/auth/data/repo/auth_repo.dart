@@ -28,11 +28,24 @@ class AuthRepo {
     }
   }
 
-  Future<NetworkResult<NetworkBaseModel>> mail({
+  Future<NetworkResult<NetworkBaseModel>> verifyEmail({
     required MailRequest request,
   }) async {
     try {
-      var response = await webService.mail(
+      var response = await webService.verifyEmail(
+        request: request,
+      );
+      return NetworkResult.success(response);
+    } on DioException catch (error) {
+      return NetworkResult.failure(NetworkExceptions.getException(error));
+    }
+  }
+
+  Future<NetworkResult<NetworkBaseModel>> validateCode({
+    required MailRequest request,
+  }) async {
+    try {
+      var response = await webService.validateCode(
         request: request,
       );
       return NetworkResult.success(response);

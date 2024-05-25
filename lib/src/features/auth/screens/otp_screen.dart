@@ -2,19 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
-import 'package:jetcare/src/core/constants/constants_variables.dart';
-import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/routing/arguments/otp_arguments.dart';
-import 'package:jetcare/src/core/routing/arguments/password_arguments.dart';
-import 'package:jetcare/src/core/routing/arguments/register_arguments.dart';
-import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
 import 'package:jetcare/src/core/shared/widgets/default_text.dart';
-import 'package:jetcare/src/core/shared/widgets/toast.dart';
 import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
+import 'package:jetcare/src/features/auth/cubit/auth_cubit.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
-import 'package:jetcare/src/presentation/views/indicator_view.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:sizer/sizer.dart';
 
@@ -28,6 +23,7 @@ class OTPScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController verifyCodeController = TextEditingController();
     return Scaffold(
       backgroundColor: AppColors.mainColor,
       body: BodyView(
@@ -86,23 +82,10 @@ class OTPScreen extends StatelessWidget {
               fontSize: 13.sp,
               textColor: AppColors.primaryLight,
               onTap: () {
-                // TODO sendEmail
-                // IndicatorView.showIndicator();
-                // AuthCubit(instance()).sendEmail(
-                //   email: appRouterArgument.phone.toString(),
-                //   success: () {
-                //     NavigationService.pop();
-                //     DefaultToast.showMyToast(
-                //       "تم إرسال كود التحقق",
-                //     );
-                //   },
-                //   failed: () {
-                //     NavigationService.pop();
-                //     DefaultToast.showMyToast(
-                //       translate(AppStrings.error),
-                //     );
-                //   },
-                // );
+                AuthCubit(instance()).verifyEmail(
+                  email: arguments.email,
+                  type: OTPTypes.resend,
+                );
               },
             ),
             SizedBox(
@@ -111,30 +94,11 @@ class OTPScreen extends StatelessWidget {
             DefaultAppButton(
               title: translate(AppStrings.verify),
               onTap: () async {
-                if (verifyCodeController.text != "") {
-                  if (verifyCodeController.text == arguments.verificationCode) {
-                    IndicatorView.showIndicator();
-                    if (arguments.type == OTPTypes.resetPassword) {
-                      NavigationService.pushNamed(
-                        Routes.resetPassword,
-                        arguments: PasswordArguments(
-                          email: arguments.email,
-                        ),
-                      );
-                    } else {
-                      NavigationService.pushNamed(
-                        Routes.register,
-                        arguments: RegisterArguments(
-                          email: arguments.email,
-                        ),
-                      );
-                    }
-                  } else {
-                    DefaultToast.showMyToast("كود التحقق خطأ");
-                  }
-                } else {
-                  DefaultToast.showMyToast(translate(AppStrings.enterCode));
-                }
+                AuthCubit(instance()).validateCode(
+                  type: arguments.type,
+                  email: arguments.email,
+                  code: verifyCodeController.text,
+                );
               },
             ),
           ],

@@ -4,8 +4,8 @@ part 'mail_request.g.dart';
 
 @JsonSerializable()
 class MailRequest {
-  final String email;
-  final int? code;
+   String email;
+   int? code;
 
   MailRequest({
     required this.email,

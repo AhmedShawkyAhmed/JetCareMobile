@@ -53,7 +53,7 @@ class _AuthWebService implements AuthWebService {
   }
 
   @override
-  Future<NetworkBaseModel<dynamic>> mail({MailRequest? request}) async {
+  Future<NetworkBaseModel<dynamic>> verifyEmail({MailRequest? request}) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
@@ -68,7 +68,39 @@ class _AuthWebService implements AuthWebService {
     )
             .compose(
               _dio.options,
-              'mail',
+              'verify_email',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = NetworkBaseModel<dynamic>.fromJson(
+      _result.data!,
+      (json) => json as dynamic,
+    );
+    return value;
+  }
+
+  @override
+  Future<NetworkBaseModel<dynamic>> validateCode({MailRequest? request}) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(request?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NetworkBaseModel<dynamic>>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'validate_code',
               queryParameters: queryParameters,
               data: _data,
             )

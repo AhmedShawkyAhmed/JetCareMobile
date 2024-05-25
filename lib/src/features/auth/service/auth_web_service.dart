@@ -20,8 +20,13 @@ abstract class AuthWebService {
     @Body() MailRequest? request,
   });
 
-  @POST(EndPoints.mail)
-  Future<NetworkBaseModel> mail({
+  @POST(EndPoints.verifyEmail)
+  Future<NetworkBaseModel> verifyEmail({
+    @Body() MailRequest? request,
+  });
+
+  @POST(EndPoints.validateCode)
+  Future<NetworkBaseModel> validateCode({
     @Body() MailRequest? request,
   });
 

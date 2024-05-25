@@ -16,4 +16,5 @@ enum Roles {
 enum OTPTypes{
   register,
   resetPassword,
+  resend,
 }

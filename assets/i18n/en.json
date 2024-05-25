@@ -5,6 +5,8 @@
   "phone": "Phone Number",
   "password": "Password",
   "verify": "Verify",
+  "wrongCode": "Wrong Code",
+  "codeReSent": "Verification Code ReSent",
   "enterPhone": "Enter Phone Number",
   "enterPassword": "Enter Password",
   "phoneExist": "Phone Number Already Exist",

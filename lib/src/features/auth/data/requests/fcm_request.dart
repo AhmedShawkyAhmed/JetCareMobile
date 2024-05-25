@@ -4,8 +4,8 @@ part 'fcm_request.g.dart';
 
 @JsonSerializable()
 class FCMRequest {
-  final int id;
-  final String fcm;
+  int id;
+  String fcm;
 
   FCMRequest({
     required this.id,

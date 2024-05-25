@@ -47,42 +47,6 @@ class VerifyEmail extends StatelessWidget {
                     height: 5.h,
                     onTap: () {
                       cubit.checkEmail(type: OTPTypes.resetPassword);
-                      // TODO checkEmail & sendEmail
-                      // if (emailController.text == "") {
-                      //   DefaultToast.showMyToast(translate(AppStrings.enterPhone));
-                      // } else {
-                      //   IndicatorView.showIndicator();
-                      //   AuthCubit(instance()).checkEmail(
-                      //     email: emailController.text,
-                      //     found: () {
-                      //       AuthCubit(instance()).sendEmail(
-                      //         email: emailController.text,
-                      //         success: () {
-                      //           NavigationService.pop();
-                      //           NavigationService.pushNamed(
-                      //             Routes.otp,
-                      //             arguments: AppRouterArgument(
-                      //               phone: emailController.text,
-                      //               type: "resetPassword",
-                      //             ),
-                      //           );
-                      //         },
-                      //         failed: () {
-                      //           NavigationService.pop();
-                      //           DefaultToast.showMyToast(
-                      //             translate(AppStrings.error),
-                      //           );
-                      //         },
-                      //       );
-                      //     },
-                      //     notFound: () {
-                      //       NavigationService.pop();
-                      //       DefaultToast.showMyToast(
-                      //         translate(AppStrings.phoneNotExist),
-                      //       );
-                      //     },
-                      //   );
-                      // }
                     },
                   ),
                 ],

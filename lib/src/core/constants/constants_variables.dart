@@ -13,7 +13,6 @@ PeriodModel selectedPeriod = PeriodModel();
 AddressModel selectedAddress = AddressModel(id: -1);
 SpaceModel selectedSpace = SpaceModel();
 TextEditingController locationController = TextEditingController();
-TextEditingController verifyCodeController = TextEditingController();
 TextEditingController dateController = TextEditingController();
 List<ItemModel> selectedExtra = [];
 List<PeriodModel> discountPeriods = [];
@@ -29,16 +28,3 @@ num cartTotal = 0;
 LatLng addressLocation = const LatLng(0.0, 0.0);
 dynamic dropDownValue;
 
-disposeConstants(){
-  extrasPrice = 0;
-  cartTotal = 0;
-  selectedPeriod = PeriodModel();
-  selectedAddress = AddressModel();
-  selectedSpace = SpaceModel();
-  locationController.clear();
-  verifyCodeController.clear();
-  dateController.clear();
-  extrasIds.clear();
-  cart.clear();
-  selectedExtra.clear();
-}
