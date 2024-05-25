@@ -18,11 +18,12 @@ import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
 import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/services/notification_service.dart';
-import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
-import 'package:jetcare/src/core/shared/widgets/default_drop_down_menu.dart';
-import 'package:jetcare/src/core/shared/widgets/default_text.dart';
-import 'package:jetcare/src/core/shared/widgets/default_text_field.dart';
-import 'package:jetcare/src/core/shared/widgets/toast.dart';
+import 'package:jetcare/src/features/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/features/shared/widgets/default_drop_down_menu.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text_field.dart';
+import 'package:jetcare/src/features/shared/widgets/toast.dart';
+import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/data/models/address_model.dart';
 import 'package:jetcare/src/data/models/period_model.dart';
 import 'package:jetcare/src/data/network/requests/order_request.dart';
@@ -553,9 +554,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                     afterSuccess: () {
                       NavigationService.pushReplacementNamed(
                         Routes.success,
-                        arguments: AppRouterArgument(
-                          type: "order",
-                        ),
+                        arguments: SuccessType.order,
                       );
                       NotificationCubit(instance()).saveNotification(
                         title: "الطلبات",

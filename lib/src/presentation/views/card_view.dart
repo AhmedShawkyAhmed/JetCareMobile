@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jetcare/src/core/network/end_points.dart';
-import 'package:jetcare/src/core/shared/widgets/default_text.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
 class CardView extends StatefulWidget {

@@ -16,7 +16,7 @@ import 'package:jetcare/src/core/routing/arguments/register_arguments.dart';
 import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/globals.dart';
-import 'package:jetcare/src/core/shared/widgets/toast.dart';
+import 'package:jetcare/src/features/shared/widgets/toast.dart';
 import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/features/auth/data/repo/auth_repo.dart';
@@ -231,7 +231,7 @@ class AuthCubit extends Cubit<AuthState> {
         if (fcmToken != null) {
           await updateFCM(id: response.data!.id!);
         }
-        await ProfileCubit(instance()).getProfile();
+        await ProfileCubit(instance()).getProfile(isNewAccount: true);
       },
       failure: (NetworkExceptions error) {
         emit(RegisterFailureState());

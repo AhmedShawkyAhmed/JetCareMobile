@@ -18,3 +18,8 @@ enum OTPTypes{
   resetPassword,
   resend,
 }
+
+enum SuccessType {
+  order,
+  support,
+}

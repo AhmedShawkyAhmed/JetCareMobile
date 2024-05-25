@@ -8,10 +8,11 @@ import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/routing/app_router_names.dart';
 import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
-import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
-import 'package:jetcare/src/core/shared/widgets/default_text.dart';
-import 'package:jetcare/src/core/shared/widgets/default_text_field.dart';
-import 'package:jetcare/src/core/shared/widgets/toast.dart';
+import 'package:jetcare/src/features/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text_field.dart';
+import 'package:jetcare/src/features/shared/widgets/toast.dart';
+import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/data/network/requests/corporate_request.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
@@ -126,9 +127,7 @@ class CorporateScreen extends StatelessWidget {
                       afterSuccess: () {
                         NavigationService.pushNamedAndRemoveUntil(
                           Routes.success,
-                          arguments: AppRouterArgument(
-                            type: "order",
-                          ),
+                          arguments: SuccessType.order,
                           (route) => false,
                         );
                       },

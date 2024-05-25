@@ -10,13 +10,13 @@ import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/routing/app_router_names.dart';
 import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
-import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
-import 'package:jetcare/src/core/shared/widgets/default_drop_down_menu.dart';
-import 'package:jetcare/src/core/shared/widgets/default_text.dart';
-import 'package:jetcare/src/core/shared/widgets/default_text_field.dart';
-import 'package:jetcare/src/core/shared/widgets/toast.dart';
 import 'package:jetcare/src/data/models/area_model.dart';
 import 'package:jetcare/src/data/network/requests/address_request.dart';
+import 'package:jetcare/src/features/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/features/shared/widgets/default_drop_down_menu.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text_field.dart';
+import 'package:jetcare/src/features/shared/widgets/toast.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/indicator_view.dart';
 import 'package:sizer/sizer.dart';
@@ -83,9 +83,11 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
             ),
             BlocBuilder<AddressCubit, AddressState>(
               builder: (context, state) {
-                return AddressCubit(instance()).allStatesResponse == null || AddressCubit(instance())
-                    .allStatesResponse!
-                    .statesList == null ||
+                return AddressCubit(instance()).allStatesResponse == null ||
+                        AddressCubit(instance())
+                                .allStatesResponse!
+                                .statesList ==
+                            null ||
                         AddressCubit(instance())
                             .allStatesResponse!
                             .statesList!
@@ -119,10 +121,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                 return AddressCubit(instance()).getAreaResponse == null ||
                         AddressCubit(instance()).getAreaResponse!.areas ==
                             null ||
-                        AddressCubit(instance())
-                            .getAreaResponse!
-                            .areas!
-                            .isEmpty
+                        AddressCubit(instance()).getAreaResponse!.areas!.isEmpty
                     ? const SizedBox()
                     : Container(
                         height: 5.h,

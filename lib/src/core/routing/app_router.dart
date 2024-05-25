@@ -6,6 +6,7 @@ import 'package:jetcare/src/core/routing/app_router_names.dart';
 import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
 import 'package:jetcare/src/core/routing/arguments/otp_arguments.dart';
 import 'package:jetcare/src/core/routing/arguments/password_arguments.dart';
+import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/core/utils/extensions.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/features/auth/cubit/auth_cubit.dart';
@@ -39,8 +40,8 @@ import 'package:jetcare/src/presentation/screens/user/map_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/order_details_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/package_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/service_screen.dart';
-import 'package:jetcare/src/presentation/screens/user/success_screen.dart';
-import 'package:jetcare/src/presentation/screens/user/welcome_screen.dart';
+import 'package:jetcare/src/features/shared/screens/success_screen.dart';
+import 'package:jetcare/src/features/shared/screens/welcome_screen.dart';
 
 import 'arguments/register_arguments.dart';
 
@@ -208,11 +209,11 @@ class AppRoutes {
           page: const CartScreen(),
         );
       case Routes.success:
-        final AppRouterArgument appRouterArgument =
-            settings.arguments as AppRouterArgument;
+        final SuccessType type =
+            settings.arguments as SuccessType;
         return CustomPageRouteTransiton.fadeOut(
           page: SuccessScreen(
-            appRouterArgument: appRouterArgument,
+            type: type,
           ),
         );
       case Routes.info:

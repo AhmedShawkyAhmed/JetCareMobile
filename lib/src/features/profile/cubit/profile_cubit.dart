@@ -9,8 +9,8 @@ import 'package:jetcare/src/core/routing/app_router_names.dart';
 import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/globals.dart';
-import 'package:jetcare/src/core/shared/widgets/default_text.dart';
-import 'package:jetcare/src/core/shared/widgets/toast.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text.dart';
+import 'package:jetcare/src/features/shared/widgets/toast.dart';
 import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/features/profile/data/repo/profile_repo.dart';
@@ -86,7 +86,9 @@ class ProfileCubit extends Cubit<ProfileState> {
     );
   }
 
-  Future getProfile() async {
+  Future getProfile({
+    bool isNewAccount = false,
+  }) async {
     emit(ProfileLoading());
     var response = await repo.profile();
     response.when(
@@ -105,7 +107,11 @@ class ProfileCubit extends Cubit<ProfileState> {
           );
         } else {
           if (Globals.userData.role == Roles.client.name) {
-            NavigationService.pushReplacementNamed(Routes.layout);
+            if(isNewAccount){
+              NavigationService.pushReplacementNamed(Routes.welcome);
+            }else{
+              NavigationService.pushReplacementNamed(Routes.layout);
+            }
           } else {
             NavigationService.pushReplacementNamed(Routes.crewLayout);
           }

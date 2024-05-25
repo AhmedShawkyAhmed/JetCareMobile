@@ -4,7 +4,7 @@ import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
 import 'package:jetcare/src/core/constants/constants_variables.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
-import 'package:jetcare/src/core/shared/widgets/default_text.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/data/models/item_model.dart';
 import 'package:sizer/sizer.dart';

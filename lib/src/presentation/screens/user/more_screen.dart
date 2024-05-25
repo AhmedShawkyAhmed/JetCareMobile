@@ -8,7 +8,7 @@ import 'package:jetcare/src/core/routing/app_router_names.dart';
 import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/globals.dart';
-import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/features/shared/widgets/default_app_button.dart';
 import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/features/auth/cubit/auth_cubit.dart';
 import 'package:jetcare/src/features/profile/cubit/profile_cubit.dart';
