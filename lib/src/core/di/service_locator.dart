@@ -6,6 +6,7 @@ import 'package:jetcare/src/core/network/network_service.dart';
 import 'package:jetcare/src/features/auth/cubit/auth_cubit.dart';
 import 'package:jetcare/src/features/auth/data/repo/auth_repo.dart';
 import 'package:jetcare/src/features/auth/service/auth_web_service.dart';
+import 'package:jetcare/src/features/language/cubit/language_cubit.dart';
 import 'package:jetcare/src/features/layout/cubit/layout_cubit.dart';
 import 'package:jetcare/src/features/profile/cubit/profile_cubit.dart';
 import 'package:jetcare/src/features/profile/data/repo/profile_repo.dart';
@@ -26,6 +27,7 @@ Future<void> initAppModule() async {
   // --------------------- Cubit
   instance.registerFactory<SplashCubit>(() => SplashCubit());
   instance.registerFactory<LayoutCubit>(() => LayoutCubit());
+  instance.registerFactory<LanguageCubit>(() => LanguageCubit());
   instance.registerFactory<ProfileCubit>(() => ProfileCubit(instance()));
   instance.registerFactory<AuthCubit>(() => AuthCubit(instance()));
   // --------------------- Repo

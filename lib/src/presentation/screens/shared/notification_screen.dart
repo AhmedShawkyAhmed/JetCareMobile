@@ -4,7 +4,7 @@ import 'package:jetcare/src/business_logic/notification_cubit/notification_cubit
 import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/features/shared/widgets/default_text.dart';
-import 'package:jetcare/src/presentation/views/body_view.dart';
+import 'package:jetcare/src/features/shared/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/notification_item.dart';
 
 class NotificationScreen extends StatefulWidget {

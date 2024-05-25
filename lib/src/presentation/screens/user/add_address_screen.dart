@@ -7,7 +7,7 @@ import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
 import 'package:jetcare/src/core/constants/constants_variables.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
-import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/routing/routes.dart';
 import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/data/models/area_model.dart';
@@ -17,8 +17,8 @@ import 'package:jetcare/src/features/shared/widgets/default_drop_down_menu.dart'
 import 'package:jetcare/src/features/shared/widgets/default_text.dart';
 import 'package:jetcare/src/features/shared/widgets/default_text_field.dart';
 import 'package:jetcare/src/features/shared/widgets/toast.dart';
-import 'package:jetcare/src/presentation/views/body_view.dart';
-import 'package:jetcare/src/presentation/views/indicator_view.dart';
+import 'package:jetcare/src/features/shared/views/body_view.dart';
+import 'package:jetcare/src/features/shared/views/indicator_view.dart';
 import 'package:sizer/sizer.dart';
 
 class AddAddressScreen extends StatefulWidget {

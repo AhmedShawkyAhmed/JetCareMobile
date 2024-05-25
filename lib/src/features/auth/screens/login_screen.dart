@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:jetcare/src/business_logic/language_cubit/language_cubit.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
-import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/routing/routes.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/features/language/cubit/language_cubit.dart';
 import 'package:jetcare/src/features/shared/widgets/default_app_button.dart';
 import 'package:jetcare/src/features/shared/widgets/default_text.dart';
 import 'package:jetcare/src/features/shared/widgets/default_text_field.dart';
 import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/features/auth/cubit/auth_cubit.dart';
-import 'package:jetcare/src/presentation/views/body_view.dart';
+import 'package:jetcare/src/features/shared/views/body_view.dart';
 import 'package:sizer/sizer.dart';
 
 class LoginScreen extends StatefulWidget {

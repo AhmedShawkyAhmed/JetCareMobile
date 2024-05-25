@@ -5,7 +5,7 @@ import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
 import 'package:jetcare/src/core/network/models/network_base_model.dart';
 import 'package:jetcare/src/core/network/models/network_exceptions.dart';
-import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/routing/routes.dart';
 import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/globals.dart';
@@ -15,7 +15,7 @@ import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/features/profile/data/repo/profile_repo.dart';
 import 'package:jetcare/src/features/profile/data/requests/update_profile_request.dart';
-import 'package:jetcare/src/presentation/views/indicator_view.dart';
+import 'package:jetcare/src/features/shared/views/indicator_view.dart';
 import 'package:sizer/sizer.dart';
 
 part 'profile_state.dart';

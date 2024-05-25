@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:jetcare/src/business_logic/details_cubit/details_cubit.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
-import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/routing/routes.dart';
 import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/data/models/item_model.dart';
 import 'package:jetcare/src/data/models/package_model.dart';
 import 'package:jetcare/src/presentation/views/card_view.dart';
-import 'package:jetcare/src/presentation/views/indicator_view.dart';
-import 'package:jetcare/src/presentation/views/loading_view.dart';
+import 'package:jetcare/src/features/shared/views/indicator_view.dart';
+import 'package:jetcare/src/features/shared/views/loading_view.dart';
 import 'package:sizer/sizer.dart';
 
 class HomeView extends StatelessWidget {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/routing/routes.dart';
 
 class NavigationService {
   static final NavigationService _instance = NavigationService._internal();

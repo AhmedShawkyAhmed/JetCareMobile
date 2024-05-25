@@ -7,7 +7,7 @@ import 'package:jetcare/src/core/shared/globals.dart';
 import 'package:jetcare/src/features/shared/widgets/default_app_button.dart';
 import 'package:jetcare/src/features/shared/widgets/default_text_field.dart';
 import 'package:jetcare/src/features/profile/cubit/profile_cubit.dart';
-import 'package:jetcare/src/presentation/views/body_view.dart';
+import 'package:jetcare/src/features/shared/views/body_view.dart';
 import 'package:sizer/sizer.dart';
 
 class ProfileScreen extends StatefulWidget {

@@ -1,12 +1,8 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
 import 'package:jetcare/src/core/network/end_points.dart';
 import 'package:jetcare/src/core/network/network_service.dart';
-import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/data/network/requests/support_request.dart';
 import 'package:jetcare/src/data/network/responses/area_response.dart';
@@ -29,24 +25,6 @@ class GlobalCubit extends Cubit<GlobalState> {
   GlobalResponse? globalResponse;
   SpaceResponse? spaceResponse;
   List<String> days = [], dates = [];
-
-  Future checkConnection() async {
-    try {
-      final result = await InternetAddress.lookup('example.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        printSuccess('Internet Connected');
-        CacheService.add(key: CacheKeys.isConnected, value: true);
-      }
-    } on SocketException catch (_) {
-      CacheService.add(key: CacheKeys.isConnected, value: false);
-      printError('Internet Disconnected');
-    }
-  }
-
-  Future navigate({required VoidCallback afterSuccess}) async {
-    await Future.delayed(const Duration(milliseconds: 200), () {});
-    afterSuccess();
-  }
 
   Future getHome() async {
     try {

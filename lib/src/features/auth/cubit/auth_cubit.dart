@@ -9,7 +9,7 @@ import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/network/models/network_base_model.dart';
 import 'package:jetcare/src/core/network/models/network_exceptions.dart';
-import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/routing/routes.dart';
 import 'package:jetcare/src/core/routing/arguments/otp_arguments.dart';
 import 'package:jetcare/src/core/routing/arguments/password_arguments.dart';
 import 'package:jetcare/src/core/routing/arguments/register_arguments.dart';
@@ -27,7 +27,7 @@ import 'package:jetcare/src/features/auth/data/requests/mail_request.dart';
 import 'package:jetcare/src/features/auth/data/requests/register_request.dart';
 import 'package:jetcare/src/features/profile/cubit/profile_cubit.dart';
 import 'package:jetcare/src/features/profile/data/models/user_model.dart';
-import 'package:jetcare/src/presentation/views/indicator_view.dart';
+import 'package:jetcare/src/features/shared/views/indicator_view.dart';
 
 part 'auth_state.dart';
 

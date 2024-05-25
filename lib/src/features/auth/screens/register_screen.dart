@@ -10,7 +10,7 @@ import 'package:jetcare/src/features/shared/widgets/default_text_field.dart';
 import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/features/auth/cubit/auth_cubit.dart';
 import 'package:jetcare/src/features/auth/data/requests/register_request.dart';
-import 'package:jetcare/src/presentation/views/body_view.dart';
+import 'package:jetcare/src/features/shared/views/body_view.dart';
 import 'package:sizer/sizer.dart';
 
 class RegisterScreen extends StatefulWidget {

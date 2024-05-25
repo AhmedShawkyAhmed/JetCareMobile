@@ -6,7 +6,7 @@ import 'package:jetcare/src/core/constants/app_strings.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/features/shared/widgets/default_text.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
-import 'package:jetcare/src/presentation/views/body_view.dart';
+import 'package:jetcare/src/features/shared/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/card_view.dart';
 import 'package:jetcare/src/presentation/views/home_view.dart';
 import 'package:sizer/sizer.dart';
