@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:jetcare/src/core/network/models/network_base_model.dart';
 import 'package:jetcare/src/core/network/models/network_exceptions.dart';
 import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/globals.dart';
 import 'package:jetcare/src/core/utils/enums.dart';
@@ -43,9 +44,10 @@ class ProfileCubit extends Cubit<ProfileState> {
         emit(ProfileSuccess());
       },
       failure: (NetworkExceptions error) {
+        CacheService.clear();
+        NavigationService.pushReplacementNamed(Routes.login);
         error.showError();
         emit(ProfileFailure());
-        NavigationService.pushReplacementNamed(Routes.login);
       },
     );
   }

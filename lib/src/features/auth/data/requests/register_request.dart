@@ -9,6 +9,7 @@ class RegisterRequest {
   final String role;
   final String email;
   final String password;
+  final String confirmPassword;
 
   RegisterRequest({
     required this.name,
@@ -16,6 +17,7 @@ class RegisterRequest {
     required this.role,
     required this.email,
     required this.password,
+    required this.confirmPassword,
   });
 
   factory RegisterRequest.fromJson(Map<String, dynamic> json) =>

@@ -26,7 +26,6 @@ num extrasPrice = 0;
 String dropState = '';
 String dropArea = '';
 num cartTotal = 0;
-int verifyCode = 0;
 LatLng addressLocation = const LatLng(0.0, 0.0);
 dynamic dropDownValue;
 

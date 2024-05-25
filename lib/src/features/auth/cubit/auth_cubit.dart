@@ -10,8 +10,10 @@ import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/network/models/network_base_model.dart';
 import 'package:jetcare/src/core/network/models/network_exceptions.dart';
 import 'package:jetcare/src/core/routing/app_router_names.dart';
+import 'package:jetcare/src/core/routing/arguments/otp_arguments.dart';
 import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/globals.dart';
 import 'package:jetcare/src/core/shared/widgets/toast.dart';
 import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
@@ -22,6 +24,7 @@ import 'package:jetcare/src/features/auth/data/requests/login_request.dart';
 import 'package:jetcare/src/features/auth/data/requests/mail_request.dart';
 import 'package:jetcare/src/features/auth/data/requests/register_request.dart';
 import 'package:jetcare/src/features/profile/cubit/profile_cubit.dart';
+import 'package:jetcare/src/features/profile/data/models/user_model.dart';
 import 'package:jetcare/src/presentation/views/indicator_view.dart';
 
 part 'auth_state.dart';
@@ -34,14 +37,19 @@ class AuthCubit extends Cubit<AuthState> {
   int verifyCode = 0;
   bool password = true;
   bool singIn = true;
+  bool confirm = true;
+
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
 
-  Future checkEmail() async {
+  Future checkEmail({
+    required OTPTypes type,
+  }) async {
     emit(CheckEmailLoadingState());
+    IndicatorView.showIndicator();
     var response = await repo.checkEmail(
       request: MailRequest(
         email: emailController.text,
@@ -50,24 +58,38 @@ class AuthCubit extends Cubit<AuthState> {
     response.when(
       success: (NetworkBaseModel response) async {
         verifyCode = randomNumber.toInt();
-        if (response.status == 200) {
-          NavigationService.pop();
-          DefaultToast.showMyToast(
-            translate(AppStrings.phoneNotExist),
-          );
+        if (type == OTPTypes.register) {
+          if (response.status == 200) {
+            sendEmail(type: type);
+          } else {
+            NavigationService.pop();
+            DefaultToast.showMyToast(
+              translate(AppStrings.phoneNotExist),
+            );
+          }
         } else {
-          sendEmail();
+          if (response.status == 200) {
+            NavigationService.pop();
+            DefaultToast.showMyToast(
+              translate(AppStrings.phoneNotExist),
+            );
+          } else {
+            sendEmail(type: type);
+          }
         }
         emit(CheckEmailSuccessState());
       },
       failure: (NetworkExceptions error) {
+        NavigationService.pop();
         emit(CheckEmailFailureState());
         error.showError();
       },
     );
   }
 
-  Future sendEmail() async {
+  Future sendEmail({
+    required OTPTypes type,
+  }) async {
     emit(SendEmailLoadingState());
     var response = await repo.mail(
       request: MailRequest(
@@ -77,7 +99,15 @@ class AuthCubit extends Cubit<AuthState> {
     );
     response.when(
       success: (NetworkBaseModel response) async {
-        NavigationService.pop();
+        NavigationService.pushNamedAndRemoveUntil(
+          Routes.otp,
+          (route) => false,
+          arguments: OtpArguments(
+            email: emailController.text,
+            verificationCode: verifyCode.toString(),
+            type: type,
+          ),
+        );
         emit(SendEmailSuccessState());
       },
       failure: (NetworkExceptions error) {
@@ -124,28 +154,24 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  Future register() async {
-    if (nameController.text.isEmpty &&
-        phoneController.text.isEmpty &&
-        emailController.text.isEmpty &&
-        passwordController.text.isEmpty &&
-        confirmPasswordController.text.isEmpty) {
+  Future register({
+    required RegisterRequest request,
+  }) async {
+    printError(request);
+    if (request.name.isEmpty &&
+        request.phone.isEmpty &&
+        request.password.isEmpty &&
+        request.confirmPassword.isEmpty) {
       DefaultToast.showMyToast(translate(AppStrings.enterData));
       return;
-    } else if (passwordController.text != confirmPasswordController.text) {
+    } else if (request.password != request.confirmPassword) {
       DefaultToast.showMyToast(translate(AppStrings.passwordMatched));
       return;
     }
     IndicatorView.showIndicator();
     emit(RegisterLoadingState());
     var response = await repo.register(
-      request: RegisterRequest(
-        name: nameController.text,
-        phone: phoneController.text,
-        role: Roles.client.name,
-        email: emailController.text,
-        password: passwordController.text,
-      ),
+      request: request,
     );
     response.when(
       success: (NetworkBaseModel response) async {
@@ -163,8 +189,10 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  Future resetPassword() async {
-    if (emailController.text == "") {
+  Future resetPassword({
+    required String email,
+}) async {
+    if (email == "") {
       DefaultToast.showMyToast(translate(AppStrings.enterEmail));
       return;
     }
@@ -172,11 +200,15 @@ class AuthCubit extends Cubit<AuthState> {
       DefaultToast.showMyToast(translate(AppStrings.enterPassword));
       return;
     }
+    if (passwordController.text != confirmPasswordController.text) {
+      DefaultToast.showMyToast(translate(AppStrings.passwordMatched));
+      return;
+    }
     IndicatorView.showIndicator();
     emit(ResetPasswordLoadingState());
     var response = await repo.resetPassword(
       request: LoginRequest(
-        email: emailController.text,
+        email: email,
         password: passwordController.text,
       ),
     );
@@ -197,7 +229,8 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future forgetPassword() async {
-    if (passwordController.text.isEmpty || confirmPasswordController.text.isEmpty) {
+    if (passwordController.text.isEmpty ||
+        confirmPasswordController.text.isEmpty) {
       DefaultToast.showMyToast(translate(AppStrings.enterPassword));
       return;
     }
@@ -218,7 +251,7 @@ class AuthCubit extends Cubit<AuthState> {
         emit(ResetPasswordSuccessState());
         NavigationService.pushNamedAndRemoveUntil(
           Routes.login,
-              (route) => false,
+          (route) => false,
         );
       },
       failure: (NetworkExceptions error) {
@@ -257,6 +290,8 @@ class AuthCubit extends Cubit<AuthState> {
     response.when(
       success: (NetworkBaseModel response) async {
         CacheService.clear();
+        Globals.userData = UserModel();
+        CacheService.add(key: CacheKeys.language, value: Languages.ar.name);
         NavigationService.pushNamedAndRemoveUntil(
             Routes.login, (route) => false);
         emit(LogoutSuccessState());

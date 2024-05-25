@@ -78,7 +78,11 @@ class LayoutCubit extends Cubit<LayoutState> {
     const MoreScreen(),
   ];
 
-  void changeIndex(int index){
+  init() {
+    currentIndex = 0;
+  }
+
+  void changeIndex(int index) {
     currentIndex = index;
     emit(AppChangeBottomNavBarState());
   }

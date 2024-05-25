@@ -4,10 +4,16 @@ import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/routing/app_animation.dart';
 import 'package:jetcare/src/core/routing/app_router_names.dart';
 import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
+import 'package:jetcare/src/core/routing/arguments/otp_arguments.dart';
+import 'package:jetcare/src/core/routing/arguments/password_arguments.dart';
 import 'package:jetcare/src/core/utils/extensions.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/features/auth/cubit/auth_cubit.dart';
 import 'package:jetcare/src/features/auth/screens/login_screen.dart';
+import 'package:jetcare/src/features/auth/screens/otp_screen.dart';
+import 'package:jetcare/src/features/auth/screens/register_screen.dart';
+import 'package:jetcare/src/features/auth/screens/reset_password.dart';
+import 'package:jetcare/src/features/auth/screens/verify_email.dart';
 import 'package:jetcare/src/features/disable/screens/deleted_account_screen.dart';
 import 'package:jetcare/src/features/disable/screens/disable_account_screen.dart';
 import 'package:jetcare/src/features/layout/cubit/layout_cubit.dart';
@@ -30,18 +36,17 @@ import 'package:jetcare/src/presentation/screens/user/home_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/info_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/map_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/order_details_screen.dart';
-import 'package:jetcare/src/presentation/screens/user/otp_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/package_screen.dart';
-import 'package:jetcare/src/presentation/screens/user/reset_password.dart';
 import 'package:jetcare/src/presentation/screens/user/service_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/success_screen.dart';
-import 'package:jetcare/src/presentation/screens/user/verify_phone.dart';
 import 'package:jetcare/src/presentation/screens/user/welcome_screen.dart';
+
+import 'arguments/register_arguments.dart';
 
 class AppRoutes {
   Route? onGenerateRoute(RouteSettings settings) {
     Routes? navigatedRoute =
-    Routes.values.firstWhereOrNull((route) => route.path == settings.name);
+        Routes.values.firstWhereOrNull((route) => route.path == settings.name);
     printSuccess(navigatedRoute);
     if (settings.name == '/') {
       navigatedRoute = Routes.splash;
@@ -50,9 +55,7 @@ class AppRoutes {
       case Routes.splash:
         return CustomPageRouteTransiton.fadeOut(
           page: BlocProvider(
-            create: (context) =>
-            SplashCubit()
-              ..init(),
+            create: (context) => SplashCubit()..init(),
             child: const SplashScreen(),
           ),
         );
@@ -67,6 +70,14 @@ class AppRoutes {
             child: const LoginScreen(),
           ),
         );
+      case Routes.register:
+        final RegisterArguments arg = settings.arguments as RegisterArguments;
+        return CustomPageRouteTransiton.fadeOut(
+          page: BlocProvider(
+            create: (context) => AuthCubit(instance()),
+            child: RegisterScreen(arguments: arg),
+          ),
+        );
       case Routes.disable:
         return CustomPageRouteTransiton.fadeOut(
           page: const DisableAccountScreen(),
@@ -76,32 +87,27 @@ class AppRoutes {
           page: const DeletedAccountScreen(),
         );
       case Routes.resetPassword:
-        final AppRouterArgument appRouterArgument =
-        settings.arguments as AppRouterArgument;
+        final PasswordArguments arguments = settings.arguments as PasswordArguments;
         return CustomPageRouteTransiton.fadeOut(
-          page: ResetPassword(
-            appRouterArgument: appRouterArgument,
+          page: BlocProvider(
+            create: (context) => AuthCubit(instance()),
+            child:  ResetPassword(arguments: arguments),
           ),
         );
       case Routes.profile:
-        final AppRouterArgument appRouterArgument =
-        settings.arguments as AppRouterArgument;
         return CustomPageRouteTransiton.fadeOut(
-          page: ProfileScreen(
-            appRouterArgument: appRouterArgument,
-          ),
+          page: const ProfileScreen(),
         );
       case Routes.otp:
-        final AppRouterArgument appRouterArgument =
-        settings.arguments as AppRouterArgument;
+        final OtpArguments arguments = settings.arguments as OtpArguments;
         return CustomPageRouteTransiton.fadeOut(
           page: OTPScreen(
-            appRouterArgument: appRouterArgument,
+            arguments: arguments,
           ),
         );
       case Routes.confirmOrder:
         final AppRouterArgument appRouterArgument =
-        settings.arguments as AppRouterArgument;
+            settings.arguments as AppRouterArgument;
         return CustomPageRouteTransiton.fadeOut(
           page: ConfirmOrderScreen(
             appRouterArgument: appRouterArgument,
@@ -109,25 +115,28 @@ class AppRoutes {
         );
       case Routes.verify:
         return CustomPageRouteTransiton.fadeOut(
-          page: VerifyPhone(),
+          page: BlocProvider(
+            create: (context) => AuthCubit(instance()),
+            child: const VerifyEmail(),
+          ),
         );
       case Routes.layout:
         return CustomPageRouteTransiton.fadeOut(
           page: BlocProvider(
-            create: (context) => LayoutCubit(),
+            create: (context) => LayoutCubit()..init(),
             child: const LayoutScreen(),
           ),
         );
       case Routes.crewLayout:
         return CustomPageRouteTransiton.fadeOut(
           page: BlocProvider(
-            create: (context) => LayoutCubit(),
+            create: (context) => LayoutCubit()..init(),
             child: const CrewLayoutScreen(),
           ),
         );
       case Routes.corporate:
         final AppRouterArgument appRouterArgument =
-        settings.arguments as AppRouterArgument;
+            settings.arguments as AppRouterArgument;
         return CustomPageRouteTransiton.fadeOut(
           page: CorporateScreen(
             appRouterArgument: appRouterArgument,
@@ -135,7 +144,7 @@ class AppRoutes {
         );
       case Routes.orderDetails:
         final AppRouterArgument appRouterArgument =
-        settings.arguments as AppRouterArgument;
+            settings.arguments as AppRouterArgument;
         return CustomPageRouteTransiton.fadeOut(
           page: OrderDetailsScreen(
             appRouterArgument: appRouterArgument,
@@ -143,7 +152,7 @@ class AppRoutes {
         );
       case Routes.serviceDetails:
         final AppRouterArgument appRouterArgument =
-        settings.arguments as AppRouterArgument;
+            settings.arguments as AppRouterArgument;
         return CustomPageRouteTransiton.fadeOut(
           page: ServiceScreen(
             appRouterArgument: appRouterArgument,
@@ -175,7 +184,7 @@ class AppRoutes {
         );
       case Routes.addAddress:
         final AppRouterArgument appRouterArgument =
-        settings.arguments as AppRouterArgument;
+            settings.arguments as AppRouterArgument;
         return CustomPageRouteTransiton.fadeOut(
           page: AddAddressScreen(
             appRouterArguments: appRouterArgument,
@@ -195,7 +204,7 @@ class AppRoutes {
         );
       case Routes.success:
         final AppRouterArgument appRouterArgument =
-        settings.arguments as AppRouterArgument;
+            settings.arguments as AppRouterArgument;
         return CustomPageRouteTransiton.fadeOut(
           page: SuccessScreen(
             appRouterArgument: appRouterArgument,
@@ -203,7 +212,7 @@ class AppRoutes {
         );
       case Routes.info:
         final AppRouterArgument appRouterArgument =
-        settings.arguments as AppRouterArgument;
+            settings.arguments as AppRouterArgument;
         return CustomPageRouteTransiton.fadeOut(
           page: InfoScreen(
             appRouterArgument: appRouterArgument,
@@ -211,7 +220,7 @@ class AppRoutes {
         );
       case Routes.appointment:
         final AppRouterArgument appRouterArgument =
-        settings.arguments as AppRouterArgument;
+            settings.arguments as AppRouterArgument;
         return CustomPageRouteTransiton.fadeOut(
           page: AppointmentScreen(
             appRouterArgument: appRouterArgument,

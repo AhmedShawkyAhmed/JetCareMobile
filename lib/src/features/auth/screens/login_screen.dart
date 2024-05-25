@@ -9,6 +9,7 @@ import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
 import 'package:jetcare/src/core/shared/widgets/default_text.dart';
 import 'package:jetcare/src/core/shared/widgets/default_text_field.dart';
+import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/features/auth/cubit/auth_cubit.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
@@ -184,41 +185,12 @@ class _LoginScreenState extends State<LoginScreen> {
                               AppColors.primaryLight
                             ],
                             onTap: () {
-                              cubit.login();
+                              if (cubit.singIn) {
+                                cubit.login();
+                              } else {
+                                cubit.checkEmail(type: OTPTypes.register);
+                              }
                             },
-                            // onTap:  () {
-                            //   IndicatorView.showIndicator();
-                            //   AuthCubit(instance()).checkEmail(
-                            //     email: emailController.text,
-                            //     notFound: () {
-                            //       AuthCubit(instance()).sendEmail(
-                            //         email: emailController.text,
-                            //         success: () {
-                            //           NavigationService
-                            //               .pushNamedAndRemoveUntil(
-                            //             Routes.otp,
-                            //                 (route) => true,
-                            //             arguments: AppRouterArgument(
-                            //               type: "register",
-                            //               phone: emailController.text,
-                            //             ),
-                            //           );
-                            //         },
-                            //         failed: () {
-                            //           NavigationService.pop();
-                            //           DefaultToast.showMyToast(
-                            //             translate(AppStrings.error),
-                            //           );
-                            //         },
-                            //       );
-                            //     },
-                            //     found: () {
-                            //       NavigationService.pop();
-                            //       DefaultToast.showMyToast(
-                            //           translate(AppStrings.phoneExist));
-                            //     },
-                            //   );
-                            // },
                           ),
                           if (cubit.singIn)
                             DefaultAppButton(

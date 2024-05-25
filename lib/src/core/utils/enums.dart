@@ -12,3 +12,8 @@ enum Roles {
   client,
   crew,
 }
+
+enum OTPTypes{
+  register,
+  resetPassword,
+}

@@ -1,6 +1,7 @@
 enum Routes {
   splash,
   login,
+  register,
   otp,
   home,
   layout,

@@ -4,17 +4,13 @@ import 'package:jetcare/src/business_logic/global_cubit/global_cubit.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
 import 'package:jetcare/src/core/constants/constants_variables.dart';
-import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/routing/app_router_names.dart';
 import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
-import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
 import 'package:jetcare/src/core/shared/widgets/default_text.dart';
-import 'package:jetcare/src/core/utils/enums.dart';
-import 'package:jetcare/src/features/layout/cubit/layout_cubit.dart';
-import 'package:jetcare/src/features/profile/data/models/user_model.dart';
+import 'package:jetcare/src/features/auth/cubit/auth_cubit.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/language_alert.dart';
 import 'package:jetcare/src/presentation/views/more_item.dart';
@@ -132,14 +128,7 @@ class MoreScreen extends StatelessWidget {
               title: translate(AppStrings.logout),
               icon: Icons.logout_outlined,
               onTap: () {
-                CacheService.clear();
-                globalAccountModel = UserModel();
-                LayoutCubit().currentIndex = 0;
-                CacheService.add(key: CacheKeys.language, value: Languages.ar.name);
-                NavigationService.pushNamedAndRemoveUntil(
-                  Routes.login,
-                  (route) => false,
-                );
+                AuthCubit(instance()).logout();
               },
             ),
             const Spacer(),
