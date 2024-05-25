@@ -3,14 +3,15 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/business_logic/global_cubit/global_cubit.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
-import 'package:jetcare/src/core/constants/constants_variables.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/routing/app_router_names.dart';
 import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/globals.dart';
 import 'package:jetcare/src/core/shared/widgets/default_app_button.dart';
-import 'package:jetcare/src/core/shared/widgets/default_text.dart';
+import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/features/auth/cubit/auth_cubit.dart';
+import 'package:jetcare/src/features/profile/cubit/profile_cubit.dart';
 import 'package:jetcare/src/presentation/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/language_alert.dart';
 import 'package:jetcare/src/presentation/views/more_item.dart';
@@ -49,20 +50,15 @@ class MoreScreen extends StatelessWidget {
             SizedBox(
               height: 4.h,
             ),
-            if (globalAccountModel.role == "client")
+            if (Globals.userData.role == Roles.client.name)
               MoreItem(
                 title: translate(AppStrings.account),
                 icon: Icons.person,
                 onTap: () {
-                  NavigationService.pushNamed(
-                    Routes.profile,
-                    arguments: AppRouterArgument(
-                      type: "profile",
-                    ),
-                  );
+                  NavigationService.pushNamed(Routes.profile);
                 },
               ),
-            if (globalAccountModel.role == "client")
+            if (Globals.userData.role == Roles.client.name)
               MoreItem(
                 title: translate(AppStrings.addresses),
                 icon: Icons.home_work,
@@ -136,62 +132,7 @@ class MoreScreen extends StatelessWidget {
               title: translate(AppStrings.deleteAccount),
               buttonColor: AppColors.darkRed,
               onTap: () {
-                showDialog<void>(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      backgroundColor: AppColors.mainColor,
-                      title: DefaultText(
-                        text: translate(AppStrings.deleteAccount),
-                        align: TextAlign.center,
-                        fontSize: 19.sp,
-                      ),
-                      content: SingleChildScrollView(
-                        child: ListBody(
-                          children: <Widget>[
-                            DefaultText(
-                              text: translate(AppStrings.deleteAlert),
-                              align: TextAlign.center,
-                              fontSize: 15.sp,
-                              maxLines: 3,
-                            ),
-                          ],
-                        ),
-                      ),
-                      actionsAlignment: MainAxisAlignment.spaceEvenly,
-                      actions: <Widget>[
-                        DefaultText(
-                          text: translate(AppStrings.deleteAccount),
-                          align: TextAlign.center,
-                          fontSize: 13.sp,
-                          textColor: AppColors.darkRed,
-                          onTap: () {
-                            // TODO delete account
-                            // AuthCubit(instance()).deleteAccount(
-                            //   userId: globalAccountModel.id.toString(),
-                            //   afterSuccess: () {
-                            //     CacheService.clear();
-                            //     NavigationService.pushNamedAndRemoveUntil(
-                            //       Routes.login,
-                            //       (route) => false,
-                            //     );
-                            //   },
-                            // );
-                          },
-                        ),
-                        DefaultText(
-                          text: translate(AppStrings.cancel),
-                          align: TextAlign.center,
-                          fontSize: 13.sp,
-                          onTap: () {
-                            NavigationService.pop();
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
+                ProfileCubit(instance()).deleteAccountDialog();
               },
             ),
           ],

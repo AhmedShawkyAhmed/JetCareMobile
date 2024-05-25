@@ -14,12 +14,13 @@ import 'package:jetcare/src/features/auth/screens/otp_screen.dart';
 import 'package:jetcare/src/features/auth/screens/register_screen.dart';
 import 'package:jetcare/src/features/auth/screens/reset_password.dart';
 import 'package:jetcare/src/features/auth/screens/verify_email.dart';
-import 'package:jetcare/src/features/disable/screens/deleted_account_screen.dart';
-import 'package:jetcare/src/features/disable/screens/disable_account_screen.dart';
 import 'package:jetcare/src/features/layout/cubit/layout_cubit.dart';
 import 'package:jetcare/src/features/layout/screens/crew_layout_screen.dart';
 import 'package:jetcare/src/features/layout/screens/layout_screen.dart';
+import 'package:jetcare/src/features/profile/cubit/profile_cubit.dart';
 import 'package:jetcare/src/features/profile/screens/profile_screen.dart';
+import 'package:jetcare/src/features/shared/screens/deleted_account_screen.dart';
+import 'package:jetcare/src/features/shared/screens/disable_account_screen.dart';
 import 'package:jetcare/src/features/splash/cubit/splash_cubit.dart';
 import 'package:jetcare/src/features/splash/screens/splash_screen.dart';
 import 'package:jetcare/src/presentation/screens/shared/notification_screen.dart';
@@ -87,16 +88,20 @@ class AppRoutes {
           page: const DeletedAccountScreen(),
         );
       case Routes.resetPassword:
-        final PasswordArguments arguments = settings.arguments as PasswordArguments;
+        final PasswordArguments arguments =
+            settings.arguments as PasswordArguments;
         return CustomPageRouteTransiton.fadeOut(
           page: BlocProvider(
             create: (context) => AuthCubit(instance()),
-            child:  ResetPassword(arguments: arguments),
+            child: ResetPassword(arguments: arguments),
           ),
         );
       case Routes.profile:
         return CustomPageRouteTransiton.fadeOut(
-          page: const ProfileScreen(),
+          page: BlocProvider(
+            create: (context) => ProfileCubit(instance())..initProfile(),
+            child: const ProfileScreen(),
+          ),
         );
       case Routes.otp:
         final OtpArguments arguments = settings.arguments as OtpArguments;

@@ -10,7 +10,7 @@ import 'package:jetcare/src/core/services/bloc_observer.dart';
 import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/services/notification_service.dart';
 import 'package:jetcare/src/core/utils/enums.dart';
-import 'package:jetcare/src/features/disable/screens/error_screen.dart';
+import 'package:jetcare/src/features/shared/screens/error_screen.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 late LocalizationDelegate delegate;
@@ -26,6 +26,7 @@ void main() async {
   await CacheService.init();
   Bloc.observer = MyBlocObserver();
   packageInfo = await PackageInfo.fromPlatform();
+
   final locale = CacheService.get(key: CacheKeys.language) ?? Languages.ar.name;
   CacheService.add(key: CacheKeys.language, value: locale);
   delegate = await LocalizationDelegate.create(
@@ -37,6 +38,7 @@ void main() async {
     CacheService.add(key: CacheKeys.language, value: Languages.ar.name);
   }
   await initAppModule();
+
   runApp(
     LocalizedApp(
       delegate,
