@@ -34,9 +34,14 @@ class EndPoints {
   static const readNotification = "read_notification";
   static const getNotifications = "get_notifications";
 
+  // ------------------- Support
+  static const getTerms = "get_terms";
+  static const getAbout = "get_about";
+  static const getContact = "get_contact";
+  static const addSupport = "add_support";
+
 // ---------------------
   static const getHome = "getHome";
-  static const getAppInfo = "getAppInfo";
   static const getAllStates = "getAllStates";
   static const getAreasOfState = "getAreasOfState";
   static const updateAccount = "updateAccount";
@@ -44,7 +49,6 @@ class EndPoints {
   static const getPackageDetails = "getPackageDetails";
   static const getPackages = "getPackages";
   static const getMyOrders = "getMyOrders";
-  static const addSupport = "addSupport";
   static const updateOrderStatusUser = "update_order_status_user";
   static const getSpaces = "getSpacesMobile";
   static const addAddress = "addAddress";

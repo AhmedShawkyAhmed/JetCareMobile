@@ -24,6 +24,11 @@ enum SuccessType {
   support,
 }
 
+enum InfoType {
+  terms,
+  about,
+}
+
 enum OrderStatus{
   assigned,
   unassigned,

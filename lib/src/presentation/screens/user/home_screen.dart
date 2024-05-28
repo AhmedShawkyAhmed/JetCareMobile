@@ -5,10 +5,10 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/business_logic/global_cubit/global_cubit.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
-import 'package:jetcare/src/core/constants/constants_variables.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/routing/routes.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/globals.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/features/shared/views/body_view.dart';
 import 'package:jetcare/src/features/shared/widgets/default_text.dart';
@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
               return ListView(
                 padding: EdgeInsets.only(bottom: 4.h),
                 children: [
-                  if (globalAccountModel.name != null) ...[
+                  if (Globals.userData.name != null) ...[
                     Padding(
                       padding: EdgeInsets.only(
                           left: 5.w, right: 5.w, top: 2.h, bottom: 2.h),
@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           DefaultText(
-                            text: globalAccountModel.name ?? "زائر",
+                            text: Globals.userData.name ?? "زائر",
                             fontSize: 15.sp,
                           ),
                           InkWell(

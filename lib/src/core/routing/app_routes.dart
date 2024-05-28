@@ -31,6 +31,9 @@ import 'package:jetcare/src/features/shared/screens/success_screen.dart';
 import 'package:jetcare/src/features/shared/screens/welcome_screen.dart';
 import 'package:jetcare/src/features/splash/cubit/splash_cubit.dart';
 import 'package:jetcare/src/features/splash/screens/splash_screen.dart';
+import 'package:jetcare/src/features/support/cubit/support_cubit.dart';
+import 'package:jetcare/src/features/support/screens/contact_screen.dart';
+import 'package:jetcare/src/features/support/screens/info_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/add_address_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/added_to_cart_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/address_screen.dart';
@@ -38,10 +41,8 @@ import 'package:jetcare/src/presentation/screens/user/appointment_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/cart_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/category_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/confirm_order_screen.dart';
-import 'package:jetcare/src/presentation/screens/user/contact_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/corporate_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/home_screen.dart';
-import 'package:jetcare/src/presentation/screens/user/info_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/map_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/order_details_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/package_screen.dart';
@@ -200,7 +201,10 @@ class AppRoutes {
         );
       case Routes.contact:
         return CustomPageRouteTransiton.fadeOut(
-          page: ContactScreen(),
+          page: BlocProvider(
+            create: (context) => SupportCubit(instance())..getContact(),
+            child: const ContactScreen(),
+          ),
         );
       case Routes.address:
         return CustomPageRouteTransiton.fadeOut(
@@ -221,7 +225,8 @@ class AppRoutes {
       case Routes.notification:
         return CustomPageRouteTransiton.fadeOut(
           page: BlocProvider(
-            create: (context) => NotificationCubit(instance())..getNotifications(),
+            create: (context) =>
+                NotificationCubit(instance())..getNotifications(),
             child: const NotificationScreen(),
           ),
         );
@@ -237,11 +242,13 @@ class AppRoutes {
           ),
         );
       case Routes.info:
-        final AppRouterArgument appRouterArgument =
-            settings.arguments as AppRouterArgument;
+        final InfoType type = settings.arguments as InfoType;
         return CustomPageRouteTransiton.fadeOut(
-          page: InfoScreen(
-            appRouterArgument: appRouterArgument,
+          page: BlocProvider(
+            create: (context) => SupportCubit(instance()),
+            child: InfoScreen(
+              type: type,
+            ),
           ),
         );
       case Routes.appointment:

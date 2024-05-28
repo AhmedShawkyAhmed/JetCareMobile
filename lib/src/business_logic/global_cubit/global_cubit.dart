@@ -4,11 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jetcare/src/core/network/end_points.dart';
 import 'package:jetcare/src/core/network/network_service.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
-import 'package:jetcare/src/data/network/requests/support_request.dart';
 import 'package:jetcare/src/data/network/responses/area_response.dart';
 import 'package:jetcare/src/data/network/responses/global_response.dart';
 import 'package:jetcare/src/data/network/responses/home_response.dart';
-import 'package:jetcare/src/data/network/responses/info_response.dart';
 import 'package:jetcare/src/data/network/responses/period_response.dart';
 import 'package:jetcare/src/data/network/responses/spaces_response.dart';
 
@@ -19,7 +17,8 @@ class GlobalCubit extends Cubit<GlobalState> {
   NetworkService networkService;
 
   HomeResponse? homeResponse;
-  InfoResponse? infoResponse;
+
+  // InfoResponse? infoResponse;
   AreaResponse? areaResponse;
   PeriodResponse? periodResponse;
   GlobalResponse? globalResponse;
@@ -43,27 +42,6 @@ class GlobalCubit extends Cubit<GlobalState> {
       printError(n.toString());
     } catch (e) {
       emit(HomeErrorState());
-      printError(e.toString());
-    }
-  }
-
-  Future getInfo() async {
-    try {
-      emit(InfoLoadingState());
-      await networkService
-          .get(
-        url: EndPoints.getAppInfo,
-      )
-          .then((value) {
-        infoResponse = InfoResponse.fromJson(value.data);
-        printSuccess("Info Response ${infoResponse!.status.toString()}");
-        emit(InfoSuccessState());
-      });
-    } on DioException catch (n) {
-      emit(InfoErrorState());
-      printError(n.toString());
-    } catch (e) {
-      emit(InfoErrorState());
       printError(e.toString());
     }
   }
@@ -129,29 +107,4 @@ class GlobalCubit extends Cubit<GlobalState> {
     }
   }
 
-  Future support({
-    required SupportRequest supportRequest,
-    required VoidCallback afterSuccess,
-  }) async {
-    try {
-      emit(SupportLoadingState());
-      await networkService.post(url: EndPoints.addSupport, body: {
-        'name': supportRequest.name,
-        'contact': supportRequest.contact,
-        'message': supportRequest.message,
-        'subject': supportRequest.subject,
-      }).then((value) {
-        globalResponse = GlobalResponse.fromJson(value.data);
-        printSuccess("Support Response ${globalResponse!.status.toString()}");
-        emit(SupportSuccessState());
-        afterSuccess();
-      });
-    } on DioException catch (n) {
-      emit(SupportErrorState());
-      printError(n.toString());
-    } catch (e) {
-      emit(SupportErrorState());
-      printError(e.toString());
-    }
-  }
 }
