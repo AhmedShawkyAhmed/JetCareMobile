@@ -29,7 +29,7 @@ class CartItem extends StatelessWidget {
     return Container(
       height: 13.h,
       padding: EdgeInsets.all(6.sp),
-      margin: EdgeInsets.only(right: 2.h, left: 2.h, bottom: 1.h),
+      margin: EdgeInsets.only(right: 1.h, left: 1.h, bottom: 1.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: AppColors.shade.withOpacity(0.1),
@@ -50,7 +50,7 @@ class CartItem extends StatelessWidget {
             ),
           ),
           SizedBox(
-            width: 58.w,
+            width: 65.w,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,

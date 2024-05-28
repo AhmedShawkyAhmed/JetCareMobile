@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/routing/app_animation.dart';
-import 'package:jetcare/src/core/routing/routes.dart';
 import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
 import 'package:jetcare/src/core/routing/arguments/otp_arguments.dart';
 import 'package:jetcare/src/core/routing/arguments/password_arguments.dart';
+import 'package:jetcare/src/core/routing/arguments/task_arguments.dart';
+import 'package:jetcare/src/core/routing/routes.dart';
 import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/core/utils/extensions.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
@@ -15,6 +16,8 @@ import 'package:jetcare/src/features/auth/screens/otp_screen.dart';
 import 'package:jetcare/src/features/auth/screens/register_screen.dart';
 import 'package:jetcare/src/features/auth/screens/reset_password.dart';
 import 'package:jetcare/src/features/auth/screens/verify_email.dart';
+import 'package:jetcare/src/features/crew/cubit/crew_cubit.dart';
+import 'package:jetcare/src/features/crew/screens/task_details_screen.dart';
 import 'package:jetcare/src/features/layout/cubit/layout_cubit.dart';
 import 'package:jetcare/src/features/layout/screens/crew_layout_screen.dart';
 import 'package:jetcare/src/features/layout/screens/layout_screen.dart';
@@ -22,6 +25,8 @@ import 'package:jetcare/src/features/profile/cubit/profile_cubit.dart';
 import 'package:jetcare/src/features/profile/screens/profile_screen.dart';
 import 'package:jetcare/src/features/shared/screens/deleted_account_screen.dart';
 import 'package:jetcare/src/features/shared/screens/disable_account_screen.dart';
+import 'package:jetcare/src/features/shared/screens/success_screen.dart';
+import 'package:jetcare/src/features/shared/screens/welcome_screen.dart';
 import 'package:jetcare/src/features/splash/cubit/splash_cubit.dart';
 import 'package:jetcare/src/features/splash/screens/splash_screen.dart';
 import 'package:jetcare/src/presentation/screens/shared/notification_screen.dart';
@@ -40,8 +45,6 @@ import 'package:jetcare/src/presentation/screens/user/map_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/order_details_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/package_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/service_screen.dart';
-import 'package:jetcare/src/features/shared/screens/success_screen.dart';
-import 'package:jetcare/src/features/shared/screens/welcome_screen.dart';
 
 import 'arguments/register_arguments.dart';
 
@@ -119,6 +122,13 @@ class AppRoutes {
             appRouterArgument: appRouterArgument,
           ),
         );
+      case Routes.taskDetails:
+        final TaskArguments arguments = settings.arguments as TaskArguments;
+        return CustomPageRouteTransiton.fadeOut(
+          page: TaskDetailsScreen(
+            arguments: arguments,
+          ),
+        );
       case Routes.verify:
         return CustomPageRouteTransiton.fadeOut(
           page: BlocProvider(
@@ -135,8 +145,15 @@ class AppRoutes {
         );
       case Routes.crewLayout:
         return CustomPageRouteTransiton.fadeOut(
-          page: BlocProvider(
-            create: (context) => LayoutCubit()..init(),
+          page: MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) => LayoutCubit()..init(),
+              ),
+              BlocProvider(
+                create: (context) => CrewCubit(instance()),
+              ),
+            ],
             child: const CrewLayoutScreen(),
           ),
         );
@@ -209,8 +226,7 @@ class AppRoutes {
           page: const CartScreen(),
         );
       case Routes.success:
-        final SuccessType type =
-            settings.arguments as SuccessType;
+        final SuccessType type = settings.arguments as SuccessType;
         return CustomPageRouteTransiton.fadeOut(
           page: SuccessScreen(
             type: type,

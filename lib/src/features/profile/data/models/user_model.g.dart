@@ -14,18 +14,27 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       rate: json['rate'] as num?,
       role: json['role'] as String?,
       token: json['token'] as String?,
-      active: (json['active'] as num?)?.toInt(),
-      archive: (json['archive'] as num?)?.toInt(),
+      isActive: json['is_active'] as bool?,
+      isArchived: json['is_archived'] as bool?,
     );
 
-Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-      'phone': instance.phone,
-      'email': instance.email,
-      'rate': instance.rate,
-      'role': instance.role,
-      'token': instance.token,
-      'active': instance.active,
-      'archive': instance.archive,
-    };
+Map<String, dynamic> _$UserModelToJson(UserModel instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('id', instance.id);
+  writeNotNull('name', instance.name);
+  writeNotNull('phone', instance.phone);
+  writeNotNull('email', instance.email);
+  writeNotNull('rate', instance.rate);
+  writeNotNull('role', instance.role);
+  writeNotNull('token', instance.token);
+  writeNotNull('is_active', instance.isActive);
+  writeNotNull('is_archived', instance.isArchived);
+  return val;
+}

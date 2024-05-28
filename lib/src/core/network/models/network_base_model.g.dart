@@ -19,12 +19,21 @@ NetworkBaseModel<T> _$NetworkBaseModelFromJson<T>(
 Map<String, dynamic> _$NetworkBaseModelToJson<T>(
   NetworkBaseModel<T> instance,
   Object? Function(T value) toJsonT,
-) =>
-    <String, dynamic>{
-      'status': instance.status,
-      'message': instance.message,
-      'data': _$nullableGenericToJson(instance.data, toJsonT),
-    };
+) {
+  final val = <String, dynamic>{
+    'status': instance.status,
+    'message': instance.message,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('data', _$nullableGenericToJson(instance.data, toJsonT));
+  return val;
+}
 
 T? _$nullableGenericFromJson<T>(
   Object? input,

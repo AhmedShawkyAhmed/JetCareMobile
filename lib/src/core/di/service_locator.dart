@@ -6,6 +6,9 @@ import 'package:jetcare/src/core/network/network_service.dart';
 import 'package:jetcare/src/features/auth/cubit/auth_cubit.dart';
 import 'package:jetcare/src/features/auth/data/repo/auth_repo.dart';
 import 'package:jetcare/src/features/auth/service/auth_web_service.dart';
+import 'package:jetcare/src/features/crew/cubit/crew_cubit.dart';
+import 'package:jetcare/src/features/crew/data/repo/crew_repo.dart';
+import 'package:jetcare/src/features/crew/service/crew_web_service.dart';
 import 'package:jetcare/src/features/language/cubit/language_cubit.dart';
 import 'package:jetcare/src/features/layout/cubit/layout_cubit.dart';
 import 'package:jetcare/src/features/profile/cubit/profile_cubit.dart';
@@ -30,10 +33,13 @@ Future<void> initAppModule() async {
   instance.registerFactory<LanguageCubit>(() => LanguageCubit());
   instance.registerFactory<ProfileCubit>(() => ProfileCubit(instance()));
   instance.registerFactory<AuthCubit>(() => AuthCubit(instance()));
+  instance.registerLazySingleton<CrewCubit>(() => CrewCubit(instance()));
   // --------------------- Repo
   instance.registerLazySingleton<AuthRepo>(() => AuthRepo(instance()));
   instance.registerLazySingleton<ProfileRepo>(() => ProfileRepo(instance()));
+  instance.registerLazySingleton<CrewRepo>(() => CrewRepo(instance()));
   // --------------------- Web Service
   instance.registerLazySingleton<AuthWebService>(() => AuthWebService(instance()));
   instance.registerLazySingleton<ProfileWebService>(() => ProfileWebService(instance()));
+  instance.registerLazySingleton<CrewWebService>(() => CrewWebService(instance()));
 }

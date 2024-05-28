@@ -48,7 +48,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future checkEmail({
     required OTPTypes type,
   }) async {
-    emit(CheckEmailLoadingState());
+    emit(CheckEmailLoading());
     IndicatorView.showIndicator();
     var response = await repo.checkEmail(
       request: MailRequest(
@@ -76,11 +76,11 @@ class AuthCubit extends Cubit<AuthState> {
             );
           }
         }
-        emit(CheckEmailSuccessState());
+        emit(CheckEmailSuccess());
       },
       failure: (NetworkExceptions error) {
         NavigationService.pop();
-        emit(CheckEmailFailureState());
+        emit(CheckEmailFailure());
         error.showError();
       },
     );
@@ -90,7 +90,7 @@ class AuthCubit extends Cubit<AuthState> {
     required OTPTypes type,
     String? email,
   }) async {
-    emit(VerifyEmailLoadingState());
+    emit(VerifyEmailLoading());
     if (type == OTPTypes.resend) {
       IndicatorView.showIndicator();
     }
@@ -114,14 +114,14 @@ class AuthCubit extends Cubit<AuthState> {
             ),
           );
         }
-        emit(VerifyEmailSuccessState());
+        emit(VerifyEmailSuccess());
       },
       failure: (NetworkExceptions error) {
         NavigationService.pop();
         DefaultToast.showMyToast(
           translate(AppStrings.error),
         );
-        emit(VerifyEmailFailureState());
+        emit(VerifyEmailFailure());
         error.showError();
       },
     );
@@ -137,7 +137,7 @@ class AuthCubit extends Cubit<AuthState> {
       return;
     }
     IndicatorView.showIndicator();
-    emit(ValidateCodeLoadingState());
+    emit(ValidateCodeLoading());
     var response = await repo.validateCode(
       request: MailRequest(
         email: email,
@@ -161,12 +161,12 @@ class AuthCubit extends Cubit<AuthState> {
             ),
           );
         }
-        emit(ValidateCodeSuccessState());
+        emit(ValidateCodeSuccess());
       },
       failure: (NetworkExceptions error) {
         NavigationService.pop();
         DefaultToast.showMyToast(translate(AppStrings.wrongCode));
-        emit(ValidateCodeFailureState());
+        emit(ValidateCodeFailure());
         error.showError();
       },
     );
@@ -182,7 +182,7 @@ class AuthCubit extends Cubit<AuthState> {
       return;
     }
     IndicatorView.showIndicator();
-    emit(LoginLoadingState());
+    emit(LoginLoading());
     var response = await repo.login(
       request: LoginRequest(
         email: emailController.text,
@@ -191,7 +191,7 @@ class AuthCubit extends Cubit<AuthState> {
     );
     response.when(
       success: (NetworkBaseModel response) async {
-        emit(LoginSuccessState());
+        emit(LoginSuccess());
         CacheService.add(key: CacheKeys.token, value: response.data!.token);
         if (fcmToken != null) {
           await updateFCM(id: response.data!.id!);
@@ -199,7 +199,7 @@ class AuthCubit extends Cubit<AuthState> {
         await ProfileCubit(instance()).getProfile();
       },
       failure: (NetworkExceptions error) {
-        emit(LoginFailureState());
+        emit(LoginFailure());
         error.showError();
       },
     );
@@ -220,13 +220,13 @@ class AuthCubit extends Cubit<AuthState> {
       return;
     }
     IndicatorView.showIndicator();
-    emit(RegisterLoadingState());
+    emit(RegisterLoading());
     var response = await repo.register(
       request: request,
     );
     response.when(
       success: (NetworkBaseModel response) async {
-        emit(RegisterSuccessState());
+        emit(RegisterSuccess());
         CacheService.add(key: CacheKeys.token, value: response.data!.token);
         if (fcmToken != null) {
           await updateFCM(id: response.data!.id!);
@@ -234,7 +234,7 @@ class AuthCubit extends Cubit<AuthState> {
         await ProfileCubit(instance()).getProfile(isNewAccount: true);
       },
       failure: (NetworkExceptions error) {
-        emit(RegisterFailureState());
+        emit(RegisterFailure());
         error.showError();
       },
     );
@@ -256,7 +256,7 @@ class AuthCubit extends Cubit<AuthState> {
       return;
     }
     IndicatorView.showIndicator();
-    emit(ResetPasswordLoadingState());
+    emit(ResetPasswordLoading());
     var response = await repo.resetPassword(
       request: LoginRequest(
         email: email,
@@ -265,7 +265,7 @@ class AuthCubit extends Cubit<AuthState> {
     );
     response.when(
       success: (NetworkBaseModel response) async {
-        emit(ResetPasswordSuccessState());
+        emit(ResetPasswordSuccess());
         NavigationService.pushNamedAndRemoveUntil(
           Routes.login,
           (route) => false,
@@ -273,7 +273,7 @@ class AuthCubit extends Cubit<AuthState> {
       },
       failure: (NetworkExceptions error) {
         NavigationService.pop();
-        emit(ResetPasswordFailureState());
+        emit(ResetPasswordFailure());
         error.showError();
       },
     );
@@ -290,7 +290,7 @@ class AuthCubit extends Cubit<AuthState> {
       return;
     }
     IndicatorView.showIndicator();
-    emit(ResetPasswordLoadingState());
+    emit(ResetPasswordLoading());
     var response = await repo.forgetPassword(
       request: ForgetPasswordRequest(
         password: passwordController.text,
@@ -299,7 +299,7 @@ class AuthCubit extends Cubit<AuthState> {
     );
     response.when(
       success: (NetworkBaseModel response) async {
-        emit(ResetPasswordSuccessState());
+        emit(ResetPasswordSuccess());
         NavigationService.pushNamedAndRemoveUntil(
           Routes.login,
           (route) => false,
@@ -307,7 +307,7 @@ class AuthCubit extends Cubit<AuthState> {
       },
       failure: (NetworkExceptions error) {
         NavigationService.pop();
-        emit(ResetPasswordFailureState());
+        emit(ResetPasswordFailure());
         error.showError();
       },
     );
@@ -316,7 +316,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future updateFCM({
     required int id,
   }) async {
-    emit(FCMLoadingState());
+    emit(FCMLoading());
     var response = await repo.fcm(
       request: FCMRequest(
         id: id,
@@ -325,18 +325,18 @@ class AuthCubit extends Cubit<AuthState> {
     );
     response.when(
       success: (NetworkBaseModel response) async {
-        emit(FCMSuccessState());
+        emit(FCMSuccess());
         printSuccess("FCM Response ${response.status}");
       },
       failure: (NetworkExceptions error) {
-        emit(FCMFailureState());
+        emit(FCMFailure());
         error.showError();
       },
     );
   }
 
   Future logout() async {
-    emit(LogoutLoadingState());
+    emit(LogoutLoading());
     var response = await repo.logout();
     response.when(
       success: (NetworkBaseModel response) async {
@@ -345,13 +345,13 @@ class AuthCubit extends Cubit<AuthState> {
         CacheService.add(key: CacheKeys.language, value: Languages.ar.name);
         NavigationService.pushNamedAndRemoveUntil(
             Routes.login, (route) => false);
-        emit(LogoutSuccessState());
+        emit(LogoutSuccess());
       },
       failure: (NetworkExceptions error) {
         DefaultToast.showMyToast(
           translate(error.message),
         );
-        emit(LogoutFailureState());
+        emit(LogoutFailure());
         error.showError();
       },
     );

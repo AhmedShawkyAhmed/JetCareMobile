@@ -23,3 +23,11 @@ enum SuccessType {
   order,
   support,
 }
+
+enum OrderStatus{
+  assigned,
+  unassigned,
+  accepted,
+  completed,
+  canceled,
+}

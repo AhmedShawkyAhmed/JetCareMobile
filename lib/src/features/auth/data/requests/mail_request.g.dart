@@ -11,8 +11,17 @@ MailRequest _$MailRequestFromJson(Map<String, dynamic> json) => MailRequest(
       code: (json['code'] as num?)?.toInt(),
     );
 
-Map<String, dynamic> _$MailRequestToJson(MailRequest instance) =>
-    <String, dynamic>{
-      'email': instance.email,
-      'code': instance.code,
-    };
+Map<String, dynamic> _$MailRequestToJson(MailRequest instance) {
+  final val = <String, dynamic>{
+    'email': instance.email,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('code', instance.code);
+  return val;
+}

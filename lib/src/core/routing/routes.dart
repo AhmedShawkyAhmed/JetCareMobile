@@ -25,6 +25,7 @@ enum Routes {
   disable,
   deleted,
   confirmOrder,
+  taskDetails,
   notification,
   cart,
   addedToCart;

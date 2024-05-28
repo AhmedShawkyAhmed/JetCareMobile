@@ -2,8 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
-import 'package:jetcare/src/presentation/screens/crew/crew_history_screen.dart';
-import 'package:jetcare/src/presentation/screens/crew/crew_home_screen.dart';
+import 'package:jetcare/src/features/crew/screens/tasks_history_screen.dart';
+import 'package:jetcare/src/features/crew/screens/tasks_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/cart_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/history_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/home_screen.dart';
@@ -73,8 +73,8 @@ class LayoutCubit extends Cubit<LayoutState> {
   ];
 
   final List<Widget> crewScreens = [
-    const CrewHomeScreen(),
-    const CrewHistoryScreen(),
+    const TasksScreen(),
+    const TasksHistoryScreen(),
     const MoreScreen(),
   ];
 

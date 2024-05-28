@@ -11,8 +11,8 @@ class UserModel {
   num? rate;
   String? role;
   String? token;
-  int? active;
-  int? archive;
+  bool? isActive;
+  bool? isArchived;
 
   UserModel({
     this.id,
@@ -22,8 +22,8 @@ class UserModel {
     this.rate,
     this.role,
     this.token,
-    this.active,
-    this.archive,
+    this.isActive,
+    this.isArchived,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>

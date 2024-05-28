@@ -22,7 +22,7 @@ class OrderCubit extends Cubit<OrderState> {
   CorporateResponse? corporateResponse;
 
   GlobalResponse? globalResponse, orderResponse;
-  HistoryResponse? historyResponse, tasksResponse;
+  HistoryResponse? historyResponse;
 
   Future getMyTasks() async {
     try {
@@ -30,8 +30,8 @@ class OrderCubit extends Cubit<OrderState> {
       await networkService.get(url: EndPoints.getMyTasks, query: {
         'crewId': globalAccountModel.id,
       }).then((value) {
-        tasksResponse = HistoryResponse.fromJson(value.data);
-        printSuccess("My Tasks Response ${tasksResponse!.message.toString()}");
+        // tasksResponse = HistoryResponse.fromJson(value.data);
+        // printSuccess("My Tasks Response ${tasksResponse!.message.toString()}");
         emit(MyTasksSuccessState());
       });
     } on DioException catch (n) {

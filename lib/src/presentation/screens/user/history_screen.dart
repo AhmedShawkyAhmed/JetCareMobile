@@ -89,11 +89,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                       onTap: () {
                                         NavigationService.pushNamed(
                                           Routes.confirmOrder,
-                                          arguments: AppRouterArgument(
-                                            orderModel: OrderCubit(instance())
-                                                .historyResponse!
-                                                .orders![index],
-                                          ),
+                                          // todo add order
+                                          // arguments: AppRouterArgument(
+                                          //   orderModel: OrderCubit(instance())
+                                          //       .historyResponse!
+                                          //       .orders![index],
+                                          // ),
                                         );
                                       },
                                       child: CartItem(

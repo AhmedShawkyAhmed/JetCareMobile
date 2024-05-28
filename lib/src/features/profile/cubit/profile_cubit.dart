@@ -95,12 +95,12 @@ class ProfileCubit extends Cubit<ProfileState> {
       success: (NetworkBaseModel response) async {
         Globals.userData = response.data!;
         printSuccess(Globals.userData.role);
-        if (Globals.userData.active == 0) {
+        if (Globals.userData.isActive == false) {
           NavigationService.pushNamedAndRemoveUntil(
             Routes.disable,
             (route) => false,
           );
-        } else if (Globals.userData.archive == 1) {
+        } else if (Globals.userData.isArchived == true) {
           NavigationService.pushNamedAndRemoveUntil(
             Routes.deleted,
             (route) => false,

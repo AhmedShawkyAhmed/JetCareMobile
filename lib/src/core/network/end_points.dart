@@ -23,6 +23,12 @@ class EndPoints {
   static const deleteAccount = "delete_account";
   static const restoreAccount = "restore_account";
 
+  // ------------------- Crew Layout
+  static const getMyTasks = "get_my_tasks";
+  static const getMyTasksHistory = "get_my_tasks_history";
+  static const updateOrderStatus = "update_order_status";
+  static const rejectOrder = "reject_order";
+
 // ---------------------
   static const getHome = "getHome";
   static const getAppInfo = "getAppInfo";
@@ -34,6 +40,7 @@ class EndPoints {
   static const getPackages = "getPackages";
   static const getMyOrders = "getMyOrders";
   static const addSupport = "addSupport";
+  static const updateOrderStatusUser = "update_order_status_user";
   static const getSpaces = "getSpacesMobile";
   static const addAddress = "addAddress";
   static const getAreas = "getAreasMobile";
@@ -43,11 +50,7 @@ class EndPoints {
   static const getMyAddresses = "getMyAddresses";
   static const deleteAddress = "deleteAddress";
   static const updateAddress = "updateAddress";
-  static const getMyTasks = "getMyTasks";
-  static const rejectOrder = "rejectOrder";
   static const deleteOrder = "deleteOrder";
-  static const updateOrderStatusUser = "updateOrderStatusUser";
-  static const updateOrderStatus = "updateOrderStatus";
   static const addCorporateOrder = "addCorporateOrder";
   static const saveNotification = "saveNotification";
   static const readNotification = "readNotification";

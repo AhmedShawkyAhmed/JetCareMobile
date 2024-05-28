@@ -5,44 +5,44 @@ sealed class AuthState {}
 
 final class AuthenticateInitial extends AuthState {}
 
-class ChangePasswordState extends AuthState {}
+class ChangePassword extends AuthState {}
 
-class LoginLoadingState extends AuthState {}
-class LoginSuccessState extends AuthState {}
-class LoginFailureState extends AuthState {}
+class LoginLoading extends AuthState {}
+class LoginSuccess extends AuthState {}
+class LoginFailure extends AuthState {}
 
-class CheckEmailLoadingState extends AuthState {}
-class CheckEmailSuccessState extends AuthState {}
-class CheckEmailFailureState extends AuthState {}
+class CheckEmailLoading extends AuthState {}
+class CheckEmailSuccess extends AuthState {}
+class CheckEmailFailure extends AuthState {}
 
-class VerifyEmailLoadingState extends AuthState {}
-class VerifyEmailSuccessState extends AuthState {}
-class VerifyEmailFailureState extends AuthState {}
+class VerifyEmailLoading extends AuthState {}
+class VerifyEmailSuccess extends AuthState {}
+class VerifyEmailFailure extends AuthState {}
 
-class ValidateCodeLoadingState extends AuthState {}
-class ValidateCodeSuccessState extends AuthState {}
-class ValidateCodeFailureState extends AuthState {}
+class ValidateCodeLoading extends AuthState {}
+class ValidateCodeSuccess extends AuthState {}
+class ValidateCodeFailure extends AuthState {}
 
-class ResetPasswordLoadingState extends AuthState {}
-class ResetPasswordSuccessState extends AuthState {}
-class ResetPasswordFailureState extends AuthState {}
+class ResetPasswordLoading extends AuthState {}
+class ResetPasswordSuccess extends AuthState {}
+class ResetPasswordFailure extends AuthState {}
 
-class DeleteLoadingState extends AuthState {}
-class DeleteSuccessState extends AuthState {}
-class DeleteFailureState extends AuthState {}
+class DeleteLoading extends AuthState {}
+class DeleteSuccess extends AuthState {}
+class DeleteFailure extends AuthState {}
 
-class UpdateLoadingState extends AuthState {}
-class UpdateSuccessState extends AuthState {}
-class UpdateFailureState extends AuthState {}
+class UpdateLoading extends AuthState {}
+class UpdateSuccess extends AuthState {}
+class UpdateFailure extends AuthState {}
 
-class RegisterLoadingState extends AuthState {}
-class RegisterSuccessState extends AuthState {}
-class RegisterFailureState extends AuthState {}
+class RegisterLoading extends AuthState {}
+class RegisterSuccess extends AuthState {}
+class RegisterFailure extends AuthState {}
 
-class FCMLoadingState extends AuthState {}
-class FCMSuccessState extends AuthState {}
-class FCMFailureState extends AuthState {}
+class FCMLoading extends AuthState {}
+class FCMSuccess extends AuthState {}
+class FCMFailure extends AuthState {}
 
-class LogoutLoadingState extends AuthState {}
-class LogoutSuccessState extends AuthState {}
-class LogoutFailureState extends AuthState {}
+class LogoutLoading extends AuthState {}
+class LogoutSuccess extends AuthState {}
+class LogoutFailure extends AuthState {}

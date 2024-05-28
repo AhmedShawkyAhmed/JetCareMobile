@@ -2,8 +2,8 @@ import 'package:jetcare/src/data/models/address_model.dart';
 import 'package:jetcare/src/data/models/corporate_model.dart';
 import 'package:jetcare/src/data/models/info_model.dart';
 import 'package:jetcare/src/data/models/item_model.dart';
-import 'package:jetcare/src/data/models/order_model.dart';
 import 'package:jetcare/src/data/models/package_model.dart';
+import 'package:jetcare/src/features/crew/data/models/order_model.dart';
 
 class AppRouterArgument {
   final String? type;
