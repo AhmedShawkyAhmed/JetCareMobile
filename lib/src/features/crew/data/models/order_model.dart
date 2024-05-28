@@ -43,6 +43,7 @@ class OrderModel {
     this.cart,
     this.comment,
   });
+
   factory OrderModel.fromJson(Map<String, dynamic> json) =>
       _$OrderModelFromJson(json);
 

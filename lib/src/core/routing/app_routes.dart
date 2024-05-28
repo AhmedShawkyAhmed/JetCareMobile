@@ -21,6 +21,8 @@ import 'package:jetcare/src/features/crew/screens/task_details_screen.dart';
 import 'package:jetcare/src/features/layout/cubit/layout_cubit.dart';
 import 'package:jetcare/src/features/layout/screens/crew_layout_screen.dart';
 import 'package:jetcare/src/features/layout/screens/layout_screen.dart';
+import 'package:jetcare/src/features/notifications/cubit/notification_cubit.dart';
+import 'package:jetcare/src/features/notifications/screens/notification_screen.dart';
 import 'package:jetcare/src/features/profile/cubit/profile_cubit.dart';
 import 'package:jetcare/src/features/profile/screens/profile_screen.dart';
 import 'package:jetcare/src/features/shared/screens/deleted_account_screen.dart';
@@ -29,9 +31,8 @@ import 'package:jetcare/src/features/shared/screens/success_screen.dart';
 import 'package:jetcare/src/features/shared/screens/welcome_screen.dart';
 import 'package:jetcare/src/features/splash/cubit/splash_cubit.dart';
 import 'package:jetcare/src/features/splash/screens/splash_screen.dart';
-import 'package:jetcare/src/presentation/screens/shared/notification_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/add_address_screen.dart';
-import 'package:jetcare/src/presentation/screens/user/added_success_screen.dart';
+import 'package:jetcare/src/presentation/screens/user/added_to_cart_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/address_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/appointment_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/cart_screen.dart';
@@ -187,7 +188,7 @@ class AppRoutes {
         );
       case Routes.addedToCart:
         return CustomPageRouteTransiton.fadeOut(
-          page: const AddedSuccessScreen(),
+          page: const AddedToCartScreen(),
         );
       case Routes.home:
         return CustomPageRouteTransiton.fadeOut(
@@ -219,7 +220,10 @@ class AppRoutes {
         );
       case Routes.notification:
         return CustomPageRouteTransiton.fadeOut(
-          page: const NotificationScreen(),
+          page: BlocProvider(
+            create: (context) => NotificationCubit(instance())..getNotifications(),
+            child: const NotificationScreen(),
+          ),
         );
       case Routes.cart:
         return CustomPageRouteTransiton.fadeOut(

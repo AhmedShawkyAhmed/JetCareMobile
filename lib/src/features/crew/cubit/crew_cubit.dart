@@ -15,11 +15,11 @@ class CrewCubit extends Cubit<CrewState> {
   CrewCubit(this.repo) : super(CrewInitial());
   final CrewRepo repo;
 
-  List<OrderModel>? myTasks,myTasksHistory;
+  List<OrderModel>? myTasks, myTasksHistory;
 
   Future updateOrderStatus({
     required UpdateOrderStatusRequest request,
-}) async {
+  }) async {
     IndicatorView.showIndicator();
     emit(UpdateOrderStatusLoading());
     var response = await repo.updateOrderStatus(request: request);
@@ -27,7 +27,7 @@ class CrewCubit extends Cubit<CrewState> {
       success: (NetworkBaseModel response) async {
         NavigationService.pushNamedAndRemoveUntil(
           Routes.crewLayout,
-              (route) => false,
+          (route) => false,
         );
         emit(UpdateOrderStatusSuccess());
       },
@@ -38,6 +38,7 @@ class CrewCubit extends Cubit<CrewState> {
       },
     );
   }
+
   Future rejectOrder({
     required int orderId,
   }) async {
@@ -48,7 +49,7 @@ class CrewCubit extends Cubit<CrewState> {
       success: (NetworkBaseModel response) async {
         NavigationService.pushNamedAndRemoveUntil(
           Routes.crewLayout,
-              (route) => false,
+          (route) => false,
         );
         emit(UpdateOrderStatusSuccess());
       },

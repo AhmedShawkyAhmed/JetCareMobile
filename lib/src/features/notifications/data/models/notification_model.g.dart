@@ -1,0 +1,35 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'notification_model.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+NotificationModel _$NotificationModelFromJson(Map<String, dynamic> json) =>
+    NotificationModel(
+      id: (json['id'] as num?)?.toInt(),
+      userId: (json['user_id'] as num?)?.toInt(),
+      isRead: (json['is_read'] as num?)?.toInt(),
+      title: json['title'] as String?,
+      message: json['message'] as String?,
+      createdAt: json['created_at'] as String?,
+    );
+
+Map<String, dynamic> _$NotificationModelToJson(NotificationModel instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('id', instance.id);
+  writeNotNull('user_id', instance.userId);
+  writeNotNull('is_read', instance.isRead);
+  writeNotNull('title', instance.title);
+  writeNotNull('message', instance.message);
+  writeNotNull('created_at', instance.createdAt);
+  return val;
+}

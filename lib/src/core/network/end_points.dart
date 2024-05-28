@@ -29,6 +29,11 @@ class EndPoints {
   static const updateOrderStatus = "update_order_status";
   static const rejectOrder = "reject_order";
 
+  // ------------------- Notification
+  static const saveNotification = "save_notification";
+  static const readNotification = "read_notification";
+  static const getNotifications = "get_notifications";
+
 // ---------------------
   static const getHome = "getHome";
   static const getAppInfo = "getAppInfo";
@@ -52,9 +57,6 @@ class EndPoints {
   static const updateAddress = "updateAddress";
   static const deleteOrder = "deleteOrder";
   static const addCorporateOrder = "addCorporateOrder";
-  static const saveNotification = "saveNotification";
-  static const readNotification = "readNotification";
-  static const getNotifications = "getNotifications";
   static const getCalender = "getCalender";
   static const addToCart = "addToCart";
   static const deleteFromCart = "deleteFromCart";
