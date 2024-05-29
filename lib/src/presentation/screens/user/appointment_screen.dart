@@ -542,7 +542,10 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                       comment: commentController.text == ""
                           ? null
                           : commentController.text,
-                      cart: cart,
+
+                      // todo clear cart
+                      cart: []
+                      // cart: cart,
                     ),
                     afterSuccess: () {
                       NavigationService.pushReplacementNamed(
@@ -556,7 +559,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                           message: "تم إنشاء طلبك بنجاح و بإنتظار التأكيد",
                         ),
                       );
-                      cart.clear();
+                      // todo clear cart
+                      // cart.clear();
                     },
                   );
                 }

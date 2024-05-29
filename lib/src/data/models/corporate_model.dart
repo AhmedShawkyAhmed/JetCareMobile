@@ -1,4 +1,4 @@
-import 'package:jetcare/src/data/models/item_model.dart';
+import 'package:jetcare/src/features/home/data/models/item_model.dart';
 
 class CorporateModel {
   int? id;
