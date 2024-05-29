@@ -74,7 +74,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
             SizedBox(
               height: 2.h,
             ),
-            if (CacheService.get(key: CacheKeys.password) != null) ...[
+            if (CacheService.get(key: CacheKeys.token) != null) ...[
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5.w),
                 child: DefaultText(
@@ -90,15 +90,9 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                         text: translate(AppStrings.aAddress),
                         textColor: AppColors.primary,
                         onTap: () {
-                          // todo get all states
-                          // IndicatorView.showIndicator();
-                          // AddressCubit(instance()).getAllStates(
-                          //     afterSuccess: () {
-                          //   NavigationService.pop();
-                          //   NavigationService.pushNamed(
-                          //     Routes.addAddress,
-                          //   );
-                          // });
+                          NavigationService.pushNamed(
+                            Routes.addAddress,
+                          );
                         },
                       ),
                     );

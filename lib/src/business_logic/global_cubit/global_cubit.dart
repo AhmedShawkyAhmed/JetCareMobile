@@ -5,7 +5,6 @@ import 'package:jetcare/src/core/network/end_points.dart';
 import 'package:jetcare/src/core/network/network_service.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/data/network/responses/global_response.dart';
-import 'package:jetcare/src/data/network/responses/home_response.dart';
 import 'package:jetcare/src/data/network/responses/period_response.dart';
 import 'package:jetcare/src/data/network/responses/spaces_response.dart';
 
@@ -15,33 +14,11 @@ class GlobalCubit extends Cubit<GlobalState> {
   GlobalCubit(this.networkService) : super(GlobalInitial());
   NetworkService networkService;
 
-  HomeResponse? homeResponse;
   PeriodResponse? periodResponse;
   GlobalResponse? globalResponse;
   SpaceResponse? spaceResponse;
   List<String> days = [], dates = [];
 
-  Future getHome() async {
-    try {
-      emit(HomeLoadingState());
-      await networkService
-          .get(
-        url: EndPoints.getHome,
-      )
-          .then((value) {
-        homeResponse = HomeResponse.fromJson(value.data);
-        printSuccess("Home Response ${homeResponse!.status.toString()}");
-        emit(HomeSuccessState());
-      });
-    } on DioException catch (n) {
-      emit(HomeErrorState());
-      printError(n.toString());
-    } catch (e) {
-      emit(HomeErrorState());
-      printError(e.toString());
-    }
-  }
-  
   Future getPeriods() async {
     try {
       emit(PeriodLoadingState());
@@ -81,5 +58,4 @@ class GlobalCubit extends Cubit<GlobalState> {
       printError(e.toString());
     }
   }
-
 }

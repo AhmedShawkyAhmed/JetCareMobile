@@ -22,6 +22,6 @@ abstract class NotificationWebService {
 
   @GET(EndPoints.readNotification)
   Future<NetworkBaseModel> readNotification({
-    @Path('id') int? id,
+    @Query('id') int? id,
   });
 }

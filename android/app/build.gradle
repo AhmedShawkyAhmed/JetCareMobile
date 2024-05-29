@@ -59,7 +59,6 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.jetcareeg.jetcare"
 //        minSdkVersion  20  //flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
@@ -86,7 +85,6 @@ android {
     }
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
             shrinkResources false
             multiDexEnabled true
             minifyEnabled false

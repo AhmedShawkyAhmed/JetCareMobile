@@ -28,13 +28,15 @@ abstract class AddressWebService {
   });
 
   @GET(EndPoints.getMyAddresses)
-  Future<NetworkBaseModel<List<AddressModel>>> getMyAddresses();
+  Future<NetworkBaseModel<List<AddressModel>>> getMyAddresses({
+    @Query('user_id') int? userId,
+});
 
   @GET(EndPoints.getStates)
   Future<NetworkBaseModel<List<AreaModel>>> getStates();
 
   @GET(EndPoints.getAreasOfState)
   Future<NetworkBaseModel<List<AreaModel>>> getAreasOfState({
-    @Path("state_id") int? stateId,
+    @Query('state_id') int? stateId,
   });
 }

@@ -4,6 +4,7 @@ import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/features/shared/views/body_view.dart';
+import 'package:jetcare/src/features/shared/views/loading_view.dart';
 import 'package:jetcare/src/features/shared/widgets/default_text.dart';
 import 'package:jetcare/src/features/support/cubit/support_cubit.dart';
 import 'package:sizer/sizer.dart';
@@ -35,12 +36,21 @@ class _InfoScreenState extends State<InfoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SupportCubit, SupportState>(
-      builder: (context, state) {
-        return Scaffold(
-          backgroundColor: AppColors.mainColor,
-          body: BodyView(
-            widget: Column(
+    return Scaffold(
+      backgroundColor: AppColors.mainColor,
+      body: BodyView(
+        widget: BlocBuilder<SupportCubit, SupportState>(
+          builder: (context, state) {
+            if (state is GetInfoLoading) {
+              return ListView.builder(
+                itemBuilder: (context, index) {
+                  return LoadingView(
+                    height: 15.h,
+                  );
+                },
+              );
+            }
+            return Column(
               children: [
                 SizedBox(
                   height: 5.h,
@@ -48,36 +58,37 @@ class _InfoScreenState extends State<InfoScreen> {
                 DefaultText(
                   text: isArabic
                       ? widget.type == InfoType.terms
-                          ? cubit.terms?.titleAr ?? "الشروط والأحكام"
-                          : cubit.about?.titleAr ?? "من نحن"
+                      ? cubit.terms?.titleAr ?? "الشروط والأحكام"
+                      : cubit.about?.titleAr ?? "من نحن"
                       : widget.type == InfoType.terms
-                          ? cubit.terms?.titleEn ?? "Terms & Conditions"
-                          : cubit.about?.titleEn ?? "About Us",
+                      ? cubit.terms?.titleEn ?? "Terms & Conditions"
+                      : cubit.about?.titleEn ?? "About Us",
                   fontSize: 20.sp,
                 ),
                 Expanded(
                     child: ListView(
-                  padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
-                  children: [
-                    DefaultText(
-                      text: isArabic
-                          ? widget.type == InfoType.terms
+                      padding: EdgeInsets.symmetric(horizontal: 5.w,
+                          vertical: 2.h),
+                      children: [
+                        DefaultText(
+                          text: isArabic
+                              ? widget.type == InfoType.terms
                               ? cubit.terms?.contentAr ?? ""
                               : cubit.about?.contentAr ?? ""
-                          : widget.type == InfoType.terms
+                              : widget.type == InfoType.terms
                               ? cubit.terms?.contentEn ?? ""
                               : cubit.about?.contentEn ?? "",
-                      fontSize: 16.sp,
-                      maxLines: 300,
-                      fontWeight: FontWeight.w300,
-                    ),
-                  ],
-                )),
+                          fontSize: 16.sp,
+                          maxLines: 300,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ],
+                    )),
               ],
-            ),
-          ),
-        );
-      },
+            );
+          },
+        ),
+      ),
     );
   }
 }

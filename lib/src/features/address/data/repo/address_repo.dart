@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:jetcare/src/core/network/models/network_base_model.dart';
 import 'package:jetcare/src/core/network/models/network_exceptions.dart';
 import 'package:jetcare/src/core/network/models/network_result.dart';
+import 'package:jetcare/src/core/shared/globals.dart';
 import 'package:jetcare/src/features/address/data/models/address_model.dart';
 import 'package:jetcare/src/features/address/data/models/area_model.dart';
 import 'package:jetcare/src/features/address/data/requests/address_request.dart';
@@ -48,7 +49,9 @@ class AddressRepo {
   Future<NetworkResult<NetworkBaseModel<List<AddressModel>>>>
       getMyAddresses() async {
     try {
-      var response = await webService.getMyAddresses();
+      var response = await webService.getMyAddresses(
+        userId: Globals.userData.id,
+      );
       return NetworkResult.success(response);
     } on DioException catch (error) {
       return NetworkResult.failure(NetworkExceptions.getException(error));

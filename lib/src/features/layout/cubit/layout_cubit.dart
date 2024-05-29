@@ -6,7 +6,7 @@ import 'package:jetcare/src/features/crew/screens/tasks_history_screen.dart';
 import 'package:jetcare/src/features/crew/screens/tasks_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/cart_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/history_screen.dart';
-import 'package:jetcare/src/presentation/screens/user/home_screen.dart';
+import 'package:jetcare/src/features/home/screens/home_screen.dart';
 import 'package:jetcare/src/features/support/screens/more_screen.dart';
 
 part 'layout_state.dart';

@@ -91,7 +91,7 @@ class _NotificationWebService implements NotificationWebService {
   @override
   Future<NetworkBaseModel<dynamic>> readNotification({int? id}) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'id': id};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;

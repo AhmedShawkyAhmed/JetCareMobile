@@ -9,13 +9,14 @@ import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
 import 'package:jetcare/src/core/routing/routes.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/globals.dart';
+import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/features/shared/views/body_view.dart';
 import 'package:jetcare/src/features/shared/widgets/default_app_button.dart';
 import 'package:jetcare/src/features/shared/widgets/default_text.dart';
 import 'package:jetcare/src/features/shared/widgets/toast.dart';
-import 'package:jetcare/src/presentation/views/card_view.dart';
-import 'package:jetcare/src/presentation/views/home_view.dart';
+import 'package:jetcare/src/features/home/views/card_view.dart';
+import 'package:jetcare/src/features/home/views/home_view.dart';
 import 'package:jetcare/src/presentation/views/summery_item.dart';
 import 'package:sizer/sizer.dart';
 
@@ -164,11 +165,12 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     ),
                     HomeView(
                       title: translate(AppStrings.extras),
-                      type: "details",
+                      type: HomeViewType.details,
                       paddingWidth: 0.w,
                       visible: widget
                           .appRouterArgument.orderModel!.extras!.isNotEmpty,
-                      itemList: widget.appRouterArgument.orderModel!.extras,
+                      // todo add items
+                      // itemList: widget.appRouterArgument.orderModel!.extras,
                     ),
                     if (widget.appRouterArgument.orderModel?.comment != "")
                       Padding(

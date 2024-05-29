@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/routing/app_animation.dart';
 import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
+import 'package:jetcare/src/core/routing/arguments/home_arguments.dart';
 import 'package:jetcare/src/core/routing/arguments/otp_arguments.dart';
 import 'package:jetcare/src/core/routing/arguments/password_arguments.dart';
 import 'package:jetcare/src/core/routing/arguments/task_arguments.dart';
@@ -23,6 +24,14 @@ import 'package:jetcare/src/features/auth/screens/reset_password.dart';
 import 'package:jetcare/src/features/auth/screens/verify_email.dart';
 import 'package:jetcare/src/features/crew/cubit/crew_cubit.dart';
 import 'package:jetcare/src/features/crew/screens/task_details_screen.dart';
+import 'package:jetcare/src/features/home/cubit/home_cubit.dart';
+import 'package:jetcare/src/features/home/data/models/package_details_model.dart';
+import 'package:jetcare/src/features/home/data/models/package_model.dart';
+import 'package:jetcare/src/features/home/screens/category_screen.dart';
+import 'package:jetcare/src/features/home/screens/corporate_screen.dart';
+import 'package:jetcare/src/features/home/screens/home_screen.dart';
+import 'package:jetcare/src/features/home/screens/package_screen.dart';
+import 'package:jetcare/src/features/home/screens/service_screen.dart';
 import 'package:jetcare/src/features/layout/cubit/layout_cubit.dart';
 import 'package:jetcare/src/features/layout/screens/crew_layout_screen.dart';
 import 'package:jetcare/src/features/layout/screens/layout_screen.dart';
@@ -42,13 +51,8 @@ import 'package:jetcare/src/features/support/screens/info_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/added_to_cart_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/appointment_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/cart_screen.dart';
-import 'package:jetcare/src/presentation/screens/user/category_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/confirm_order_screen.dart';
-import 'package:jetcare/src/presentation/screens/user/corporate_screen.dart';
-import 'package:jetcare/src/presentation/screens/user/home_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/order_details_screen.dart';
-import 'package:jetcare/src/presentation/screens/user/package_screen.dart';
-import 'package:jetcare/src/presentation/screens/user/service_screen.dart';
 
 import 'arguments/register_arguments.dart';
 
@@ -142,8 +146,15 @@ class AppRoutes {
         );
       case Routes.layout:
         return CustomPageRouteTransiton.fadeOut(
-          page: BlocProvider(
-            create: (context) => LayoutCubit()..init(),
+          page: MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) => LayoutCubit()..init(),
+              ),
+              BlocProvider(
+                create: (context) => HomeCubit(instance()),
+              ),
+            ],
             child: const LayoutScreen(),
           ),
         );
@@ -162,11 +173,10 @@ class AppRoutes {
           ),
         );
       case Routes.corporate:
-        final AppRouterArgument appRouterArgument =
-            settings.arguments as AppRouterArgument;
+        final HomeArguments arguments = settings.arguments as HomeArguments;
         return CustomPageRouteTransiton.fadeOut(
           page: CorporateScreen(
-            appRouterArgument: appRouterArgument,
+            arguments: arguments,
           ),
         );
       case Routes.orderDetails:
@@ -177,17 +187,17 @@ class AppRoutes {
             appRouterArgument: appRouterArgument,
           ),
         );
-      case Routes.serviceDetails:
-        final AppRouterArgument appRouterArgument =
-            settings.arguments as AppRouterArgument;
+      case Routes.service:
+        final HomeArguments arguments = settings.arguments as HomeArguments;
         return CustomPageRouteTransiton.fadeOut(
           page: ServiceScreen(
-            appRouterArgument: appRouterArgument,
+            arguments: arguments,
           ),
         );
-      case Routes.categoryDetails:
+      case Routes.category:
+        final PackageModel category = settings.arguments as PackageModel;
         return CustomPageRouteTransiton.fadeOut(
-          page: const CategoryScreen(),
+          page: CategoryScreen(category: category),
         );
       case Routes.addedToCart:
         return CustomPageRouteTransiton.fadeOut(
@@ -197,9 +207,11 @@ class AppRoutes {
         return CustomPageRouteTransiton.fadeOut(
           page: const HomeScreen(),
         );
-      case Routes.packageDetails:
+      case Routes.package:
+        final PackageDetailsModel packageDetails =
+            settings.arguments as PackageDetailsModel;
         return CustomPageRouteTransiton.fadeOut(
-          page: const PackageScreen(),
+          page: PackageScreen(packageDetails: packageDetails),
         );
       case Routes.contact:
         return CustomPageRouteTransiton.fadeOut(

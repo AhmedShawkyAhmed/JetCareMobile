@@ -12,6 +12,9 @@ import 'package:jetcare/src/features/auth/service/auth_web_service.dart';
 import 'package:jetcare/src/features/crew/cubit/crew_cubit.dart';
 import 'package:jetcare/src/features/crew/data/repo/crew_repo.dart';
 import 'package:jetcare/src/features/crew/service/crew_web_service.dart';
+import 'package:jetcare/src/features/home/cubit/home_cubit.dart';
+import 'package:jetcare/src/features/home/data/repo/home_repo.dart';
+import 'package:jetcare/src/features/home/service/home_web_service.dart';
 import 'package:jetcare/src/features/language/cubit/language_cubit.dart';
 import 'package:jetcare/src/features/layout/cubit/layout_cubit.dart';
 import 'package:jetcare/src/features/notifications/cubit/notification_cubit.dart';
@@ -46,6 +49,7 @@ Future<void> initAppModule() async {
   instance.registerFactory<NotificationCubit>(() => NotificationCubit(instance()));
   instance.registerFactory<SupportCubit>(() => SupportCubit(instance()));
   instance.registerFactory<AddressCubit>(() => AddressCubit(instance()));
+  instance.registerFactory<HomeCubit>(() => HomeCubit(instance()));
 
   // --------------------- Repo
   instance.registerLazySingleton<AuthRepo>(() => AuthRepo(instance()));
@@ -54,6 +58,7 @@ Future<void> initAppModule() async {
   instance.registerLazySingleton<NotificationRepo>(() => NotificationRepo(instance()));
   instance.registerLazySingleton<SupportRepo>(() => SupportRepo(instance()));
   instance.registerLazySingleton<AddressRepo>(() => AddressRepo(instance()));
+  instance.registerLazySingleton<HomeRepo>(() => HomeRepo(instance()));
 
   // --------------------- Web Service
   instance.registerLazySingleton<AuthWebService>(() => AuthWebService(instance()));
@@ -62,4 +67,5 @@ Future<void> initAppModule() async {
   instance.registerLazySingleton<NotificationWebService>(() => NotificationWebService(instance()));
   instance.registerLazySingleton<SupportWebService>(() => SupportWebService(instance()));
   instance.registerLazySingleton<AddressWebService>(() => AddressWebService(instance()));
+  instance.registerLazySingleton<HomeWebService>(() => HomeWebService(instance()));
 }

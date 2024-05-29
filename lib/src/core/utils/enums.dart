@@ -36,3 +36,12 @@ enum OrderStatus{
   completed,
   canceled,
 }
+
+enum HomeViewType {
+  loading,
+  corporate,
+  category,
+  package,
+  extra,
+  details,
+}

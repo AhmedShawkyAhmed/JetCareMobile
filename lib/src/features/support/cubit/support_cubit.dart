@@ -52,16 +52,16 @@ class SupportCubit extends Cubit<SupportState> {
   }
 
   Future getContact() async {
-    emit(GetInfoLoading());
+    emit(GetContactsLoading());
     var response = await repo.getContact();
     response.when(
       success: (NetworkBaseModel response) async {
         contacts = response.data;
-        emit(GetInfoSuccess());
+        emit(GetContactsSuccess());
       },
       failure: (NetworkExceptions error) {
         error.showError();
-        emit(GetInfoFailure());
+        emit(GetContactsFailure());
       },
     );
   }

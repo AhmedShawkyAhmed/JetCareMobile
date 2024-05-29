@@ -23,6 +23,11 @@ class EndPoints {
   static const deleteAccount = "delete_account";
   static const restoreAccount = "restore_account";
 
+  // ------------------- Home
+  static const getHome = "get_home";
+  static const getPackageDetails = "get_package_details";
+  static const getCategoryDetails = "get_category_details";
+
   // ------------------- Crew Layout
   static const getMyTasks = "get_my_tasks";
   static const getMyTasksHistory = "get_my_tasks_history";
@@ -49,11 +54,6 @@ class EndPoints {
   static const getAreasOfState = "get_areas_of_state";
 
 // ---------------------
-  static const getHome = "getHome";
-  static const getAllStates = "getAllStates";
-  static const updateAccount = "updateAccount";
-  static const getCategoryDetails = "getCategoryDetails";
-  static const getPackageDetails = "getPackageDetails";
   static const getPackages = "getPackages";
   static const getMyOrders = "getMyOrders";
   static const updateOrderStatusUser = "update_order_status_user";

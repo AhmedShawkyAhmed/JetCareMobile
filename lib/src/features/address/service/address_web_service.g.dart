@@ -124,9 +124,11 @@ class _AddressWebService implements AddressWebService {
   }
 
   @override
-  Future<NetworkBaseModel<List<AddressModel>>> getMyAddresses() async {
+  Future<NetworkBaseModel<List<AddressModel>>> getMyAddresses(
+      {int? userId}) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'user_id': userId};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -197,7 +199,7 @@ class _AddressWebService implements AddressWebService {
   Future<NetworkBaseModel<List<AreaModel>>> getAreasOfState(
       {int? stateId}) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'state_id': stateId};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
