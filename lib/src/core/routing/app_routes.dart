@@ -22,6 +22,8 @@ import 'package:jetcare/src/features/auth/screens/otp_screen.dart';
 import 'package:jetcare/src/features/auth/screens/register_screen.dart';
 import 'package:jetcare/src/features/auth/screens/reset_password.dart';
 import 'package:jetcare/src/features/auth/screens/verify_email.dart';
+import 'package:jetcare/src/features/cart/cubit/cart_cubit.dart';
+import 'package:jetcare/src/features/cart/screens/added_to_cart_screen.dart';
 import 'package:jetcare/src/features/crew/cubit/crew_cubit.dart';
 import 'package:jetcare/src/features/crew/screens/task_details_screen.dart';
 import 'package:jetcare/src/features/home/cubit/home_cubit.dart';
@@ -48,9 +50,7 @@ import 'package:jetcare/src/features/splash/screens/splash_screen.dart';
 import 'package:jetcare/src/features/support/cubit/support_cubit.dart';
 import 'package:jetcare/src/features/support/screens/contact_screen.dart';
 import 'package:jetcare/src/features/support/screens/info_screen.dart';
-import 'package:jetcare/src/presentation/screens/user/added_to_cart_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/appointment_screen.dart';
-import 'package:jetcare/src/presentation/screens/user/cart_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/confirm_order_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/order_details_screen.dart';
 
@@ -145,6 +145,7 @@ class AppRoutes {
           ),
         );
       case Routes.layout:
+        final int? current = settings.arguments as int?;
         return CustomPageRouteTransiton.fadeOut(
           page: MultiBlocProvider(
             providers: [
@@ -154,11 +155,15 @@ class AppRoutes {
               BlocProvider(
                 create: (context) => HomeCubit(instance()),
               ),
+              BlocProvider(
+                create: (context) => CartCubit(instance()),
+              ),
             ],
-            child: const LayoutScreen(),
+            child: LayoutScreen(current: current),
           ),
         );
       case Routes.crewLayout:
+        final int? current = settings.arguments as int?;
         return CustomPageRouteTransiton.fadeOut(
           page: MultiBlocProvider(
             providers: [
@@ -169,7 +174,7 @@ class AppRoutes {
                 create: (context) => CrewCubit(instance()),
               ),
             ],
-            child: const CrewLayoutScreen(),
+            child: CrewLayoutScreen(current: current),
           ),
         );
       case Routes.corporate:
@@ -248,10 +253,6 @@ class AppRoutes {
                 NotificationCubit(instance())..getNotifications(),
             child: const NotificationScreen(),
           ),
-        );
-      case Routes.cart:
-        return CustomPageRouteTransiton.fadeOut(
-          page: const CartScreen(),
         );
       case Routes.success:
         final SuccessType type = settings.arguments as SuccessType;

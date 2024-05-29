@@ -9,6 +9,9 @@ import 'package:jetcare/src/features/address/service/address_web_service.dart';
 import 'package:jetcare/src/features/auth/cubit/auth_cubit.dart';
 import 'package:jetcare/src/features/auth/data/repo/auth_repo.dart';
 import 'package:jetcare/src/features/auth/service/auth_web_service.dart';
+import 'package:jetcare/src/features/cart/cubit/cart_cubit.dart';
+import 'package:jetcare/src/features/cart/data/repo/cart_repo.dart';
+import 'package:jetcare/src/features/cart/service/cart_web_service.dart';
 import 'package:jetcare/src/features/crew/cubit/crew_cubit.dart';
 import 'package:jetcare/src/features/crew/data/repo/crew_repo.dart';
 import 'package:jetcare/src/features/crew/service/crew_web_service.dart';
@@ -50,6 +53,7 @@ Future<void> initAppModule() async {
   instance.registerFactory<SupportCubit>(() => SupportCubit(instance()));
   instance.registerFactory<AddressCubit>(() => AddressCubit(instance()));
   instance.registerFactory<HomeCubit>(() => HomeCubit(instance()));
+  instance.registerFactory<CartCubit>(() => CartCubit(instance()));
 
   // --------------------- Repo
   instance.registerLazySingleton<AuthRepo>(() => AuthRepo(instance()));
@@ -59,6 +63,7 @@ Future<void> initAppModule() async {
   instance.registerLazySingleton<SupportRepo>(() => SupportRepo(instance()));
   instance.registerLazySingleton<AddressRepo>(() => AddressRepo(instance()));
   instance.registerLazySingleton<HomeRepo>(() => HomeRepo(instance()));
+  instance.registerLazySingleton<CartRepo>(() => CartRepo(instance()));
 
   // --------------------- Web Service
   instance.registerLazySingleton<AuthWebService>(() => AuthWebService(instance()));
@@ -68,4 +73,5 @@ Future<void> initAppModule() async {
   instance.registerLazySingleton<SupportWebService>(() => SupportWebService(instance()));
   instance.registerLazySingleton<AddressWebService>(() => AddressWebService(instance()));
   instance.registerLazySingleton<HomeWebService>(() => HomeWebService(instance()));
+  instance.registerLazySingleton<CartWebService>(() => CartWebService(instance()));
 }

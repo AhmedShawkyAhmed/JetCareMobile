@@ -24,25 +24,6 @@ class OrderCubit extends Cubit<OrderState> {
   GlobalResponse? globalResponse, orderResponse;
   HistoryResponse? historyResponse;
 
-  Future getMyTasks() async {
-    try {
-      emit(MyTasksLoadingState());
-      await networkService.get(url: EndPoints.getMyTasks, query: {
-        'crewId': Globals.userData.id,
-      }).then((value) {
-        // tasksResponse = HistoryResponse.fromJson(value.data);
-        // printSuccess("My Tasks Response ${tasksResponse!.message.toString()}");
-        emit(MyTasksSuccessState());
-      });
-    } on DioException catch (n) {
-      emit(MyTasksErrorState());
-      printError(n.toString());
-    } catch (e) {
-      emit(MyTasksErrorState());
-      printError(e.toString());
-    }
-  }
-
   Future getMyOrders() async {
     try {
       emit(MyOrdersLoadingState());
@@ -128,30 +109,6 @@ class OrderCubit extends Cubit<OrderState> {
     }
   }
 
-  Future rejectOrder({
-    required int orderId,
-    required VoidCallback afterSuccess,
-  }) async {
-    try {
-      emit(RejectOrderLoadingState());
-      await networkService.post(url: EndPoints.rejectOrder, body: {
-        'id': orderId,
-      }).then((value) {
-        globalResponse = GlobalResponse.fromJson(value.data);
-        printSuccess(
-            "Order Reject Response ${globalResponse!.message.toString()}");
-        emit(RejectOrderSuccessState());
-        afterSuccess();
-      });
-    } on DioException catch (n) {
-      emit(RejectOrderErrorState());
-      printError(n.toString());
-    } catch (e) {
-      emit(RejectOrderErrorState());
-      printError(e.toString());
-    }
-  }
-
   Future updateOrderStatusUser({
     required int orderId,
     required String status,
@@ -162,40 +119,6 @@ class OrderCubit extends Cubit<OrderState> {
     try {
       emit(UpdateOrderStatusLoadingState());
       await networkService.post(url: EndPoints.updateOrderStatusUser, body: {
-        'id': orderId,
-        'status': status,
-        'reason': reason,
-      }).then((value) {
-        globalResponse = GlobalResponse.fromJson(value.data);
-        printSuccess(
-            "Order Status Response ${globalResponse!.message.toString()}");
-        emit(UpdateOrderStatusSuccessState());
-        if (globalResponse!.status == 200) {
-          afterSuccess();
-        } else if (globalResponse!.status == 402) {
-          DefaultToast.showMyToast(globalResponse!.message.toString());
-          afterCancel();
-        }
-      });
-    } on DioException catch (n) {
-      emit(UpdateOrderStatusErrorState());
-      printError(n.toString());
-    } catch (e) {
-      emit(UpdateOrderStatusErrorState());
-      printError(e.toString());
-    }
-  }
-
-  Future updateOrderStatus({
-    required int orderId,
-    required String status,
-    String? reason,
-    required VoidCallback afterSuccess,
-    required VoidCallback afterCancel,
-  }) async {
-    try {
-      emit(UpdateOrderStatusLoadingState());
-      await networkService.post(url: EndPoints.updateOrderStatus, body: {
         'id': orderId,
         'status': status,
         'reason': reason,

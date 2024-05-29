@@ -39,7 +39,7 @@ OrderModel _$OrderModelFromJson(Map<String, dynamic> json) => OrderModel(
           ?.map((e) => ItemModel.fromJson(e as Map<String, dynamic>))
           .toList(),
       cart: (json['cart'] as List<dynamic>?)
-          ?.map((e) => CartModel.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => CartItemModel.fromJson(e as Map<String, dynamic>))
           .toList(),
       comment: json['comment'] as String?,
     );

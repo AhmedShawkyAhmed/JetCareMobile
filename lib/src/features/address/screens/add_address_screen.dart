@@ -34,8 +34,9 @@ class AddAddressScreen extends StatefulWidget {
 
 class _AddAddressScreenState extends State<AddAddressScreen> {
   late AddressCubit cubit = BlocProvider.of(context);
-  final TextEditingController phoneController = TextEditingController();
-  final TextEditingController addressController = TextEditingController();
+   TextEditingController phoneController = TextEditingController();
+   TextEditingController addressController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
   int stateId = 0;
   int areaId = 0;
 
@@ -43,6 +44,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   dispose() {
     phoneController.clear();
     addressController.clear();
+    locationController.clear();
     addressLocation = const LatLng(0.0, 0.0);
     super.dispose();
   }

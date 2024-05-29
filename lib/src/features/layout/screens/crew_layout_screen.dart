@@ -4,7 +4,9 @@ import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/features/layout/cubit/layout_cubit.dart';
 
 class CrewLayoutScreen extends StatefulWidget {
-  const CrewLayoutScreen({super.key});
+  final int? current;
+
+  const CrewLayoutScreen({this.current, super.key});
 
   @override
   State<CrewLayoutScreen> createState() => _CrewLayoutScreenState();
@@ -13,7 +15,13 @@ class CrewLayoutScreen extends StatefulWidget {
 class _CrewLayoutScreenState extends State<CrewLayoutScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   late LayoutCubit cubit = BlocProvider.of(context);
-
+  @override
+  void initState() {
+    if (widget.current != null) {
+      cubit.currentIndex = widget.current!;
+    }
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LayoutCubit, LayoutState>(

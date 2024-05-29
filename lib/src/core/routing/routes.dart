@@ -27,7 +27,6 @@ enum Routes {
   confirmOrder,
   taskDetails,
   notification,
-  cart,
   addedToCart;
 
   String get path => '/${name.toString()}';

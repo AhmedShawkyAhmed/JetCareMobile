@@ -6,11 +6,10 @@ import 'package:jetcare/src/core/constants/app_strings.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/routing/routes.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/utils/enums.dart';
+import 'package:jetcare/src/features/shared/views/body_view.dart';
 import 'package:jetcare/src/features/shared/widgets/default_app_button.dart';
 import 'package:jetcare/src/features/shared/widgets/default_text.dart';
-import 'package:jetcare/src/core/utils/enums.dart';
-import 'package:jetcare/src/features/layout/cubit/layout_cubit.dart';
-import 'package:jetcare/src/features/shared/views/body_view.dart';
 import 'package:sizer/sizer.dart';
 
 class SuccessScreen extends StatelessWidget {
@@ -61,9 +60,9 @@ class SuccessScreen extends StatelessWidget {
               title: translate(AppStrings.con),
               onTap: () {
                 if (type == SuccessType.order) {
-                  LayoutCubit().changeIndex(0);
                   NavigationService.pushNamedAndRemoveUntil(
                     Routes.layout,
+                    arguments: 0,
                     (route) => false,
                   );
                   OrderCubit(instance()).getMyOrders();

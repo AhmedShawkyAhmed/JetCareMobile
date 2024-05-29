@@ -53,6 +53,11 @@ class EndPoints {
   static const getStates = "get_states_mobile";
   static const getAreasOfState = "get_areas_of_state";
 
+  // ------------------- cart
+  static const getMyCart = "get_my_cart";
+  static const addToCart = "add_to_cart";
+  static const deleteFromCart = "delete_from_cart";
+
 // ---------------------
   static const getPackages = "getPackages";
   static const getMyOrders = "getMyOrders";
@@ -65,7 +70,4 @@ class EndPoints {
   static const deleteOrder = "deleteOrder";
   static const addCorporateOrder = "addCorporateOrder";
   static const getCalender = "getCalender";
-  static const addToCart = "addToCart";
-  static const deleteFromCart = "deleteFromCart";
-  static const getMyCart = "getMyCart";
 }

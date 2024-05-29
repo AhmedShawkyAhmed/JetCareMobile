@@ -21,6 +21,7 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
+  TextEditingController locationController = TextEditingController();
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
   final Map<String, Marker> _markers = {};
@@ -77,6 +78,12 @@ class _MapScreenState extends State<MapScreen> {
   initState() {
     super.initState();
     getMyLocation();
+  }
+
+  @override
+  void dispose() {
+    locationController.clear();
+    super.dispose();
   }
 
   @override

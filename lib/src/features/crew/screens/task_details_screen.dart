@@ -11,7 +11,7 @@ import 'package:jetcare/src/features/crew/data/requests/update_order_status_requ
 import 'package:jetcare/src/features/shared/views/body_view.dart';
 import 'package:jetcare/src/features/shared/widgets/default_app_button.dart';
 import 'package:jetcare/src/features/shared/widgets/default_text.dart';
-import 'package:jetcare/src/presentation/views/cart_item.dart';
+import 'package:jetcare/src/features/cart/widgets/cart_item.dart';
 import 'package:sizer/sizer.dart';
 
 class TaskDetailsScreen extends StatefulWidget {

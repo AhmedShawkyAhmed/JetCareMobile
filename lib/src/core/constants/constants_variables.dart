@@ -10,7 +10,6 @@ import 'package:jetcare/src/features/address/data/models/area_model.dart';
 PeriodModel selectedPeriod = PeriodModel();
 AddressModel selectedAddress = AddressModel(id: -1);
 SpaceModel selectedSpace = SpaceModel();
-TextEditingController locationController = TextEditingController();
 TextEditingController dateController = TextEditingController();
 List<ItemModel> selectedExtra = [];
 List<PeriodModel> discountPeriods = [];

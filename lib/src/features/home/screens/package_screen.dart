@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:jetcare/src/business_logic/cart_cubit/cart_cubit.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
 import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
@@ -8,20 +7,22 @@ import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/routing/routes.dart';
 import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/globals.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
+import 'package:jetcare/src/features/cart/cubit/cart_cubit.dart';
+import 'package:jetcare/src/features/cart/data/requests/cart_request.dart';
 import 'package:jetcare/src/features/home/data/models/package_details_model.dart';
 import 'package:jetcare/src/features/home/views/card_view.dart';
 import 'package:jetcare/src/features/home/widgets/package_item.dart';
 import 'package:jetcare/src/features/shared/views/body_view.dart';
-import 'package:jetcare/src/features/shared/views/indicator_view.dart';
 import 'package:jetcare/src/features/shared/widgets/default_app_button.dart';
 import 'package:jetcare/src/features/shared/widgets/default_text.dart';
 import 'package:jetcare/src/features/shared/widgets/default_text_field.dart';
-import 'package:jetcare/src/features/shared/widgets/toast.dart';
 import 'package:sizer/sizer.dart';
 
 class PackageScreen extends StatefulWidget {
   final PackageDetailsModel packageDetails;
+
   const PackageScreen({
     required this.packageDetails,
     super.key,
@@ -141,25 +142,15 @@ class _PackageScreenState extends State<PackageScreen> {
                   : DefaultAppButton(
                       title: translate(AppStrings.toCart),
                       onTap: () {
-                        if (quantity == 0) {
-                          DefaultToast.showMyToast(
-                              translate(AppStrings.enterQuantity));
-                        } else {
-                          IndicatorView.showIndicator();
-                          CartCubit(instance()).addToCart(
+                        CartCubit(instance()).addToCart(
+                          request: CartRequest(
+                            userId: Globals.userData.id!,
                             packageId: widget.packageDetails.package!.id!,
                             count: quantity,
                             price: (widget.packageDetails.package!.price)!
                                 .toDouble(),
-                            afterSuccess: () {
-                              quantityController.clear();
-                              NavigationService.pushNamedAndRemoveUntil(
-                                Routes.addedToCart,
-                                (route) => false,
-                              );
-                            },
-                          );
-                        }
+                          ),
+                        );
                       },
                     ),
               SizedBox(

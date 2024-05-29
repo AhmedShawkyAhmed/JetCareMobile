@@ -12,7 +12,7 @@ import 'package:jetcare/src/features/shared/widgets/default_text.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/features/shared/views/body_view.dart';
 import 'package:jetcare/src/features/home/views/card_view.dart';
-import 'package:jetcare/src/presentation/views/cart_item.dart';
+import 'package:jetcare/src/features/cart/widgets/cart_item.dart';
 import 'package:jetcare/src/features/shared/views/loading_view.dart';
 import 'package:sizer/sizer.dart';
 

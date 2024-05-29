@@ -1,10 +1,10 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:jetcare/src/data/models/calender_model.dart';
-import 'package:jetcare/src/data/models/cart_model.dart';
 import 'package:jetcare/src/data/models/item_model.dart';
 import 'package:jetcare/src/data/models/package_model.dart';
 import 'package:jetcare/src/data/models/period_model.dart';
 import 'package:jetcare/src/features/address/data/models/address_model.dart';
+import 'package:jetcare/src/features/cart/data/models/cart_item_model.dart';
 import 'package:jetcare/src/features/profile/data/models/user_model.dart';
 
 part 'order_model.g.dart';
@@ -22,7 +22,7 @@ class OrderModel {
   ItemModel? item;
   CalenderModel? calendar;
   List<ItemModel>? extras;
-  List<CartModel>? cart;
+  List<CartItemModel>? cart;
 
   OrderModel({
     this.id,

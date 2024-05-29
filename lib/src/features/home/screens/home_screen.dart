@@ -43,10 +43,56 @@ class _HomeScreenState extends State<HomeScreen> {
         widget: BlocBuilder<HomeCubit, HomeState>(
           builder: (context, state) {
             if (state is GetHomeLoading) {
-              return HomeView(
-                title: translate(AppStrings.corporate),
-                type: HomeViewType.loading,
-                visible: true,
+              return ListView(
+                children: [
+                  if (Globals.userData.name != null) ...[
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: 5.w,
+                        right: 5.w,
+                        top: 2.h,
+                        bottom: 2.h,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          DefaultText(
+                            text: Globals.userData.name!,
+                            fontSize: 15.sp,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              NavigationService.pushNamed(
+                                Routes.notification,
+                              );
+                            },
+                            child: Container(
+                              width: 9.w,
+                              height: 9.w,
+                              decoration: BoxDecoration(
+                                color: AppColors.white,
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Center(
+                                child: Icon(
+                                  Icons.notifications_active,
+                                  color: AppColors.primary,
+                                  size: 15.sp,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                  HomeView(
+                    title: translate(AppStrings.corporate),
+                    type: HomeViewType.loading,
+                    visible: true,
+                  ),
+                ],
               );
             }
             return ListView(

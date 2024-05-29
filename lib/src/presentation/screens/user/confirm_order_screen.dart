@@ -10,7 +10,7 @@ import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/globals.dart';
 import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
-import 'package:jetcare/src/features/layout/cubit/layout_cubit.dart';
+import 'package:jetcare/src/features/cart/widgets/cart_item.dart';
 import 'package:jetcare/src/features/notifications/cubit/notification_cubit.dart';
 import 'package:jetcare/src/features/notifications/data/requests/notification_request.dart';
 import 'package:jetcare/src/features/shared/views/body_view.dart';
@@ -19,7 +19,6 @@ import 'package:jetcare/src/features/shared/widgets/default_app_button.dart';
 import 'package:jetcare/src/features/shared/widgets/default_text.dart';
 import 'package:jetcare/src/features/shared/widgets/default_text_field.dart';
 import 'package:jetcare/src/features/shared/widgets/toast.dart';
-import 'package:jetcare/src/presentation/views/cart_item.dart';
 import 'package:sizer/sizer.dart';
 
 class ConfirmOrderScreen extends StatefulWidget {
@@ -98,87 +97,6 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                   ],
                 ),
               ),
-              if (Globals.userData.role == "crew" &&
-                  widget.appRouterArgument.orderModel!.status == "assigned")
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: EdgeInsets.only(bottom: 1.h),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        DefaultAppButton(
-                          title: translate(AppStrings.reject),
-                          width: 30.w,
-                          height: 4.h,
-                          radius: 5.sp,
-                          marginHorizontal: 0,
-                          buttonColor: AppColors.darkRed,
-                          onTap: () {
-                            IndicatorView.showIndicator();
-                            OrderCubit(instance()).rejectOrder(
-                              orderId: widget.appRouterArgument.orderModel!.id!,
-                              afterSuccess: () {
-                                NavigationService.pushNamedAndRemoveUntil(
-                                  Routes.crewLayout,
-                                  (route) => false,
-                                );
-                                OrderCubit(instance()).getMyTasks();
-                              },
-                            );
-                          },
-                        ),
-                        DefaultAppButton(
-                          title: translate(AppStrings.accept),
-                          width: 30.w,
-                          height: 4.h,
-                          radius: 5.sp,
-                          marginHorizontal: 0,
-                          buttonColor: AppColors.darkBlue,
-                          onTap: () {
-                            IndicatorView.showIndicator();
-                            OrderCubit(instance()).updateOrderStatus(
-                              orderId: widget.appRouterArgument.orderModel!.id!,
-                              status: "accepted",
-                              afterSuccess: () {
-                                setState(() {
-                                  widget.appRouterArgument.orderModel!.status ==
-                                      "accepted";
-                                });
-                                NavigationService.pushNamedAndRemoveUntil(
-                                  Routes.crewLayout,
-                                  (route) => false,
-                                );
-                                OrderCubit(instance()).getMyTasks();
-                              },
-                              afterCancel: () {},
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              if (Globals.userData.role == "crew" &&
-                  widget.appRouterArgument.orderModel!.status == "accepted")
-                DefaultAppButton(
-                  title: translate(AppStrings.complete),
-                  onTap: () {
-                    IndicatorView.showIndicator();
-                    OrderCubit(instance()).updateOrderStatus(
-                      orderId: widget.appRouterArgument.orderModel!.id!,
-                      status: "completed",
-                      afterSuccess: () {
-                        OrderCubit(instance()).getMyTasks();
-                        NavigationService.pushNamedAndRemoveUntil(
-                          Routes.crewLayout,
-                          (route) => false,
-                        );
-                      },
-                      afterCancel: () {},
-                    );
-                  },
-                ),
               if (Globals.userData.role != "crew" &&
                   widget.appRouterArgument.orderModel!.status ==
                       "unassigned") ...[
@@ -238,9 +156,10 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                                       status: OrderStatus.canceled.name,
                                       reason: reasonController.text,
                                       afterSuccess: () {
-                                        LayoutCubit().changeIndex(0);
                                         NavigationService.pushReplacementNamed(
-                                            Routes.layout);
+                                          Routes.layout,
+                                          arguments: 0,
+                                        );
                                         NotificationCubit(instance())
                                             .saveNotification(
                                           request: NotificationRequest(

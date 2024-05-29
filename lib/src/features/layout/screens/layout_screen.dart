@@ -4,7 +4,9 @@ import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/features/layout/cubit/layout_cubit.dart';
 
 class LayoutScreen extends StatefulWidget {
-  const LayoutScreen({super.key});
+  final int? current;
+
+  const LayoutScreen({this.current, super.key});
 
   @override
   State<LayoutScreen> createState() => _LayoutScreenState();
@@ -13,6 +15,14 @@ class LayoutScreen extends StatefulWidget {
 class _LayoutScreenState extends State<LayoutScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   late LayoutCubit cubit = BlocProvider.of(context);
+
+  @override
+  void initState() {
+    if (widget.current != null) {
+      cubit.currentIndex = widget.current!;
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

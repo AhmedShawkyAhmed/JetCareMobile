@@ -8,15 +8,14 @@ import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
 import 'package:jetcare/src/core/routing/routes.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
-import 'package:jetcare/src/core/shared/globals.dart';
 import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
+import 'package:jetcare/src/features/home/views/card_view.dart';
+import 'package:jetcare/src/features/home/views/home_view.dart';
 import 'package:jetcare/src/features/shared/views/body_view.dart';
 import 'package:jetcare/src/features/shared/widgets/default_app_button.dart';
 import 'package:jetcare/src/features/shared/widgets/default_text.dart';
 import 'package:jetcare/src/features/shared/widgets/toast.dart';
-import 'package:jetcare/src/features/home/views/card_view.dart';
-import 'package:jetcare/src/features/home/views/home_view.dart';
 import 'package:jetcare/src/presentation/views/summery_item.dart';
 import 'package:sizer/sizer.dart';
 
@@ -185,91 +184,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         maxLines: 50,
                         fontSize: 15.sp,
                       ),
-                    if (Globals.userData.role == "crew" &&
-                        widget.appRouterArgument.orderModel!.status ==
-                            "assigned")
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Padding(
-                          padding: EdgeInsets.only(bottom: 1.h),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              DefaultAppButton(
-                                title: translate(AppStrings.reject),
-                                width: 30.w,
-                                height: 4.h,
-                                radius: 5.sp,
-                                marginHorizontal: 0,
-                                buttonColor: AppColors.darkRed,
-                                onTap: () {
-                                  OrderCubit(instance()).rejectOrder(
-                                    orderId: widget
-                                        .appRouterArgument.orderModel!.id!,
-                                    afterSuccess: () {
-                                      NavigationService.pushNamedAndRemoveUntil(
-                                        Routes.crewLayout,
-                                        (route) => false,
-                                      );
-                                      OrderCubit(instance()).getMyTasks();
-                                    },
-                                  );
-                                },
-                              ),
-                              DefaultAppButton(
-                                title: translate(AppStrings.accept),
-                                width: 30.w,
-                                height: 4.h,
-                                radius: 5.sp,
-                                marginHorizontal: 0,
-                                buttonColor: AppColors.darkBlue,
-                                onTap: () {
-                                  OrderCubit(instance()).updateOrderStatusUser(
-                                    orderId: widget
-                                        .appRouterArgument.orderModel!.id!,
-                                    status: "accepted",
-                                    afterSuccess: () {
-                                      setState(() {
-                                        widget.appRouterArgument.orderModel!
-                                                .status ==
-                                            "accepted";
-                                      });
-                                      NavigationService.pushNamedAndRemoveUntil(
-                                        Routes.crewLayout,
-                                        (route) => false,
-                                      );
-                                      OrderCubit(instance()).getMyTasks();
-                                    },
-                                    afterCancel: () {},
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    if (Globals.userData.role == "crew" &&
-                        widget.appRouterArgument.orderModel!.status ==
-                            "accepted")
-                      DefaultAppButton(
-                        title: translate(AppStrings.complete),
-                        onTap: () {
-                          OrderCubit(instance()).updateOrderStatusUser(
-                            orderId: widget.appRouterArgument.orderModel!.id!,
-                            status: "completed",
-                            afterSuccess: () {
-                              OrderCubit(instance()).getMyTasks();
-                              NavigationService.pushNamedAndRemoveUntil(
-                                Routes.crewLayout,
-                                (route) => false,
-                              );
-                            },
-                            afterCancel: () {},
-                          );
-                        },
-                      ),
-                    if (Globals.userData.role == "client" &&
-                        widget.appRouterArgument.orderModel?.crew == null)
+                    if (widget.appRouterArgument.orderModel?.crew == null)
                       DefaultAppButton(
                         title: translate(AppStrings.cancel),
                         buttonColor: AppColors.darkRed,

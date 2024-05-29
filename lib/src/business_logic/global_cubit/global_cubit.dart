@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jetcare/src/core/network/end_points.dart';
 import 'package:jetcare/src/core/network/network_service.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
-import 'package:jetcare/src/data/network/responses/global_response.dart';
 import 'package:jetcare/src/data/network/responses/period_response.dart';
 import 'package:jetcare/src/data/network/responses/spaces_response.dart';
 
@@ -15,9 +14,7 @@ class GlobalCubit extends Cubit<GlobalState> {
   NetworkService networkService;
 
   PeriodResponse? periodResponse;
-  GlobalResponse? globalResponse;
   SpaceResponse? spaceResponse;
-  List<String> days = [], dates = [];
 
   Future getPeriods() async {
     try {

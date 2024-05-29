@@ -7,45 +7,50 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'enums.dart';
 
-
-void printSuccess(Object? object,{Type? runtimeType}) {
+void printSuccess(Object? object, {Type? runtimeType}) {
   String line = "${object?.toString()}";
   String? className;
-  if(runtimeType != null) className = "\x1B[1;4;32m${runtimeType.toString()}:\x1B[0m";
+  if (runtimeType != null) {
+    className = "\x1B[1;4;32m${runtimeType.toString()}:\x1B[0m";
+  }
   if (kDebugMode) {
-    if(Platform.isIOS) {
-      if(runtimeType != null) className = "${runtimeType.toString()}:";
-      debugPrint('${className?? ''} $line');
+    if (Platform.isIOS) {
+      if (runtimeType != null) className = "${runtimeType.toString()}:";
+      debugPrint('${className ?? ''} $line');
     } else {
-      debugPrint('${className??''} \x1B[32m$line\x1B[0m');
+      debugPrint('${className ?? ''} \x1B[32m$line\x1B[0m');
     }
   }
 }
 
-void printError(Object? object,{Type? runtimeType}) {
+void printError(Object? object, {Type? runtimeType}) {
   String line = "${object?.toString()}";
   String? className;
-  if(runtimeType != null) className = "\x1B[1;4;31m${runtimeType.toString()}:\x1B[0m";
+  if (runtimeType != null) {
+    className = "\x1B[1;4;31m${runtimeType.toString()}:\x1B[0m";
+  }
   if (kDebugMode) {
-    if(Platform.isIOS) {
-      if(runtimeType != null) className = "${runtimeType.toString()}:";
-      debugPrint('${className?? ''} $line');
+    if (Platform.isIOS) {
+      if (runtimeType != null) className = "${runtimeType.toString()}:";
+      debugPrint('${className ?? ''} $line');
     } else {
-      debugPrint('${className??''} \x1B[31m$line\x1B[0m');
+      debugPrint('${className ?? ''} \x1B[31m$line\x1B[0m');
     }
   }
 }
 
-void printLog(Object? object,{Type? runtimeType}) {
+void printLog(Object? object, {Type? runtimeType}) {
   String line = "${object?.toString()}";
   String? className;
-  if(runtimeType != null) className = "\x1B[1;34m${runtimeType.toString()}:\x1B[0m";
+  if (runtimeType != null) {
+    className = "\x1B[1;34m${runtimeType.toString()}:\x1B[0m";
+  }
   if (kDebugMode) {
-    if(Platform.isIOS) {
-      if(runtimeType != null) className = "${runtimeType.toString()}:";
-      debugPrint('${className?? ''} $line');
+    if (Platform.isIOS) {
+      if (runtimeType != null) className = "${runtimeType.toString()}:";
+      debugPrint('${className ?? ''} $line');
     } else {
-      debugPrint('${className??''} \x1B[34m$line\x1B[0m');
+      debugPrint('${className ?? ''} \x1B[34m$line\x1B[0m');
     }
   }
 }
@@ -53,7 +58,7 @@ void printLog(Object? object,{Type? runtimeType}) {
 void printResponse(Object? object) {
   String line = "$object";
   if (kDebugMode) {
-    if(Platform.isIOS) {
+    if (Platform.isIOS) {
       debugPrint(line);
     } else {
       debugPrint('\x1B[33m$line\x1B[0m');
@@ -61,11 +66,10 @@ void printResponse(Object? object) {
   }
 }
 
-
 void printRequest(Object? object) {
   String line = "$object";
   if (kDebugMode) {
-    if(Platform.isIOS) {
+    if (Platform.isIOS) {
       debugPrint(line);
     } else {
       debugPrint('\x1B[35m$line\x1B[0m');
@@ -80,4 +84,3 @@ Future<void> openUrl(String url) async {
 }
 
 bool isArabic = CacheService.get(key: CacheKeys.language) == Languages.ar.name;
-
