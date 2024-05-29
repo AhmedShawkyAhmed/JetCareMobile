@@ -40,10 +40,17 @@ class EndPoints {
   static const getContact = "get_contact";
   static const addSupport = "add_support";
 
+  // ------------------- Address
+  static const addAddress = "add_address";
+  static const updateAddress = "update_address";
+  static const deleteAddress = "delete_address";
+  static const getMyAddresses = "get_my_addresses";
+  static const getStates = "get_states_mobile";
+  static const getAreasOfState = "get_areas_of_state";
+
 // ---------------------
   static const getHome = "getHome";
   static const getAllStates = "getAllStates";
-  static const getAreasOfState = "getAreasOfState";
   static const updateAccount = "updateAccount";
   static const getCategoryDetails = "getCategoryDetails";
   static const getPackageDetails = "getPackageDetails";
@@ -51,14 +58,10 @@ class EndPoints {
   static const getMyOrders = "getMyOrders";
   static const updateOrderStatusUser = "update_order_status_user";
   static const getSpaces = "getSpacesMobile";
-  static const addAddress = "addAddress";
   static const getAreas = "getAreasMobile";
   static const getDatesMobile = "getDatesMobile";
   static const getPeriods = "getPeriodsMobile";
   static const createOrder = "createOrder";
-  static const getMyAddresses = "getMyAddresses";
-  static const deleteAddress = "deleteAddress";
-  static const updateAddress = "updateAddress";
   static const deleteOrder = "deleteOrder";
   static const addCorporateOrder = "addCorporateOrder";
   static const getCalender = "getCalender";

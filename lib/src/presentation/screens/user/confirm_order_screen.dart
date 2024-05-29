@@ -3,7 +3,6 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/business_logic/order_cubit/order_cubit.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
-import 'package:jetcare/src/core/constants/constants_variables.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
 import 'package:jetcare/src/core/routing/routes.dart';
@@ -99,7 +98,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                   ],
                 ),
               ),
-              if (globalAccountModel.role == "crew" &&
+              if (Globals.userData.role == "crew" &&
                   widget.appRouterArgument.orderModel!.status == "assigned")
                 Align(
                   alignment: Alignment.bottomCenter,
@@ -160,7 +159,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                     ),
                   ),
                 ),
-              if (globalAccountModel.role == "crew" &&
+              if (Globals.userData.role == "crew" &&
                   widget.appRouterArgument.orderModel!.status == "accepted")
                 DefaultAppButton(
                   title: translate(AppStrings.complete),
@@ -180,7 +179,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                     );
                   },
                 ),
-              if (globalAccountModel.role != "crew" &&
+              if (Globals.userData.role != "crew" &&
                   widget.appRouterArgument.orderModel!.status ==
                       "unassigned") ...[
                 DefaultAppButton(

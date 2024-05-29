@@ -4,16 +4,16 @@ import 'package:intl/intl.dart';
 import 'package:jetcare/src/business_logic/order_cubit/order_cubit.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
-import 'package:jetcare/src/core/constants/constants_variables.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
-import 'package:jetcare/src/core/routing/routes.dart';
 import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
+import 'package:jetcare/src/core/routing/routes.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/globals.dart';
+import 'package:jetcare/src/core/utils/shared_methods.dart';
+import 'package:jetcare/src/features/shared/views/body_view.dart';
 import 'package:jetcare/src/features/shared/widgets/default_app_button.dart';
 import 'package:jetcare/src/features/shared/widgets/default_text.dart';
 import 'package:jetcare/src/features/shared/widgets/toast.dart';
-import 'package:jetcare/src/core/utils/shared_methods.dart';
-import 'package:jetcare/src/features/shared/views/body_view.dart';
 import 'package:jetcare/src/presentation/views/card_view.dart';
 import 'package:jetcare/src/presentation/views/home_view.dart';
 import 'package:jetcare/src/presentation/views/summery_item.dart';
@@ -183,7 +183,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         maxLines: 50,
                         fontSize: 15.sp,
                       ),
-                    if (globalAccountModel.role == "crew" &&
+                    if (Globals.userData.role == "crew" &&
                         widget.appRouterArgument.orderModel!.status ==
                             "assigned")
                       Align(
@@ -246,7 +246,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                           ),
                         ),
                       ),
-                    if (globalAccountModel.role == "crew" &&
+                    if (Globals.userData.role == "crew" &&
                         widget.appRouterArgument.orderModel!.status ==
                             "accepted")
                       DefaultAppButton(
@@ -266,7 +266,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                           );
                         },
                       ),
-                    if (globalAccountModel.role == "client" &&
+                    if (Globals.userData.role == "client" &&
                         widget.appRouterArgument.orderModel?.crew == null)
                       DefaultAppButton(
                         title: translate(AppStrings.cancel),

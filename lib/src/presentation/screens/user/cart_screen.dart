@@ -9,6 +9,7 @@ import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/routing/routes.dart';
 import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/globals.dart';
 import 'package:jetcare/src/features/shared/widgets/default_app_button.dart';
 import 'package:jetcare/src/features/shared/widgets/default_text.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
@@ -29,7 +30,7 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => CartCubit(instance())
-        ..getMyCart(userId: globalAccountModel.id!, afterSuccess: () {}),
+        ..getMyCart(userId: Globals.userData.id!, afterSuccess: () {}),
       child: Scaffold(
         backgroundColor: AppColors.mainColor,
         body: BodyView(

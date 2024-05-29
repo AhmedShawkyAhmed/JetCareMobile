@@ -10,6 +10,11 @@ import 'package:jetcare/src/core/routing/routes.dart';
 import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/core/utils/extensions.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
+import 'package:jetcare/src/features/address/cubit/address_cubit.dart';
+import 'package:jetcare/src/features/address/data/models/address_model.dart';
+import 'package:jetcare/src/features/address/screens/add_address_screen.dart';
+import 'package:jetcare/src/features/address/screens/address_screen.dart';
+import 'package:jetcare/src/features/address/screens/map_screen.dart';
 import 'package:jetcare/src/features/auth/cubit/auth_cubit.dart';
 import 'package:jetcare/src/features/auth/screens/login_screen.dart';
 import 'package:jetcare/src/features/auth/screens/otp_screen.dart';
@@ -34,16 +39,13 @@ import 'package:jetcare/src/features/splash/screens/splash_screen.dart';
 import 'package:jetcare/src/features/support/cubit/support_cubit.dart';
 import 'package:jetcare/src/features/support/screens/contact_screen.dart';
 import 'package:jetcare/src/features/support/screens/info_screen.dart';
-import 'package:jetcare/src/presentation/screens/user/add_address_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/added_to_cart_screen.dart';
-import 'package:jetcare/src/presentation/screens/user/address_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/appointment_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/cart_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/category_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/confirm_order_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/corporate_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/home_screen.dart';
-import 'package:jetcare/src/presentation/screens/user/map_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/order_details_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/package_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/service_screen.dart';
@@ -208,14 +210,19 @@ class AppRoutes {
         );
       case Routes.address:
         return CustomPageRouteTransiton.fadeOut(
-          page: const AddressScreen(),
+          page: BlocProvider(
+            create: (context) => AddressCubit(instance())..getMyAddresses(),
+            child: const AddressScreen(),
+          ),
         );
       case Routes.addAddress:
-        final AppRouterArgument appRouterArgument =
-            settings.arguments as AppRouterArgument;
+        final AddressModel address = settings.arguments as AddressModel;
         return CustomPageRouteTransiton.fadeOut(
-          page: AddAddressScreen(
-            appRouterArguments: appRouterArgument,
+          page: BlocProvider(
+            create: (context) => AddressCubit(instance())..getStates(),
+            child: AddAddressScreen(
+              address: address,
+            ),
           ),
         );
       case Routes.map:

@@ -1,6 +1,4 @@
-import 'package:jetcare/src/data/models/address_model.dart';
 import 'package:jetcare/src/data/models/corporate_model.dart';
-import 'package:jetcare/src/data/models/info_model.dart';
 import 'package:jetcare/src/data/models/item_model.dart';
 import 'package:jetcare/src/data/models/package_model.dart';
 import 'package:jetcare/src/features/crew/data/models/order_model.dart';
@@ -12,8 +10,6 @@ class AppRouterArgument {
   final PackageModel? packageModel;
   final OrderModel? orderModel;
   final CorporateModel? corporateModel;
-  final InfoModel? infoModel;
-  final AddressModel? addressModel;
 
   AppRouterArgument({
     this.type,
@@ -22,7 +18,5 @@ class AppRouterArgument {
     this.packageModel,
     this.orderModel,
     this.corporateModel,
-    this.infoModel,
-    this.addressModel,
   });
 }

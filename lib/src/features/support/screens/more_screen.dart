@@ -12,7 +12,7 @@ import 'package:jetcare/src/features/language/views/language_alert.dart';
 import 'package:jetcare/src/features/profile/cubit/profile_cubit.dart';
 import 'package:jetcare/src/features/shared/views/body_view.dart';
 import 'package:jetcare/src/features/shared/widgets/default_app_button.dart';
-import 'package:jetcare/src/presentation/views/more_item.dart';
+import 'package:jetcare/src/features/support/widgets/more_item.dart';
 import 'package:sizer/sizer.dart';
 
 class MoreScreen extends StatefulWidget {

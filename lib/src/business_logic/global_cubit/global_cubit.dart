@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jetcare/src/core/network/end_points.dart';
 import 'package:jetcare/src/core/network/network_service.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
-import 'package:jetcare/src/data/network/responses/area_response.dart';
 import 'package:jetcare/src/data/network/responses/global_response.dart';
 import 'package:jetcare/src/data/network/responses/home_response.dart';
 import 'package:jetcare/src/data/network/responses/period_response.dart';
@@ -17,9 +16,6 @@ class GlobalCubit extends Cubit<GlobalState> {
   NetworkService networkService;
 
   HomeResponse? homeResponse;
-
-  // InfoResponse? infoResponse;
-  AreaResponse? areaResponse;
   PeriodResponse? periodResponse;
   GlobalResponse? globalResponse;
   SpaceResponse? spaceResponse;
@@ -45,28 +41,7 @@ class GlobalCubit extends Cubit<GlobalState> {
       printError(e.toString());
     }
   }
-
-  Future getArea() async {
-    try {
-      emit(AreaLoadingState());
-      await networkService
-          .get(
-        url: EndPoints.getAreas,
-      )
-          .then((value) {
-        areaResponse = AreaResponse.fromJson(value.data);
-        printSuccess("Area Response ${areaResponse!.status.toString()}");
-        emit(AreaSuccessState());
-      });
-    } on DioException catch (n) {
-      emit(AreaErrorState());
-      printError(n.toString());
-    } catch (e) {
-      emit(AreaErrorState());
-      printError(e.toString());
-    }
-  }
-
+  
   Future getPeriods() async {
     try {
       emit(PeriodLoadingState());

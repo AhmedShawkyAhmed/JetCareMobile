@@ -3,7 +3,6 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:jetcare/src/business_logic/address_cubit/address_cubit.dart';
 import 'package:jetcare/src/business_logic/calender_cubit/calender_cubit.dart';
 import 'package:jetcare/src/business_logic/global_cubit/global_cubit.dart';
 import 'package:jetcare/src/business_logic/order_cubit/order_cubit.dart';
@@ -18,9 +17,11 @@ import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/globals.dart';
 import 'package:jetcare/src/core/utils/enums.dart';
-import 'package:jetcare/src/data/models/address_model.dart';
 import 'package:jetcare/src/data/models/period_model.dart';
 import 'package:jetcare/src/data/network/requests/order_request.dart';
+import 'package:jetcare/src/features/address/cubit/address_cubit.dart';
+import 'package:jetcare/src/features/address/data/models/address_model.dart';
+import 'package:jetcare/src/features/address/data/models/area_model.dart';
 import 'package:jetcare/src/features/notifications/cubit/notification_cubit.dart';
 import 'package:jetcare/src/features/notifications/data/requests/notification_request.dart';
 import 'package:jetcare/src/features/shared/views/body_view.dart';
@@ -30,11 +31,9 @@ import 'package:jetcare/src/features/shared/widgets/default_drop_down_menu.dart'
 import 'package:jetcare/src/features/shared/widgets/default_text.dart';
 import 'package:jetcare/src/features/shared/widgets/default_text_field.dart';
 import 'package:jetcare/src/features/shared/widgets/toast.dart';
-import 'package:jetcare/src/presentation/views/address_widget.dart';
+import 'package:jetcare/src/features/address/widgets/address_widget.dart';
 import 'package:jetcare/src/presentation/views/calender_item_view.dart';
 import 'package:sizer/sizer.dart';
-
-import '../../../data/models/area_model.dart';
 
 class AppointmentScreen extends StatefulWidget {
   final AppRouterArgument appRouterArgument;
@@ -85,22 +84,21 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
               ),
               BlocBuilder<AddressCubit, AddressState>(
                 builder: (context, state) {
-                  if (AddressCubit(instance()).addressList.isEmpty ||
-                      AddressCubit(instance()).addressResponse == null) {
+                  if (AddressCubit(instance()).address.isEmpty) {
                     return Center(
                       child: DefaultText(
                         text: translate(AppStrings.aAddress),
                         textColor: AppColors.primary,
                         onTap: () {
-                          IndicatorView.showIndicator();
-                          AddressCubit(instance()).getAllStates(
-                              afterSuccess: () {
-                            NavigationService.pop();
-                            NavigationService.pushNamed(
-                              Routes.addAddress,
-                              arguments: AppRouterArgument(type: "new"),
-                            );
-                          });
+                          // todo get all states
+                          // IndicatorView.showIndicator();
+                          // AddressCubit(instance()).getAllStates(
+                          //     afterSuccess: () {
+                          //   NavigationService.pop();
+                          //   NavigationService.pushNamed(
+                          //     Routes.addAddress,
+                          //   );
+                          // });
                         },
                       ),
                     );
@@ -112,27 +110,27 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: AddressCubit(instance())
-                        .addressResponse!
-                        .address!
+                        .address
                         .length,
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () {
                           setState(() {
                             selectedAddress = AddressCubit(instance())
-                                .addressResponse!
-                                .address![index];
+                                .address[index];
                           });
                         },
                         child: AddressWidget(
-                          color: selectedAddress.id ==
-                                  AddressCubit(instance()).addressList[index].id
+                          color:
+                          selectedAddress.id ==
+                                  AddressCubit(instance()).address[index].id
                               ? AppColors.primary.withOpacity(0.5)
-                              : AppColors.shade.withOpacity(0.1),
+                              :
+                          AppColors.shade.withOpacity(0.1),
                           addressModelList:
-                              AddressCubit(instance()).addressList,
+                              AddressCubit(instance()).address,
                           addressModel:
-                              AddressCubit(instance()).addressList[index],
+                              AddressCubit(instance()).address[index],
                           edit: () {},
                           delete: () {},
                         ),

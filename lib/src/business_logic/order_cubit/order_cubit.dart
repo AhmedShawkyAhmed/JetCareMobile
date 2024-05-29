@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jetcare/src/core/constants/constants_variables.dart';
 import 'package:jetcare/src/core/network/end_points.dart';
 import 'package:jetcare/src/core/network/network_service.dart';
+import 'package:jetcare/src/core/shared/globals.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/data/network/requests/corporate_request.dart';
 import 'package:jetcare/src/data/network/requests/order_request.dart';
@@ -28,7 +28,7 @@ class OrderCubit extends Cubit<OrderState> {
     try {
       emit(MyTasksLoadingState());
       await networkService.get(url: EndPoints.getMyTasks, query: {
-        'crewId': globalAccountModel.id,
+        'crewId': Globals.userData.id,
       }).then((value) {
         // tasksResponse = HistoryResponse.fromJson(value.data);
         // printSuccess("My Tasks Response ${tasksResponse!.message.toString()}");
@@ -47,7 +47,7 @@ class OrderCubit extends Cubit<OrderState> {
     try {
       emit(MyOrdersLoadingState());
       await networkService.get(url: EndPoints.getMyOrders, query: {
-        'userId': globalAccountModel.id,
+        'userId': Globals.userData.id,
       }).then((value) {
         historyResponse = HistoryResponse.fromJson(value.data);
         printSuccess(
@@ -101,7 +101,7 @@ class OrderCubit extends Cubit<OrderState> {
       await networkService.post(
         url: EndPoints.createOrder,
         body: {
-          'userId': globalAccountModel.id,
+          'userId': Globals.userData.id,
           'periodId': orderRequest.periodId,
           'addressId': orderRequest.addressId,
           'date': orderRequest.date,

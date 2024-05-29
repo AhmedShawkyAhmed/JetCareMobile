@@ -3,6 +3,9 @@ import 'package:get_it/get_it.dart';
 import 'package:jetcare/src/core/network/dio_consumer.dart';
 import 'package:jetcare/src/core/network/dio_factory.dart';
 import 'package:jetcare/src/core/network/network_service.dart';
+import 'package:jetcare/src/features/address/cubit/address_cubit.dart';
+import 'package:jetcare/src/features/address/data/repo/address_repo.dart';
+import 'package:jetcare/src/features/address/service/address_web_service.dart';
 import 'package:jetcare/src/features/auth/cubit/auth_cubit.dart';
 import 'package:jetcare/src/features/auth/data/repo/auth_repo.dart';
 import 'package:jetcare/src/features/auth/service/auth_web_service.dart';
@@ -42,6 +45,7 @@ Future<void> initAppModule() async {
   instance.registerLazySingleton<CrewCubit>(() => CrewCubit(instance()));
   instance.registerFactory<NotificationCubit>(() => NotificationCubit(instance()));
   instance.registerFactory<SupportCubit>(() => SupportCubit(instance()));
+  instance.registerFactory<AddressCubit>(() => AddressCubit(instance()));
 
   // --------------------- Repo
   instance.registerLazySingleton<AuthRepo>(() => AuthRepo(instance()));
@@ -49,6 +53,7 @@ Future<void> initAppModule() async {
   instance.registerLazySingleton<CrewRepo>(() => CrewRepo(instance()));
   instance.registerLazySingleton<NotificationRepo>(() => NotificationRepo(instance()));
   instance.registerLazySingleton<SupportRepo>(() => SupportRepo(instance()));
+  instance.registerLazySingleton<AddressRepo>(() => AddressRepo(instance()));
 
   // --------------------- Web Service
   instance.registerLazySingleton<AuthWebService>(() => AuthWebService(instance()));
@@ -56,4 +61,5 @@ Future<void> initAppModule() async {
   instance.registerLazySingleton<CrewWebService>(() => CrewWebService(instance()));
   instance.registerLazySingleton<NotificationWebService>(() => NotificationWebService(instance()));
   instance.registerLazySingleton<SupportWebService>(() => SupportWebService(instance()));
+  instance.registerLazySingleton<AddressWebService>(() => AddressWebService(instance()));
 }

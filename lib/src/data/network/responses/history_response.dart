@@ -1,5 +1,5 @@
 import 'package:jetcare/src/data/models/corporate_model.dart';
-import 'package:jetcare/src/data/models/order_model.dart';
+import 'package:jetcare/src/features/crew/data/models/order_model.dart';
 
 class HistoryResponse {
   int? status;
