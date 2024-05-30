@@ -34,7 +34,7 @@ OrderModel _$OrderModelFromJson(Map<String, dynamic> json) => OrderModel(
           : PackageModel.fromJson(json['package'] as Map<String, dynamic>),
       calendar: json['calendar'] == null
           ? null
-          : CalenderModel.fromJson(json['calendar'] as Map<String, dynamic>),
+          : CalendarModel.fromJson(json['calendar'] as Map<String, dynamic>),
       extras: (json['extras'] as List<dynamic>?)
           ?.map((e) => ItemModel.fromJson(e as Map<String, dynamic>))
           .toList(),

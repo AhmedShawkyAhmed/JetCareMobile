@@ -8,7 +8,7 @@ import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/data/network/requests/corporate_request.dart';
 import 'package:jetcare/src/data/network/requests/order_request.dart';
 import 'package:jetcare/src/data/network/responses/corporate_response.dart';
-import 'package:jetcare/src/data/network/responses/global_response.dart';
+// import 'package:jetcare/src/data/network/responses/global_response.dart';
 import 'package:jetcare/src/data/network/responses/history_response.dart';
 import 'package:jetcare/src/features/shared/ui/widgets/toast.dart';
 
@@ -21,7 +21,7 @@ class OrderCubit extends Cubit<OrderState> {
 
   CorporateResponse? corporateResponse;
 
-  GlobalResponse? globalResponse, orderResponse;
+  // GlobalResponse? globalResponse, orderResponse;
   HistoryResponse? historyResponse;
 
   Future getMyOrders() async {
@@ -95,10 +95,10 @@ class OrderCubit extends Cubit<OrderState> {
         },
       ).then((value) {
         printResponse(value.data.toString());
-        orderResponse = GlobalResponse.fromJson(value.data);
+        // orderResponse = GlobalResponse.fromJson(value.data);
         emit(OrdersSuccessState());
         afterSuccess();
-        printSuccess("Order Response ${orderResponse!.message.toString()}");
+        // printSuccess("Order Response ${orderResponse!.message.toString()}");
       });
     } on DioException catch (n) {
       emit(OrdersErrorState());
@@ -123,16 +123,16 @@ class OrderCubit extends Cubit<OrderState> {
         'status': status,
         'reason': reason,
       }).then((value) {
-        globalResponse = GlobalResponse.fromJson(value.data);
-        printSuccess(
-            "Order Status Response ${globalResponse!.message.toString()}");
+        // globalResponse = GlobalResponse.fromJson(value.data);
+        // printSuccess(
+            // "Order Status Response ${globalResponse!.message.toString()}");
         emit(UpdateOrderStatusSuccessState());
-        if (globalResponse!.status == 200) {
-          afterSuccess();
-        } else if (globalResponse!.status == 402) {
-          DefaultToast.showMyToast(globalResponse!.message.toString());
-          afterCancel();
-        }
+        // if (globalResponse!.status == 200) {
+        //   afterSuccess();
+        // } else if (globalResponse!.status == 402) {
+        //   DefaultToast.showMyToast(globalResponse!.message.toString());
+        //   afterCancel();
+        // }
       });
     } on DioException catch (n) {
       emit(UpdateOrderStatusErrorState());
@@ -152,9 +152,9 @@ class OrderCubit extends Cubit<OrderState> {
       await networkService.post(url: EndPoints.deleteOrder, body: {
         'id': orderId,
       }).then((value) {
-        globalResponse = GlobalResponse.fromJson(value.data);
-        printSuccess(
-            "Delete Order Response ${globalResponse!.message.toString()}");
+        // globalResponse = GlobalResponse.fromJson(value.data);
+        // printSuccess(
+        //     "Delete Order Response ${globalResponse!.message.toString()}");
         emit(DeleteOrderStatusSuccessState());
         afterSuccess();
       });
