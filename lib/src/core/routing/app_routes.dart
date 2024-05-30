@@ -26,6 +26,9 @@ import 'package:jetcare/src/features/auth/ui/screens/reset_password.dart';
 import 'package:jetcare/src/features/auth/ui/screens/verify_email.dart';
 import 'package:jetcare/src/features/cart/cubit/cart_cubit.dart';
 import 'package:jetcare/src/features/cart/ui/screens/added_to_cart_screen.dart';
+import 'package:jetcare/src/features/corporate/cubit/corporate_cubit.dart';
+import 'package:jetcare/src/features/corporate/data/models/corporate_model.dart';
+import 'package:jetcare/src/features/corporate/ui/screens/corporate_details_screen.dart';
 import 'package:jetcare/src/features/crew/cubit/crew_cubit.dart';
 import 'package:jetcare/src/features/crew/ui/screens/task_details_screen.dart';
 import 'package:jetcare/src/features/home/cubit/home_cubit.dart';
@@ -155,6 +158,9 @@ class AppRoutes {
               BlocProvider(
                 create: (context) => CartCubit(instance()),
               ),
+              BlocProvider(
+                create: (context) => CorporateCubit(instance()),
+              ),
             ],
             child: LayoutScreen(current: current),
           ),
@@ -174,7 +180,7 @@ class AppRoutes {
             child: CrewLayoutScreen(current: current),
           ),
         );
-      case Routes.corporate:
+      case Routes.corporateItems:
         final HomeArguments arguments = settings.arguments as HomeArguments;
         return CustomPageRouteTransiton.fadeOut(
           page: CorporateScreen(arguments: arguments),
@@ -185,12 +191,12 @@ class AppRoutes {
         return CustomPageRouteTransiton.fadeOut(
           page: OrderDetailsScreen(appRouterArgument: appRouterArgument),
         );
-      case Routes.service:
+      case Routes.serviceItems:
         final HomeArguments arguments = settings.arguments as HomeArguments;
         return CustomPageRouteTransiton.fadeOut(
           page: ServiceScreen(arguments: arguments),
         );
-      case Routes.category:
+      case Routes.categoryItems:
         final PackageModel category = settings.arguments as PackageModel;
         return CustomPageRouteTransiton.fadeOut(
           page: CategoryScreen(category: category),
@@ -199,11 +205,16 @@ class AppRoutes {
         return CustomPageRouteTransiton.fadeOut(
           page: const AddedToCartScreen(),
         );
+      case Routes.corporateDetails:
+        final CorporateModel corporate = settings.arguments as CorporateModel;
+        return CustomPageRouteTransiton.fadeOut(
+          page: CorporateDetailsScreen(corporate: corporate),
+        );
       case Routes.home:
         return CustomPageRouteTransiton.fadeOut(
           page: const HomeScreen(),
         );
-      case Routes.package:
+      case Routes.packageItems:
         final PackageDetailsModel packageDetails =
             settings.arguments as PackageDetailsModel;
         return CustomPageRouteTransiton.fadeOut(
@@ -263,7 +274,9 @@ class AppRoutes {
           page: MultiBlocProvider(
             providers: [
               BlocProvider(
-                create: (context) => AppointmentCubit(instance())..getCalendar(),
+                create: (context) => AppointmentCubit(instance())
+                  ..getCalendar()
+                  ..getPeriods(),
               ),
               BlocProvider(
                 create: (context) => AddressCubit(instance())..getMyAddresses(),

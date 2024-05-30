@@ -33,23 +33,23 @@ class AppointmentCubit extends Cubit<AppointmentState> {
     );
   }
 
-  Future getSpaces({
-    required int packageId,
-  }) async {
-    spaces.clear();
-    emit(GetSpacesLoading());
-    var response = await repo.getSpaces(packageId: packageId);
-    response.when(
-      success: (NetworkBaseModel response) async {
-        spaces = response.data;
-        emit(GetSpacesSuccess());
-      },
-      failure: (NetworkExceptions error) {
-        error.showError();
-        emit(GetSpacesFailure());
-      },
-    );
-  }
+  // Future getSpaces({
+  //   required int packageId,
+  // }) async {
+  //   spaces.clear();
+  //   emit(GetSpacesLoading());
+  //   var response = await repo.getSpaces(packageId: packageId);
+  //   response.when(
+  //     success: (NetworkBaseModel response) async {
+  //       spaces = response.data;
+  //       emit(GetSpacesSuccess());
+  //     },
+  //     failure: (NetworkExceptions error) {
+  //       error.showError();
+  //       emit(GetSpacesFailure());
+  //     },
+  //   );
+  // }
 
   Future getCalendar({
     int? month,

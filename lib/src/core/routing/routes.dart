@@ -7,11 +7,10 @@ enum Routes {
   layout,
   crewLayout,
   welcome,
-  corporate,
-  orderDetails,
-  category,
-  package,
-  service,
+  corporateItems,
+  categoryItems,
+  packageItems,
+  serviceItems,
   info,
   contact,
   address,
@@ -27,6 +26,8 @@ enum Routes {
   confirmOrder,
   taskDetails,
   notification,
+  orderDetails,
+  corporateDetails,
   addedToCart;
 
   String get path => '/${name.toString()}';

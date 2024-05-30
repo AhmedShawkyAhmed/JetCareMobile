@@ -47,7 +47,7 @@ class HomeCubit extends Cubit<HomeState> {
         NavigationService.pop();
         await Future.delayed(const Duration(milliseconds: 100), () {
           NavigationService.pushNamed(
-            Routes.package,
+            Routes.packageItems,
             arguments: packageDetails,
           );
         });
@@ -73,7 +73,7 @@ class HomeCubit extends Cubit<HomeState> {
         NavigationService.pop();
         await Future.delayed(const Duration(milliseconds: 100), () {
           NavigationService.pushNamed(
-            Routes.category,
+            Routes.categoryItems,
             arguments: category,
           );
         });

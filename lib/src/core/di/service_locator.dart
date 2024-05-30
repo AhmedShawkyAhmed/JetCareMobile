@@ -15,6 +15,9 @@ import 'package:jetcare/src/features/auth/service/auth_web_service.dart';
 import 'package:jetcare/src/features/cart/cubit/cart_cubit.dart';
 import 'package:jetcare/src/features/cart/data/repo/cart_repo.dart';
 import 'package:jetcare/src/features/cart/service/cart_web_service.dart';
+import 'package:jetcare/src/features/corporate/cubit/corporate_cubit.dart';
+import 'package:jetcare/src/features/corporate/data/repo/corporate_repo.dart';
+import 'package:jetcare/src/features/corporate/service/corporate_web_service.dart';
 import 'package:jetcare/src/features/crew/cubit/crew_cubit.dart';
 import 'package:jetcare/src/features/crew/data/repo/crew_repo.dart';
 import 'package:jetcare/src/features/crew/service/crew_web_service.dart';
@@ -58,6 +61,7 @@ Future<void> initAppModule() async {
   instance.registerFactory<HomeCubit>(() => HomeCubit(instance()));
   instance.registerFactory<CartCubit>(() => CartCubit(instance()));
   instance.registerFactory<AppointmentCubit>(() => AppointmentCubit(instance()));
+  instance.registerFactory<CorporateCubit>(() => CorporateCubit(instance()));
 
   // --------------------- Repo
   instance.registerLazySingleton<AuthRepo>(() => AuthRepo(instance()));
@@ -69,6 +73,7 @@ Future<void> initAppModule() async {
   instance.registerLazySingleton<HomeRepo>(() => HomeRepo(instance()));
   instance.registerLazySingleton<CartRepo>(() => CartRepo(instance()));
   instance.registerLazySingleton<AppointmentRepo>(() => AppointmentRepo(instance()));
+  instance.registerLazySingleton<CorporateRepo>(() => CorporateRepo(instance()));
 
   // --------------------- Web Service
   instance.registerLazySingleton<AuthWebService>(() => AuthWebService(instance()));
@@ -80,4 +85,5 @@ Future<void> initAppModule() async {
   instance.registerLazySingleton<HomeWebService>(() => HomeWebService(instance()));
   instance.registerLazySingleton<CartWebService>(() => CartWebService(instance()));
   instance.registerLazySingleton<AppointmentWebService>(() => AppointmentWebService(instance()));
+  instance.registerLazySingleton<CorporateWebService>(() => CorporateWebService(instance()));
 }

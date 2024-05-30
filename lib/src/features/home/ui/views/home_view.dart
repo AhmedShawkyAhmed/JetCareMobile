@@ -75,7 +75,7 @@ class HomeView extends StatelessWidget {
                             onTap: () {
                               if (type == HomeViewType.corporate) {
                                 NavigationService.pushNamed(
-                                  Routes.corporate,
+                                  Routes.corporateItems,
                                   arguments: HomeArguments(
                                     item: itemList![index],
                                   ),
@@ -90,7 +90,7 @@ class HomeView extends StatelessWidget {
                                 );
                               } else if (type == HomeViewType.extra) {
                                 NavigationService.pushNamed(
-                                  Routes.service,
+                                  Routes.serviceItems,
                                   arguments: HomeArguments(
                                     item: itemList![index],
                                   ),

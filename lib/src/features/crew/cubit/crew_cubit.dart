@@ -62,6 +62,7 @@ class CrewCubit extends Cubit<CrewState> {
   }
 
   Future getMyTasks() async {
+    myTasks?.clear();
     emit(GetMyTasksLoading());
     var response = await repo.getMyTasks();
     response.when(
@@ -77,6 +78,7 @@ class CrewCubit extends Cubit<CrewState> {
   }
 
   Future getMyTasksHistory() async {
+    myTasksHistory?.clear();
     emit(GetMyTasksHistoryLoading());
     var response = await repo.getMyTasksHistory();
     response.when(

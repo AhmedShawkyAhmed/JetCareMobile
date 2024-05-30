@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:jetcare/src/business_logic/order_cubit/order_cubit.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/routing/arguments/home_arguments.dart';
-import 'package:jetcare/src/core/routing/routes.dart';
-import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/globals.dart';
-import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
-import 'package:jetcare/src/data/network/requests/corporate_request.dart';
+import 'package:jetcare/src/features/corporate/cubit/corporate_cubit.dart';
+import 'package:jetcare/src/features/corporate/data/requests/corporate_request.dart';
 import 'package:jetcare/src/features/home/ui/views/card_view.dart';
 import 'package:jetcare/src/features/shared/ui/views/body_view.dart';
 import 'package:jetcare/src/features/shared/ui/widgets/default_app_button.dart';
 import 'package:jetcare/src/features/shared/ui/widgets/default_text.dart';
 import 'package:jetcare/src/features/shared/ui/widgets/default_text_field.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/toast.dart';
 import 'package:sizer/sizer.dart';
 
 class CorporateScreen extends StatelessWidget {
@@ -89,10 +85,12 @@ class CorporateScreen extends StatelessWidget {
             DefaultTextField(
               controller: emailController,
               hintText: translate(AppStrings.email),
+              keyboardType: TextInputType.emailAddress,
             ),
             DefaultTextField(
               controller: phoneController,
               hintText: translate(AppStrings.phone),
+              keyboardType: TextInputType.phone,
             ),
             DefaultTextField(
               controller: messageController,
@@ -102,37 +100,20 @@ class CorporateScreen extends StatelessWidget {
               maxLength: 500,
             ),
             DefaultAppButton(
-                title: translate(AppStrings.send),
-                onTap: () {
-                  if (nameController.text == "") {
-                    DefaultToast.showMyToast(translate(AppStrings.enterName));
-                  } else if (emailController.text == "") {
-                    DefaultToast.showMyToast(translate(AppStrings.enterEmail));
-                  } else if (phoneController.text == "") {
-                    DefaultToast.showMyToast(translate(AppStrings.enterPhone));
-                  } else if (messageController.text == "") {
-                    DefaultToast.showMyToast(
-                        translate(AppStrings.enterMessage));
-                  } else {
-                    OrderCubit(instance()).corporateOrder(
-                      corporateRequest: CorporateRequest(
-                        userId: Globals.userData.id!,
-                        itemId: arguments.item!.id!,
-                        name: nameController.text,
-                        email: emailController.text,
-                        phone: phoneController.text,
-                        message: messageController.text,
-                      ),
-                      afterSuccess: () {
-                        NavigationService.pushNamedAndRemoveUntil(
-                          Routes.success,
-                          arguments: SuccessType.order,
-                          (route) => false,
-                        );
-                      },
-                    );
-                  }
-                }),
+              title: translate(AppStrings.send),
+              onTap: () {
+                CorporateCubit(instance()).addCorporateOrder(
+                  request: CorporateRequest(
+                    userId: Globals.userData.id!,
+                    itemId: arguments.item!.id!,
+                    name: nameController.text,
+                    email: emailController.text,
+                    phone: phoneController.text,
+                    message: messageController.text,
+                  ),
+                );
+              },
+            ),
             SizedBox(
               height: 2.h,
             ),

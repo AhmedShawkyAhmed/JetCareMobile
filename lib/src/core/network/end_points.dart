@@ -63,11 +63,13 @@ class EndPoints {
   static const getSpaces = "get_spaces_mobile";
   static const getCalendar = "get_calendar";
 
+  // ------------------- Corporate
+  static const addCorporateOrder = "add_corporate_order";
+  static const getMyCorporateOrders = "get_my_corporate_orders";
+
 // ---------------------
   static const getMyOrders = "getMyOrders";
   static const updateOrderStatusUser = "update_order_status_user";
   static const createOrder = "createOrder";
   static const deleteOrder = "deleteOrder";
-  static const addCorporateOrder = "addCorporateOrder";
-  static const getCalender = "getCalender";
 }
