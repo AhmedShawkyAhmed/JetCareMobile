@@ -2,12 +2,12 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
-import 'package:jetcare/src/features/crew/screens/tasks_history_screen.dart';
-import 'package:jetcare/src/features/crew/screens/tasks_screen.dart';
-import 'package:jetcare/src/features/cart/screens/cart_screen.dart';
+import 'package:jetcare/src/features/crew/ui/screens/tasks_history_screen.dart';
+import 'package:jetcare/src/features/crew/ui/screens/tasks_screen.dart';
+import 'package:jetcare/src/features/cart/ui/screens/cart_screen.dart';
 import 'package:jetcare/src/presentation/screens/user/history_screen.dart';
-import 'package:jetcare/src/features/home/screens/home_screen.dart';
-import 'package:jetcare/src/features/support/screens/more_screen.dart';
+import 'package:jetcare/src/features/home/ui/screens/home_screen.dart';
+import 'package:jetcare/src/features/support/ui/screens/more_screen.dart';
 
 part 'layout_state.dart';
 

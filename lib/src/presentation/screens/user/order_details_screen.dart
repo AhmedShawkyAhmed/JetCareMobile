@@ -10,12 +10,12 @@ import 'package:jetcare/src/core/routing/routes.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
-import 'package:jetcare/src/features/home/views/card_view.dart';
-import 'package:jetcare/src/features/home/views/home_view.dart';
-import 'package:jetcare/src/features/shared/views/body_view.dart';
-import 'package:jetcare/src/features/shared/widgets/default_app_button.dart';
-import 'package:jetcare/src/features/shared/widgets/default_text.dart';
-import 'package:jetcare/src/features/shared/widgets/toast.dart';
+import 'package:jetcare/src/features/home/ui/views/card_view.dart';
+import 'package:jetcare/src/features/home/ui/views/home_view.dart';
+import 'package:jetcare/src/features/shared/ui/views/body_view.dart';
+import 'package:jetcare/src/features/shared/ui/widgets/default_app_button.dart';
+import 'package:jetcare/src/features/shared/ui/widgets/default_text.dart';
+import 'package:jetcare/src/features/shared/ui/widgets/toast.dart';
 import 'package:jetcare/src/presentation/views/summery_item.dart';
 import 'package:sizer/sizer.dart';
 

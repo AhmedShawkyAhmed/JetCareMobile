@@ -1,0 +1,66 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
+import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/constants/app_strings.dart';
+import 'package:jetcare/src/core/routing/routes.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/features/shared/ui/views/body_view.dart';
+import 'package:jetcare/src/features/shared/ui/widgets/default_app_button.dart';
+import 'package:jetcare/src/features/shared/ui/widgets/default_text.dart';
+import 'package:sizer/sizer.dart';
+
+class AddedToCartScreen extends StatelessWidget {
+  const AddedToCartScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.mainColor,
+      body: BodyView(
+        hasBack: false,
+        widget: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Spacer(),
+            SizedBox(
+              height: 20.h,
+              child: Image.asset("assets/images/success.png"),
+            ),
+            SizedBox(
+              height: 5.h,
+            ),
+            DefaultText(
+              text: translate(AppStrings.addedToCart),
+              align: TextAlign.center,
+            ),
+            const Spacer(),
+            DefaultAppButton(
+              title: translate(AppStrings.goToCart),
+              onTap: () {
+                NavigationService.pushNamedAndRemoveUntil(
+                  Routes.layout,
+                  arguments: 2,
+                  (route) => false,
+                );
+              },
+            ),
+            DefaultAppButton(
+              title: translate(AppStrings.goToHome),
+              onTap: () {
+                NavigationService.pushNamedAndRemoveUntil(
+                  Routes.layout,
+                  arguments: 0,
+                  (route) => false,
+                );
+              },
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

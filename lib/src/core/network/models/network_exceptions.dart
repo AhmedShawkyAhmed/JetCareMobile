@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:jetcare/src/features/shared/widgets/toast.dart';
+import 'package:jetcare/src/features/shared/ui/widgets/toast.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 
 import 'network_base_model.dart';

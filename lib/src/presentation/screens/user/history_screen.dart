@@ -8,12 +8,12 @@ import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/routing/routes.dart';
 import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
-import 'package:jetcare/src/features/shared/widgets/default_text.dart';
+import 'package:jetcare/src/features/shared/ui/widgets/default_text.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
-import 'package:jetcare/src/features/shared/views/body_view.dart';
-import 'package:jetcare/src/features/home/views/card_view.dart';
-import 'package:jetcare/src/features/cart/widgets/cart_item.dart';
-import 'package:jetcare/src/features/shared/views/loading_view.dart';
+import 'package:jetcare/src/features/shared/ui/views/body_view.dart';
+import 'package:jetcare/src/features/home/ui/views/card_view.dart';
+import 'package:jetcare/src/features/cart/ui/widgets/cart_item.dart';
+import 'package:jetcare/src/features/shared/ui/views/loading_view.dart';
 import 'package:sizer/sizer.dart';
 
 class HistoryScreen extends StatefulWidget {

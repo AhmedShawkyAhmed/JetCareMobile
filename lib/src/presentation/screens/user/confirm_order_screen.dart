@@ -10,15 +10,15 @@ import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/globals.dart';
 import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
-import 'package:jetcare/src/features/cart/widgets/cart_item.dart';
+import 'package:jetcare/src/features/cart/ui/widgets/cart_item.dart';
 import 'package:jetcare/src/features/notifications/cubit/notification_cubit.dart';
 import 'package:jetcare/src/features/notifications/data/requests/notification_request.dart';
-import 'package:jetcare/src/features/shared/views/body_view.dart';
-import 'package:jetcare/src/features/shared/views/indicator_view.dart';
-import 'package:jetcare/src/features/shared/widgets/default_app_button.dart';
-import 'package:jetcare/src/features/shared/widgets/default_text.dart';
-import 'package:jetcare/src/features/shared/widgets/default_text_field.dart';
-import 'package:jetcare/src/features/shared/widgets/toast.dart';
+import 'package:jetcare/src/features/shared/ui/views/body_view.dart';
+import 'package:jetcare/src/features/shared/ui/views/indicator_view.dart';
+import 'package:jetcare/src/features/shared/ui/widgets/default_app_button.dart';
+import 'package:jetcare/src/features/shared/ui/widgets/default_text.dart';
+import 'package:jetcare/src/features/shared/ui/widgets/default_text_field.dart';
+import 'package:jetcare/src/features/shared/ui/widgets/toast.dart';
 import 'package:sizer/sizer.dart';
 
 class ConfirmOrderScreen extends StatefulWidget {

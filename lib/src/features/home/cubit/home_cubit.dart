@@ -8,7 +8,7 @@ import 'package:jetcare/src/features/home/data/models/home_model.dart';
 import 'package:jetcare/src/features/home/data/models/package_details_model.dart';
 import 'package:jetcare/src/features/home/data/models/package_model.dart';
 import 'package:jetcare/src/features/home/data/repo/home_repo.dart';
-import 'package:jetcare/src/features/shared/views/indicator_view.dart';
+import 'package:jetcare/src/features/shared/ui/views/indicator_view.dart';
 
 part 'home_state.dart';
 

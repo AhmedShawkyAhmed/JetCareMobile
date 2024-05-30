@@ -10,7 +10,7 @@ import 'package:jetcare/src/data/network/requests/order_request.dart';
 import 'package:jetcare/src/data/network/responses/corporate_response.dart';
 import 'package:jetcare/src/data/network/responses/global_response.dart';
 import 'package:jetcare/src/data/network/responses/history_response.dart';
-import 'package:jetcare/src/features/shared/widgets/toast.dart';
+import 'package:jetcare/src/features/shared/ui/widgets/toast.dart';
 
 part 'order_state.dart';
 

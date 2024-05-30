@@ -7,7 +7,7 @@ import 'package:jetcare/src/core/network/models/network_exceptions.dart';
 import 'package:jetcare/src/core/routing/routes.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/utils/enums.dart';
-import 'package:jetcare/src/features/shared/widgets/toast.dart';
+import 'package:jetcare/src/features/shared/ui/widgets/toast.dart';
 import 'package:jetcare/src/features/support/data/models/info_model.dart';
 import 'package:jetcare/src/features/support/data/repo/support_repo.dart';
 import 'package:jetcare/src/features/support/data/requests/support_request.dart';

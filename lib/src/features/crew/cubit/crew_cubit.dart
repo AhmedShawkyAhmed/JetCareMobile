@@ -7,7 +7,7 @@ import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/features/crew/data/models/order_model.dart';
 import 'package:jetcare/src/features/crew/data/repo/crew_repo.dart';
 import 'package:jetcare/src/features/crew/data/requests/update_order_status_request.dart';
-import 'package:jetcare/src/features/shared/views/indicator_view.dart';
+import 'package:jetcare/src/features/shared/ui/views/indicator_view.dart';
 
 part 'crew_state.dart';
 

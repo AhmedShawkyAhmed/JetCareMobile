@@ -6,6 +6,9 @@ import 'package:jetcare/src/core/network/network_service.dart';
 import 'package:jetcare/src/features/address/cubit/address_cubit.dart';
 import 'package:jetcare/src/features/address/data/repo/address_repo.dart';
 import 'package:jetcare/src/features/address/service/address_web_service.dart';
+import 'package:jetcare/src/features/appointment/cubit/appointment_cubit.dart';
+import 'package:jetcare/src/features/appointment/data/repo/appointment_repo.dart';
+import 'package:jetcare/src/features/appointment/service/appointment_web_service.dart';
 import 'package:jetcare/src/features/auth/cubit/auth_cubit.dart';
 import 'package:jetcare/src/features/auth/data/repo/auth_repo.dart';
 import 'package:jetcare/src/features/auth/service/auth_web_service.dart';
@@ -54,6 +57,7 @@ Future<void> initAppModule() async {
   instance.registerFactory<AddressCubit>(() => AddressCubit(instance()));
   instance.registerFactory<HomeCubit>(() => HomeCubit(instance()));
   instance.registerFactory<CartCubit>(() => CartCubit(instance()));
+  instance.registerFactory<AppointmentCubit>(() => AppointmentCubit(instance()));
 
   // --------------------- Repo
   instance.registerLazySingleton<AuthRepo>(() => AuthRepo(instance()));
@@ -64,6 +68,7 @@ Future<void> initAppModule() async {
   instance.registerLazySingleton<AddressRepo>(() => AddressRepo(instance()));
   instance.registerLazySingleton<HomeRepo>(() => HomeRepo(instance()));
   instance.registerLazySingleton<CartRepo>(() => CartRepo(instance()));
+  instance.registerLazySingleton<AppointmentRepo>(() => AppointmentRepo(instance()));
 
   // --------------------- Web Service
   instance.registerLazySingleton<AuthWebService>(() => AuthWebService(instance()));
@@ -74,4 +79,5 @@ Future<void> initAppModule() async {
   instance.registerLazySingleton<AddressWebService>(() => AddressWebService(instance()));
   instance.registerLazySingleton<HomeWebService>(() => HomeWebService(instance()));
   instance.registerLazySingleton<CartWebService>(() => CartWebService(instance()));
+  instance.registerLazySingleton<AppointmentWebService>(() => AppointmentWebService(instance()));
 }

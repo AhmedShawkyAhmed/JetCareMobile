@@ -9,8 +9,8 @@ import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/features/cart/data/models/cart_item_model.dart';
 import 'package:jetcare/src/features/cart/data/repo/cart_repo.dart';
 import 'package:jetcare/src/features/cart/data/requests/cart_request.dart';
-import 'package:jetcare/src/features/shared/views/indicator_view.dart';
-import 'package:jetcare/src/features/shared/widgets/toast.dart';
+import 'package:jetcare/src/features/shared/ui/views/indicator_view.dart';
+import 'package:jetcare/src/features/shared/ui/widgets/toast.dart';
 
 part 'cart_state.dart';
 

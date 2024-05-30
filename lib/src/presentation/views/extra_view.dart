@@ -5,7 +5,7 @@
 // import 'package:jetcare/src/core/constants/constants_variables.dart';
 // import 'package:jetcare/src/core/services/navigation_service.dart';
 // import 'package:jetcare/src/features/home/data/models/item_model.dart';
-// import 'package:jetcare/src/features/shared/widgets/default_text.dart';
+// import 'package:jetcare/src/features/shared/ui/widgets/default_text.dart';
 // import 'package:jetcare/src/core/utils/shared_methods.dart';
 // import 'package:sizer/sizer.dart';
 //

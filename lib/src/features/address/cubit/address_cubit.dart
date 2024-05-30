@@ -9,8 +9,8 @@ import 'package:jetcare/src/features/address/data/models/address_model.dart';
 import 'package:jetcare/src/features/address/data/models/area_model.dart';
 import 'package:jetcare/src/features/address/data/repo/address_repo.dart';
 import 'package:jetcare/src/features/address/data/requests/address_request.dart';
-import 'package:jetcare/src/features/shared/views/indicator_view.dart';
-import 'package:jetcare/src/features/shared/widgets/toast.dart';
+import 'package:jetcare/src/features/shared/ui/views/indicator_view.dart';
+import 'package:jetcare/src/features/shared/ui/widgets/toast.dart';
 
 part 'address_state.dart';
 

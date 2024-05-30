@@ -58,14 +58,14 @@ class EndPoints {
   static const addToCart = "add_to_cart";
   static const deleteFromCart = "delete_from_cart";
 
+  // ------------------- Appointment
+  static const getPeriods = "get_periods_mobile";
+  static const getSpaces = "get_spaces_mobile";
+  static const getCalendar = "get_calendar";
+
 // ---------------------
-  static const getPackages = "getPackages";
   static const getMyOrders = "getMyOrders";
   static const updateOrderStatusUser = "update_order_status_user";
-  static const getSpaces = "getSpacesMobile";
-  static const getAreas = "getAreasMobile";
-  static const getDatesMobile = "getDatesMobile";
-  static const getPeriods = "getPeriodsMobile";
   static const createOrder = "createOrder";
   static const deleteOrder = "deleteOrder";
   static const addCorporateOrder = "addCorporateOrder";
