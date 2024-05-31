@@ -10,7 +10,7 @@ NotificationModel _$NotificationModelFromJson(Map<String, dynamic> json) =>
     NotificationModel(
       id: (json['id'] as num?)?.toInt(),
       userId: (json['user_id'] as num?)?.toInt(),
-      isRead: (json['is_read'] as num?)?.toInt(),
+      isRead: json['is_read'] as bool?,
       title: json['title'] as String?,
       message: json['message'] as String?,
       createdAt: json['created_at'] as String?,

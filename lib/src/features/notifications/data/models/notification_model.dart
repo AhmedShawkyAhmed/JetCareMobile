@@ -6,7 +6,7 @@ part 'notification_model.g.dart';
 class NotificationModel {
   int? id;
   int? userId;
-  int? isRead;
+  bool? isRead;
   String? title;
   String? message;
   String? createdAt;

@@ -9,8 +9,8 @@ import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/features/cart/data/models/cart_item_model.dart';
 import 'package:jetcare/src/features/cart/data/repo/cart_repo.dart';
 import 'package:jetcare/src/features/cart/data/requests/cart_request.dart';
-import 'package:jetcare/src/features/shared/ui/views/indicator_view.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/toast.dart';
+import 'package:jetcare/src/features/shared/views/indicator_view.dart';
+import 'package:jetcare/src/features/shared/widgets/toast.dart';
 
 part 'cart_state.dart';
 
@@ -18,10 +18,12 @@ class CartCubit extends Cubit<CartState> {
   CartCubit(this.repo) : super(CartInitial());
   final CartRepo repo;
 
-  List<CartItemModel>? cart;
+  List<CartItemModel> cart = [];
+  List<int> cartIds = [];
+  List<int> shipping = [];
 
   num get total =>
-      cart?.fold(0, (total, item) => (total ?? 0) + (item.price ?? 0)) ?? 0;
+      cart.fold(0, (total, item) => (total ?? 0) + (item.price ?? 0)) ?? 0;
 
   Future addToCart({
     required CartRequest request,
@@ -59,7 +61,7 @@ class CartCubit extends Cubit<CartState> {
     var response = await repo.deleteFromCart(id: cartItem.id!);
     response.when(
       success: (NetworkBaseModel response) async {
-        cart!.remove(cartItem);
+        cart.remove(cartItem);
         NavigationService.pop();
         emit(DeleteFromCartSuccess());
       },
@@ -72,11 +74,20 @@ class CartCubit extends Cubit<CartState> {
   }
 
   Future getCart() async {
+    shipping.clear();
+    cartIds.clear();
+    cart.clear();
     emit(GetCartLoading());
     var response = await repo.getMyCart();
     response.when(
       success: (NetworkBaseModel response) async {
         cart = response.data;
+        for(int i = 0; i < cart.length; i++){
+          cartIds.add(cart[i].id!);
+          if(cart[i].item!.hasShipping == true){
+            shipping.add(1);
+          }
+        }
         emit(GetCartSuccess());
       },
       failure: (NetworkExceptions error) {

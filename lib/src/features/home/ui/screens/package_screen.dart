@@ -14,10 +14,10 @@ import 'package:jetcare/src/features/cart/data/requests/cart_request.dart';
 import 'package:jetcare/src/features/home/data/models/package_details_model.dart';
 import 'package:jetcare/src/features/home/ui/views/card_view.dart';
 import 'package:jetcare/src/features/home/ui/widgets/package_item.dart';
-import 'package:jetcare/src/features/shared/ui/views/body_view.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_app_button.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_text.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_text_field.dart';
+import 'package:jetcare/src/features/shared/views/body_view.dart';
+import 'package:jetcare/src/features/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text_field.dart';
 import 'package:sizer/sizer.dart';
 
 class PackageScreen extends StatefulWidget {

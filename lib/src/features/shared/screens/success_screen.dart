@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:jetcare/src/business_logic/order_cubit/order_cubit.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
-import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/routing/routes.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/utils/enums.dart';
-import 'package:jetcare/src/features/shared/ui/views/body_view.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_app_button.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_text.dart';
+import 'package:jetcare/src/features/shared/views/body_view.dart';
+import 'package:jetcare/src/features/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
 class SuccessScreen extends StatelessWidget {
@@ -65,7 +63,6 @@ class SuccessScreen extends StatelessWidget {
                     arguments: 0,
                     (route) => false,
                   );
-                  OrderCubit(instance()).getMyOrders();
                 } else if (type == SuccessType.support) {
                   NavigationService.pop();
                 }

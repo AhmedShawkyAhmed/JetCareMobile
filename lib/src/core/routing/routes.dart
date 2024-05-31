@@ -26,7 +26,7 @@ enum Routes {
   confirmOrder,
   taskDetails,
   notification,
-  orderDetails,
+  // orderDetails,
   corporateDetails,
   addedToCart;
 

@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
 import 'package:jetcare/src/core/network/models/network_base_model.dart';
 import 'package:jetcare/src/core/network/models/network_exceptions.dart';
@@ -9,8 +10,8 @@ import 'package:jetcare/src/features/address/data/models/address_model.dart';
 import 'package:jetcare/src/features/address/data/models/area_model.dart';
 import 'package:jetcare/src/features/address/data/repo/address_repo.dart';
 import 'package:jetcare/src/features/address/data/requests/address_request.dart';
-import 'package:jetcare/src/features/shared/ui/views/indicator_view.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/toast.dart';
+import 'package:jetcare/src/features/shared/views/indicator_view.dart';
+import 'package:jetcare/src/features/shared/widgets/toast.dart';
 
 part 'address_state.dart';
 
@@ -22,6 +23,7 @@ class AddressCubit extends Cubit<AddressState> {
   List<AddressModel> address = [];
   List<AreaModel> states = [];
   List<AreaModel> areas = [];
+  LatLng addressLocation = const LatLng(0.0, 0.0);
 
   Future getMyAddresses() async {
     address.clear();

@@ -10,8 +10,8 @@ import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/features/auth/cubit/auth_cubit.dart';
 import 'package:jetcare/src/features/language/ui/views/language_alert.dart';
 import 'package:jetcare/src/features/profile/cubit/profile_cubit.dart';
-import 'package:jetcare/src/features/shared/ui/views/body_view.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_app_button.dart';
+import 'package:jetcare/src/features/shared/views/body_view.dart';
+import 'package:jetcare/src/features/shared/widgets/default_app_button.dart';
 import 'package:jetcare/src/features/support/ui/widgets/more_item.dart';
 import 'package:sizer/sizer.dart';
 

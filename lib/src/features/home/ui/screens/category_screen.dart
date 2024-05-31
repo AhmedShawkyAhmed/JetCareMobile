@@ -7,8 +7,8 @@ import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/features/home/data/models/package_model.dart';
 import 'package:jetcare/src/features/home/ui/views/card_view.dart';
 import 'package:jetcare/src/features/home/ui/views/home_view.dart';
-import 'package:jetcare/src/features/shared/ui/views/body_view.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_text.dart';
+import 'package:jetcare/src/features/shared/views/body_view.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
 class CategoryScreen extends StatefulWidget {

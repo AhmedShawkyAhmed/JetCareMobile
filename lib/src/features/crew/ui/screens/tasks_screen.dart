@@ -7,9 +7,9 @@ import 'package:jetcare/src/core/routing/arguments/task_arguments.dart';
 import 'package:jetcare/src/core/routing/routes.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/features/crew/cubit/crew_cubit.dart';
-import 'package:jetcare/src/features/shared/ui/views/body_view.dart';
-import 'package:jetcare/src/features/shared/ui/views/loading_view.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_text.dart';
+import 'package:jetcare/src/features/shared/views/body_view.dart';
+import 'package:jetcare/src/features/shared/views/loading_view.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text.dart';
 import 'package:jetcare/src/features/cart/ui/widgets/cart_item.dart';
 import 'package:sizer/sizer.dart';
 

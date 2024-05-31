@@ -9,13 +9,13 @@ import 'package:jetcare/src/core/routing/routes.dart';
 import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/globals.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_text.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/toast.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text.dart';
+import 'package:jetcare/src/features/shared/widgets/toast.dart';
 import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/features/profile/data/repo/profile_repo.dart';
 import 'package:jetcare/src/features/profile/data/requests/update_profile_request.dart';
-import 'package:jetcare/src/features/shared/ui/views/indicator_view.dart';
+import 'package:jetcare/src/features/shared/views/indicator_view.dart';
 import 'package:sizer/sizer.dart';
 
 part 'profile_state.dart';

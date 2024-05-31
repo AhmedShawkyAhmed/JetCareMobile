@@ -14,7 +14,7 @@ class NotificationCubit extends Cubit<NotificationState> {
 
   final NotificationRepo repo;
 
-  List<NotificationModel>? notifications;
+  List<NotificationModel> notifications = [];
 
   Future saveNotification({
     required NotificationRequest request,
@@ -38,11 +38,12 @@ class NotificationCubit extends Cubit<NotificationState> {
   }
 
   Future getNotifications() async {
+    notifications.clear();
     emit(GetNotificationLoading());
     var response = await repo.getNotifications();
     response.when(
       success: (NetworkBaseModel response) async {
-        notifications = response.data ?? [];
+        notifications = response.data;
         emit(GetNotificationSuccess());
       },
       failure: (NetworkExceptions error) {
@@ -72,8 +73,8 @@ class NotificationCubit extends Cubit<NotificationState> {
   Future readLocalNotification({
     required int id,
   }) async {
-    if (notifications != null || notifications!.isNotEmpty) {
-      notifications!.firstWhere((n) => n.id == id).isRead = 1;
+    if (notifications.isNotEmpty) {
+      notifications.firstWhere((n) => n.id == id).isRead = true;
     }
   }
 }

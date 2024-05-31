@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/routing/app_animation.dart';
-import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
+import 'package:jetcare/src/core/routing/arguments/appointment_arguments.dart';
 import 'package:jetcare/src/core/routing/arguments/home_arguments.dart';
+import 'package:jetcare/src/core/routing/arguments/order_arguments.dart';
 import 'package:jetcare/src/core/routing/arguments/otp_arguments.dart';
 import 'package:jetcare/src/core/routing/arguments/password_arguments.dart';
 import 'package:jetcare/src/core/routing/arguments/task_arguments.dart';
@@ -44,19 +45,19 @@ import 'package:jetcare/src/features/layout/ui/screens/crew_layout_screen.dart';
 import 'package:jetcare/src/features/layout/ui/screens/layout_screen.dart';
 import 'package:jetcare/src/features/notifications/cubit/notification_cubit.dart';
 import 'package:jetcare/src/features/notifications/ui/screens/notification_screen.dart';
+import 'package:jetcare/src/features/orders/cubit/orders_cubit.dart';
+import 'package:jetcare/src/features/orders/ui/screens/confirm_order_screen.dart';
 import 'package:jetcare/src/features/profile/cubit/profile_cubit.dart';
 import 'package:jetcare/src/features/profile/ui/screens/profile_screen.dart';
-import 'package:jetcare/src/features/shared/ui/screens/deleted_account_screen.dart';
-import 'package:jetcare/src/features/shared/ui/screens/disable_account_screen.dart';
-import 'package:jetcare/src/features/shared/ui/screens/success_screen.dart';
-import 'package:jetcare/src/features/shared/ui/screens/welcome_screen.dart';
+import 'package:jetcare/src/features/shared/screens/deleted_account_screen.dart';
+import 'package:jetcare/src/features/shared/screens/disable_account_screen.dart';
+import 'package:jetcare/src/features/shared/screens/success_screen.dart';
+import 'package:jetcare/src/features/shared/screens/welcome_screen.dart';
 import 'package:jetcare/src/features/splash/cubit/splash_cubit.dart';
 import 'package:jetcare/src/features/splash/ui/screens/splash_screen.dart';
 import 'package:jetcare/src/features/support/cubit/support_cubit.dart';
 import 'package:jetcare/src/features/support/ui/screens/contact_screen.dart';
 import 'package:jetcare/src/features/support/ui/screens/info_screen.dart';
-import 'package:jetcare/src/presentation/screens/user/confirm_order_screen.dart';
-import 'package:jetcare/src/presentation/screens/user/order_details_screen.dart';
 
 import 'arguments/register_arguments.dart';
 
@@ -125,11 +126,10 @@ class AppRoutes {
           page: OTPScreen(arguments: arguments),
         );
       case Routes.confirmOrder:
-        final AppRouterArgument appRouterArgument =
-            settings.arguments as AppRouterArgument;
+        final OrderArguments arguments = settings.arguments as OrderArguments;
         return CustomPageRouteTransiton.fadeOut(
           page: ConfirmOrderScreen(
-            appRouterArgument: appRouterArgument,
+            arguments: arguments,
           ),
         );
       case Routes.taskDetails:
@@ -161,6 +161,9 @@ class AppRoutes {
               BlocProvider(
                 create: (context) => CorporateCubit(instance()),
               ),
+              BlocProvider(
+                create: (context) => OrdersCubit(instance()),
+              ),
             ],
             child: LayoutScreen(current: current),
           ),
@@ -185,12 +188,12 @@ class AppRoutes {
         return CustomPageRouteTransiton.fadeOut(
           page: CorporateScreen(arguments: arguments),
         );
-      case Routes.orderDetails:
-        final AppRouterArgument appRouterArgument =
-            settings.arguments as AppRouterArgument;
-        return CustomPageRouteTransiton.fadeOut(
-          page: OrderDetailsScreen(appRouterArgument: appRouterArgument),
-        );
+      // case Routes.orderDetails:
+      //   final OrderArguments arguments =
+      //   settings.arguments as OrderArguments;
+      //   return CustomPageRouteTransiton.fadeOut(
+      //     page: OrderDetailsScreen(arguments: arguments),
+      //   );
       case Routes.serviceItems:
         final HomeArguments arguments = settings.arguments as HomeArguments;
         return CustomPageRouteTransiton.fadeOut(
@@ -268,8 +271,8 @@ class AppRoutes {
           ),
         );
       case Routes.appointment:
-        final AppRouterArgument appRouterArgument =
-            settings.arguments as AppRouterArgument;
+        final AppointmentArguments arguments =
+            settings.arguments as AppointmentArguments;
         return CustomPageRouteTransiton.fadeOut(
           page: MultiBlocProvider(
             providers: [
@@ -282,7 +285,7 @@ class AppRoutes {
                 create: (context) => AddressCubit(instance())..getMyAddresses(),
               ),
             ],
-            child: AppointmentScreen(appRouterArgument: appRouterArgument),
+            child: AppointmentScreen(arguments: arguments),
           ),
         );
       default:

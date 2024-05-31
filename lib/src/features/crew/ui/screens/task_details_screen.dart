@@ -8,9 +8,9 @@ import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/features/crew/cubit/crew_cubit.dart';
 import 'package:jetcare/src/features/crew/data/requests/update_order_status_request.dart';
-import 'package:jetcare/src/features/shared/ui/views/body_view.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_app_button.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_text.dart';
+import 'package:jetcare/src/features/shared/views/body_view.dart';
+import 'package:jetcare/src/features/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text.dart';
 import 'package:jetcare/src/features/cart/ui/widgets/cart_item.dart';
 import 'package:sizer/sizer.dart';
 

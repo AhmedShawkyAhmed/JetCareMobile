@@ -13,9 +13,9 @@ import 'package:jetcare/src/features/home/cubit/home_cubit.dart';
 import 'package:jetcare/src/features/home/ui/views/card_view.dart';
 import 'package:jetcare/src/features/home/ui/views/home_view.dart';
 import 'package:jetcare/src/features/home/ui/views/service_view.dart';
-import 'package:jetcare/src/features/shared/ui/views/body_view.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_text.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/toast.dart';
+import 'package:jetcare/src/features/shared/views/body_view.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text.dart';
+import 'package:jetcare/src/features/shared/widgets/toast.dart';
 import 'package:sizer/sizer.dart';
 
 class HomeScreen extends StatefulWidget {

@@ -5,12 +5,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
-import 'package:jetcare/src/core/constants/constants_variables.dart';
 import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
-import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
+import 'package:jetcare/src/core/di/service_locator.dart';
+import 'package:jetcare/src/core/routing/arguments/appointment_arguments.dart';
 import 'package:jetcare/src/core/routing/routes.dart';
 import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/globals.dart';
 import 'package:jetcare/src/features/address/cubit/address_cubit.dart';
 import 'package:jetcare/src/features/address/data/models/address_model.dart';
 import 'package:jetcare/src/features/address/data/models/area_model.dart';
@@ -19,19 +20,21 @@ import 'package:jetcare/src/features/appointment/cubit/appointment_cubit.dart';
 import 'package:jetcare/src/features/appointment/data/models/period_model.dart';
 import 'package:jetcare/src/features/appointment/data/models/space_model.dart';
 import 'package:jetcare/src/features/appointment/ui/widgets/calender_item_view.dart';
-import 'package:jetcare/src/features/shared/ui/views/body_view.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_app_button.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_drop_down_menu.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_text.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_text_field.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/toast.dart';
+import 'package:jetcare/src/features/orders/cubit/orders_cubit.dart';
+import 'package:jetcare/src/features/orders/data/requests/order_request.dart';
+import 'package:jetcare/src/features/shared/views/body_view.dart';
+import 'package:jetcare/src/features/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/features/shared/widgets/default_drop_down_menu.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text_field.dart';
+import 'package:jetcare/src/features/shared/widgets/toast.dart';
 import 'package:sizer/sizer.dart';
 
 class AppointmentScreen extends StatefulWidget {
-  final AppRouterArgument appRouterArgument;
+  final AppointmentArguments arguments;
 
   const AppointmentScreen({
-    required this.appRouterArgument,
+    required this.arguments,
     super.key,
   });
 
@@ -44,6 +47,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   late AddressCubit addressCubit = BlocProvider.of(context);
   DateTime now = DateTime.now();
   int quantity = 1;
+  TextEditingController dateController = TextEditingController();
   TextEditingController quantityController = TextEditingController();
   TextEditingController commentController = TextEditingController();
   AddressModel selectedAddress = AddressModel(id: -1);
@@ -51,6 +55,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   PeriodModel selectedPeriod = PeriodModel();
   SpaceModel selectedSpace = SpaceModel();
   List<PeriodModel> discountPeriods = [];
+  List<int> cart = [];
 
   DateTime date = DateTime.now();
   int selected = -1;
@@ -277,7 +282,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                                 setState(() {
                                                   if (appointmentCubit
                                                       .calendar[index]
-                                                      .areas!
+                                                      .area!
                                                       .isEmpty) {
                                                     discountAreas =
                                                         AreaModel(id: -1);
@@ -285,7 +290,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                                     discountAreas =
                                                         appointmentCubit
                                                             .calendar[index]
-                                                            .areas!
+                                                            .area!
                                                             .first;
                                                   }
                                                   dateController.text =
@@ -319,12 +324,15 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                                     ? null
                                                     : appointmentCubit
                                                                 .calendar[index]
-                                                                .areas!
+                                                                .area!
                                                                 .first
                                                                 .id ==
                                                             selectedAddress
                                                                 .area?.id
-                                                        ? shipping.isNotEmpty
+                                                        ? widget
+                                                                .arguments
+                                                                .shipping
+                                                                .isNotEmpty
                                                             ? AppColors.gold
                                                             : null
                                                         : null
@@ -369,7 +377,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                     showSearchBox: true,
                                     itemAsString: (PeriodModel? u) =>
                                         "${u?.from} - ${u?.to}",
-                                    items: shipping.isEmpty
+                                    items: widget.arguments.shipping.isEmpty
                                         ? appointmentCubit.periods
                                         : discountPeriods.isEmpty
                                             ? appointmentCubit.periods
@@ -409,12 +417,12 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                   const Spacer(),
                   DefaultText(
                     text:
-                        " ${widget.appRouterArgument.total ?? 0} ${translate(AppStrings.currency)}",
+                        " ${widget.arguments.total} ${translate(AppStrings.currency)}",
                   ),
                 ],
               ),
             ),
-            if (shipping.isNotEmpty) ...[
+            if (widget.arguments.shipping.isNotEmpty) ...[
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10.w),
                 child: Row(
@@ -449,7 +457,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                   const Spacer(),
                   DefaultText(
                     text:
-                        " ${((double.parse(widget.appRouterArgument.total.toString())) + (shipping.isNotEmpty ? (discountAreas.id == -1 ? selectedAddress.area?.price?.toInt() ?? 0 : selectedAddress.area?.discount?.toInt() ?? 0) : 0))} ${translate(AppStrings.currency)}",
+                        " ${((double.parse(widget.arguments.total.toString())) + (widget.arguments.shipping.isNotEmpty ? (discountAreas.id == -1 ? selectedAddress.area?.price?.toInt() ?? 0 : selectedAddress.area?.discount?.toInt() ?? 0) : 0))} ${translate(AppStrings.currency)}",
                   ),
                 ],
               ),
@@ -460,68 +468,33 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
             DefaultAppButton(
               title: translate(AppStrings.confirm),
               onTap: () {
-                // todo create order
-                // if (dateController.text == "") {
-                //   DefaultToast.showMyToast(translate(AppStrings.selectData));
-                // } else if (selectedAddress.id == null ||
-                //     selectedAddress.id == 0) {
-                //   DefaultToast.showMyToast(translate(AppStrings.selectAddress));
-                // } else if (selectedPeriod.id == null ||
-                //     selectedPeriod.id == 0) {
-                //   DefaultToast.showMyToast(translate(AppStrings.selectTime));
-                // } else {
-                //   IndicatorView.showIndicator();
-                //   OrderCubit(instance()).createOrder(
-                //     orderRequest: OrderRequest(
-                //         total: ((double.parse(widget.appRouterArgument.total
-                //                     .toString())) +
-                //                 (shipping.isNotEmpty
-                //                     ? (discountAreas.id == -1
-                //                         ? selectedAddress.area?.price
-                //                                 ?.toInt() ??
-                //                             0
-                //                         : selectedAddress.area?.discount
-                //                                 ?.toInt() ??
-                //                             0)
-                //                     : 0))
-                //             .toString(),
-                //         price: widget.appRouterArgument.total.toString(),
-                //         relationId: selectedPeriod.relationId!,
-                //         shipping: shipping.isEmpty
-                //             ? "0"
-                //             : (discountAreas.id == -1
-                //                     ? selectedAddress.area?.price?.toInt() ?? 0
-                //                     : selectedAddress.area?.discount?.toInt() ??
-                //                         0)
-                //                 .toString(),
-                //         periodId: selectedPeriod.id!,
-                //         addressId: selectedAddress.id!,
-                //         date: dateController.text,
-                //         comment: commentController.text == ""
-                //             ? null
-                //             : commentController.text,
-                //
-                //         // todo clear cart
-                //         cart: []
-                //         // cart: cart,
-                //         ),
-                //     afterSuccess: () {
-                //       NavigationService.pushReplacementNamed(
-                //         Routes.success,
-                //         arguments: SuccessType.order,
-                //       );
-                //       NotificationCubit(instance()).saveNotification(
-                //         request: NotificationRequest(
-                //           userId: Globals.userData.id!,
-                //           title: "الطلبات",
-                //           message: "تم إنشاء طلبك بنجاح و بإنتظار التأكيد",
-                //         ),
-                //       );
-                //       // todo clear cart
-                //       // cart.clear();
-                //     },
-                //   );
-                // }
+                OrdersCubit(instance()).createOrder(
+                  request: OrderRequest(
+                    userId: Globals.userData.id!,
+                    total: ((double.parse(widget.arguments.total.toString())) +
+                            (widget.arguments.shipping.isNotEmpty
+                                ? (discountAreas.id == -1
+                                    ? selectedAddress.area?.price?.toInt() ?? 0
+                                    : selectedAddress.area?.discount?.toInt() ??
+                                        0)
+                                : 0))
+                        .toString(),
+                    price: widget.arguments.total.toString(),
+                    relationId: selectedPeriod.relationId,
+                    shipping: widget.arguments.shipping.isEmpty
+                        ? 0
+                        : (discountAreas.id == -1
+                            ? selectedAddress.area?.price?.toInt() ?? 0
+                            : selectedAddress.area?.discount?.toInt() ?? 0),
+                    periodId: selectedPeriod.id!,
+                    addressId: selectedAddress.id!,
+                    date: dateController.text,
+                    comment: commentController.text == ""
+                        ? null
+                        : commentController.text,
+                    cart: widget.arguments.cartIds,
+                  ),
+                );
               },
             ),
             SizedBox(

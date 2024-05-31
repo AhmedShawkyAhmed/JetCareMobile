@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
-import 'package:jetcare/src/core/routing/routes.dart';
-import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
-import 'package:jetcare/src/core/services/navigation_service.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_app_button.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_text.dart';
-import 'package:jetcare/src/features/shared/ui/views/body_view.dart';
+import 'package:jetcare/src/core/di/service_locator.dart';
+import 'package:jetcare/src/features/profile/cubit/profile_cubit.dart';
+import 'package:jetcare/src/features/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text.dart';
+import 'package:jetcare/src/features/shared/views/body_view.dart';
 import 'package:sizer/sizer.dart';
 
-class DisableAccountScreen extends StatelessWidget {
-  const DisableAccountScreen({super.key});
+class DeletedAccountScreen extends StatelessWidget {
+  const DeletedAccountScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,19 +30,14 @@ class DisableAccountScreen extends StatelessWidget {
             SizedBox(
               height: 5.h,
             ),
-             DefaultText(
-              text: translate(AppStrings.stopped),
+            DefaultText(
+              text: translate(AppStrings.deleted),
             ),
             const Spacer(),
             DefaultAppButton(
-              title: translate(AppStrings.contactUs),
+              title: translate(AppStrings.restoreAccount),
               onTap: () {
-                NavigationService.pushNamed(
-                  Routes.contact,
-                  arguments: AppRouterArgument(
-                    type: "support",
-                  )
-                );
+                ProfileCubit(instance()).restoreAccount();
               },
             ),
           ],

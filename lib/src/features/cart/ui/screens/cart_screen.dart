@@ -3,15 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
-import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
+import 'package:jetcare/src/core/routing/arguments/appointment_arguments.dart';
 import 'package:jetcare/src/core/routing/routes.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/features/cart/cubit/cart_cubit.dart';
 import 'package:jetcare/src/features/cart/ui/widgets/cart_item.dart';
-import 'package:jetcare/src/features/shared/ui/views/body_view.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_app_button.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_text.dart';
+import 'package:jetcare/src/features/shared/views/body_view.dart';
+import 'package:jetcare/src/features/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
 class CartScreen extends StatefulWidget {
@@ -49,7 +49,7 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                 );
               }
-              return cubit.cart == null || cubit.cart!.isEmpty
+              return cubit.cart.isEmpty
                   ? const Center(
                       child: DefaultText(
                         text: "لا يوجد عناصر",
@@ -78,8 +78,10 @@ class _CartScreenState extends State<CartScreen> {
                           onTap: () {
                             NavigationService.pushNamed(
                               Routes.appointment,
-                              arguments: AppRouterArgument(
+                              arguments: AppointmentArguments(
                                 total: cubit.total.toString(),
+                                shipping: cubit.shipping,
+                                cartIds: cubit.cartIds,
                               ),
                             );
                           },
@@ -89,26 +91,26 @@ class _CartScreenState extends State<CartScreen> {
                         ListView.builder(
                           physics: const ScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: cubit.cart?.length ?? 0,
+                          itemCount: cubit.cart.length,
                           itemBuilder: (context, index) {
                             return CartItem(
                               withDelete: true,
-                              image: cubit.cart![index].package == null
-                                  ? cubit.cart![index].item?.image ??
+                              image: cubit.cart[index].package == null
+                                  ? cubit.cart[index].item?.image ??
                                       "1674441185.jpg"
-                                  : cubit.cart![index].package!.image!,
-                              name: cubit.cart![index].package == null
+                                  : cubit.cart[index].package!.image!,
+                              name: cubit.cart[index].package == null
                                   ? isArabic
-                                      ? cubit.cart![index].item?.nameAr ?? ""
-                                      : cubit.cart![index].item?.nameEn ?? ""
+                                      ? cubit.cart[index].item?.nameAr ?? ""
+                                      : cubit.cart[index].item?.nameEn ?? ""
                                   : isArabic
-                                      ? cubit.cart![index].package!.nameAr!
-                                      : cubit.cart![index].package!.nameEn!,
-                              count: cubit.cart![index].count.toString(),
-                              price: cubit.cart![index].price.toString(),
+                                      ? cubit.cart[index].package!.nameAr!
+                                      : cubit.cart[index].package!.nameEn!,
+                              count: cubit.cart[index].count.toString(),
+                              price: cubit.cart[index].price.toString(),
                               onDelete: () {
                                 cubit.deleteFromCart(
-                                    cartItem: cubit.cart![index]);
+                                    cartItem: cubit.cart[index]);
                               },
                             );
                           },

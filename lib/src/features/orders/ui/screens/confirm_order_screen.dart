@@ -1,31 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:jetcare/src/business_logic/order_cubit/order_cubit.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
-import 'package:jetcare/src/core/routing/arguments/app_router_argument.dart';
-import 'package:jetcare/src/core/routing/routes.dart';
+import 'package:jetcare/src/core/routing/arguments/order_arguments.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
-import 'package:jetcare/src/core/shared/globals.dart';
 import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/features/cart/ui/widgets/cart_item.dart';
-import 'package:jetcare/src/features/notifications/cubit/notification_cubit.dart';
-import 'package:jetcare/src/features/notifications/data/requests/notification_request.dart';
-import 'package:jetcare/src/features/shared/ui/views/body_view.dart';
-import 'package:jetcare/src/features/shared/ui/views/indicator_view.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_app_button.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_text.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_text_field.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/toast.dart';
+import 'package:jetcare/src/features/orders/cubit/orders_cubit.dart';
+import 'package:jetcare/src/features/shared/views/body_view.dart';
+import 'package:jetcare/src/features/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text_field.dart';
 import 'package:sizer/sizer.dart';
 
 class ConfirmOrderScreen extends StatefulWidget {
-  final AppRouterArgument appRouterArgument;
+  final OrderArguments arguments;
 
   const ConfirmOrderScreen({
-    required this.appRouterArgument,
+    required this.arguments,
     super.key,
   });
 
@@ -56,7 +50,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                     const Spacer(),
                     DefaultText(
                       text:
-                          " ${widget.appRouterArgument.orderModel!.price ?? 0} ${translate(AppStrings.currency)}",
+                          " ${widget.arguments.order.price ?? 0} ${translate(AppStrings.currency)}",
                     ),
                   ],
                 ),
@@ -70,9 +64,9 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                     ),
                     const Spacer(),
                     DefaultText(
-                      text: widget.appRouterArgument.orderModel!.shipping == 0
+                      text: widget.arguments.order.shipping == 0
                           ? translate(AppStrings.free)
-                          : " ${widget.appRouterArgument.orderModel!.shipping ?? 0} ${translate(AppStrings.currency)}",
+                          : " ${widget.arguments.order.shipping ?? 0} ${translate(AppStrings.currency)}",
                     ),
                   ],
                 ),
@@ -92,14 +86,13 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                     const Spacer(),
                     DefaultText(
                       text:
-                          " ${widget.appRouterArgument.orderModel!.total ?? 0} ${translate(AppStrings.currency)}",
+                          " ${widget.arguments.order.total ?? 0} ${translate(AppStrings.currency)}",
                     ),
                   ],
                 ),
               ),
-              if (Globals.userData.role != "crew" &&
-                  widget.appRouterArgument.orderModel!.status ==
-                      "unassigned") ...[
+              if (widget.arguments.order.status ==
+                  OrderStatus.unassigned.name) ...[
                 DefaultAppButton(
                   title: translate(AppStrings.cancel),
                   fontSize: 14.sp,
@@ -145,36 +138,10 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                               fontSize: 13.sp,
                               textColor: AppColors.darkRed,
                               onTap: () {
-                                if (reasonController.text == "") {
-                                  DefaultToast.showMyToast(
-                                      translate(AppStrings.enterCancelReason));
-                                } else {
-                                  IndicatorView.showIndicator();
-                                  OrderCubit(instance()).updateOrderStatusUser(
-                                      orderId: widget
-                                          .appRouterArgument.orderModel!.id!,
-                                      status: OrderStatus.canceled.name,
-                                      reason: reasonController.text,
-                                      afterSuccess: () {
-                                        NavigationService.pushReplacementNamed(
-                                          Routes.layout,
-                                          arguments: 0,
-                                        );
-                                        NotificationCubit(instance())
-                                            .saveNotification(
-                                          request: NotificationRequest(
-                                            userId: Globals.userData.id!,
-                                            title: "الطلبات",
-                                            message: "تم إلغاء طلبك بنجاح",
-                                          ),
-                                        );
-                                      },
-                                      afterCancel: () {
-                                        reasonController.clear();
-                                        NavigationService.pop();
-                                        NavigationService.pop();
-                                      });
-                                }
+                                OrdersCubit(instance()).cancelOrder(
+                                  orderId: widget.arguments.order.id!,
+                                  reason: reasonController.text,
+                                );
                               },
                             ),
                             DefaultText(
@@ -200,36 +167,24 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
               ListView.builder(
                 physics: const ScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: widget.appRouterArgument.orderModel!.cart!.length,
+                itemCount: widget.arguments.order.cart!.length,
                 itemBuilder: (context, index) {
                   return CartItem(
                     withDelete: false,
-                    image: widget.appRouterArgument.orderModel!.cart![index]
-                                .package ==
-                            null
-                        ? widget.appRouterArgument.orderModel!.cart![index]
-                            .item!.image!
-                        : widget.appRouterArgument.orderModel!.cart![index]
-                            .package!.image!,
-                    name: widget.appRouterArgument.orderModel!.cart![index]
-                                .package ==
-                            null
+                    image: widget.arguments.order.cart![index].package == null
+                        ? widget.arguments.order.cart![index].item!.image!
+                        : widget.arguments.order.cart![index].package!.image!,
+                    name: widget.arguments.order.cart![index].package == null
                         ? isArabic
-                            ? widget.appRouterArgument.orderModel!.cart![index]
-                                .item!.nameAr!
-                            : widget.appRouterArgument.orderModel!.cart![index]
-                                .item!.nameEn!
+                            ? widget.arguments.order.cart![index].item!.nameAr!
+                            : widget.arguments.order.cart![index].item!.nameEn!
                         : isArabic
-                            ? widget.appRouterArgument.orderModel!.cart![index]
-                                .package!.nameAr!
-                            : widget.appRouterArgument.orderModel!.cart![index]
-                                .package!.nameEn!,
-                    count: widget
-                        .appRouterArgument.orderModel!.cart![index].count
-                        .toString(),
-                    price: widget
-                        .appRouterArgument.orderModel!.cart![index].price
-                        .toString(),
+                            ? widget
+                                .arguments.order.cart![index].package!.nameAr!
+                            : widget
+                                .arguments.order.cart![index].package!.nameEn!,
+                    count: widget.arguments.order.cart![index].count.toString(),
+                    price: widget.arguments.order.cart![index].price.toString(),
                     onDelete: () {},
                   );
                 },

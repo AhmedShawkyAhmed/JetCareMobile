@@ -14,7 +14,7 @@ CalendarModel _$CalendarModelFromJson(Map<String, dynamic> json) =>
       periods: (json['periods'] as List<dynamic>?)
           ?.map((e) => PeriodModel.fromJson(e as Map<String, dynamic>))
           .toList(),
-      areas: (json['areas'] as List<dynamic>?)
+      area: (json['area'] as List<dynamic>?)
           ?.map((e) => AreaModel.fromJson(e as Map<String, dynamic>))
           .toList(),
       month: (json['month'] as num?)?.toInt(),
@@ -40,6 +40,6 @@ Map<String, dynamic> _$CalendarModelToJson(CalendarModel instance) {
   writeNotNull('day_name', instance.dayName);
   writeNotNull('month_name', instance.monthName);
   writeNotNull('periods', instance.periods?.map((e) => e.toJson()).toList());
-  writeNotNull('areas', instance.areas?.map((e) => e.toJson()).toList());
+  writeNotNull('area', instance.area?.map((e) => e.toJson()).toList());
   return val;
 }

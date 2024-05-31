@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/features/language/cubit/language_cubit.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_text.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
 class LanguageAlert extends StatelessWidget {

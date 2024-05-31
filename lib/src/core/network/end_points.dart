@@ -67,9 +67,12 @@ class EndPoints {
   static const addCorporateOrder = "add_corporate_order";
   static const getMyCorporateOrders = "get_my_corporate_orders";
 
+  // ------------------- Orders
+  static const getMyOrders = "get_my_orders";
+  static const createOrder = "create_order";
+  static const deleteOrder = "delete_order";
+  static const cancelOrder = "cancel_order";
+
 // ---------------------
-  static const getMyOrders = "getMyOrders";
   static const updateOrderStatusUser = "update_order_status_user";
-  static const createOrder = "createOrder";
-  static const deleteOrder = "deleteOrder";
 }

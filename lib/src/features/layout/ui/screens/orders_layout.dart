@@ -3,9 +3,9 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
 import 'package:jetcare/src/features/corporate/ui/screens/corporate_orders_screen.dart';
-import 'package:jetcare/src/features/shared/ui/views/body_view.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_text.dart';
-import 'package:jetcare/src/presentation/screens/user/history_screen.dart';
+import 'package:jetcare/src/features/orders/ui/screens/orders_screen.dart';
+import 'package:jetcare/src/features/shared/views/body_view.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
 class OrdersLayout extends StatefulWidget {
@@ -16,7 +16,7 @@ class OrdersLayout extends StatefulWidget {
 }
 
 class _OrdersLayoutState extends State<OrdersLayout> {
-  bool myOrder = false;
+  bool myOrder = true;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,9 @@ class _OrdersLayoutState extends State<OrdersLayout> {
               ],
             ),
             Expanded(
-              child: myOrder ? const HistoryScreen() : const CorporateOrdersScreen(),
+              child: myOrder
+                  ? const OrdersScreen()
+                  : const CorporateOrdersScreen(),
             ),
           ],
         ),

@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
-import 'package:jetcare/src/core/di/service_locator.dart';
-import 'package:jetcare/src/features/profile/cubit/profile_cubit.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_app_button.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_text.dart';
-import 'package:jetcare/src/features/shared/ui/views/body_view.dart';
+import 'package:jetcare/src/core/routing/routes.dart';
+import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/features/shared/views/body_view.dart';
+import 'package:jetcare/src/features/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
-class DeletedAccountScreen extends StatelessWidget {
-  const DeletedAccountScreen({super.key});
+class DisableAccountScreen extends StatelessWidget {
+  const DisableAccountScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,13 +31,15 @@ class DeletedAccountScreen extends StatelessWidget {
               height: 5.h,
             ),
             DefaultText(
-              text: translate(AppStrings.deleted),
+              text: translate(AppStrings.stopped),
             ),
             const Spacer(),
             DefaultAppButton(
-              title: translate(AppStrings.restoreAccount),
+              title: translate(AppStrings.contactUs),
               onTap: () {
-                ProfileCubit(instance()).restoreAccount();
+                NavigationService.pushNamed(
+                  Routes.contact,
+                );
               },
             ),
           ],

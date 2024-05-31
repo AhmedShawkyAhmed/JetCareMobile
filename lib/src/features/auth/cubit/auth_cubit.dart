@@ -16,7 +16,7 @@ import 'package:jetcare/src/core/routing/arguments/register_arguments.dart';
 import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/globals.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/toast.dart';
+import 'package:jetcare/src/features/shared/widgets/toast.dart';
 import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/features/auth/data/repo/auth_repo.dart';
@@ -27,7 +27,7 @@ import 'package:jetcare/src/features/auth/data/requests/mail_request.dart';
 import 'package:jetcare/src/features/auth/data/requests/register_request.dart';
 import 'package:jetcare/src/features/profile/cubit/profile_cubit.dart';
 import 'package:jetcare/src/features/profile/data/models/user_model.dart';
-import 'package:jetcare/src/features/shared/ui/views/indicator_view.dart';
+import 'package:jetcare/src/features/shared/views/indicator_view.dart';
 
 part 'auth_state.dart';
 

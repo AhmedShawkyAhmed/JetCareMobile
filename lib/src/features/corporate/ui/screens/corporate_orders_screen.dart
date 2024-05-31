@@ -8,8 +8,8 @@ import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/features/corporate/cubit/corporate_cubit.dart';
 import 'package:jetcare/src/features/home/ui/views/card_view.dart';
-import 'package:jetcare/src/features/shared/ui/views/loading_view.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_text.dart';
+import 'package:jetcare/src/features/shared/views/loading_view.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
 class CorporateOrdersScreen extends StatefulWidget {
@@ -41,7 +41,6 @@ class _CorporateOrdersScreenState extends State<CorporateOrdersScreen> {
             },
           );
         }
-        printError(cubit.corporates.length);
         return cubit.corporates.isNotEmpty
             ? ListView.builder(
               padding: EdgeInsets.only(left: 3.w, right: 3.w),

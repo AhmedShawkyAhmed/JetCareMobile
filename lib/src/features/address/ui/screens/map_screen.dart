@@ -6,10 +6,9 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
-import 'package:jetcare/src/core/constants/constants_variables.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_app_button.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/toast.dart';
+import 'package:jetcare/src/features/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/features/shared/widgets/toast.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:sizer/sizer.dart';
 
@@ -21,6 +20,7 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
+  LatLng addressLocation = const LatLng(0.0, 0.0);
   TextEditingController locationController = TextEditingController();
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
@@ -164,7 +164,7 @@ class _MapScreenState extends State<MapScreen> {
                   DefaultToast.showMyToast(
                       translate(AppStrings.selectLocation));
                 } else {
-                  NavigationService.pop();
+                  NavigationService.pop(addressLocation);
                 }
               },
             ),

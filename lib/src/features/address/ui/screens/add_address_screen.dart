@@ -4,7 +4,6 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
-import 'package:jetcare/src/core/constants/constants_variables.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/routing/routes.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
@@ -13,11 +12,11 @@ import 'package:jetcare/src/features/address/cubit/address_cubit.dart';
 import 'package:jetcare/src/features/address/data/models/address_model.dart';
 import 'package:jetcare/src/features/address/data/models/area_model.dart';
 import 'package:jetcare/src/features/address/data/requests/address_request.dart';
-import 'package:jetcare/src/features/shared/ui/views/body_view.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_text.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_app_button.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_drop_down_menu.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_text_field.dart';
+import 'package:jetcare/src/features/shared/views/body_view.dart';
+import 'package:jetcare/src/features/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/features/shared/widgets/default_drop_down_menu.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text_field.dart';
 import 'package:sizer/sizer.dart';
 
 class AddAddressScreen extends StatefulWidget {
@@ -45,7 +44,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     phoneController.clear();
     addressController.clear();
     locationController.clear();
-    addressLocation = const LatLng(0.0, 0.0);
+    cubit.addressLocation = const LatLng(0.0, 0.0);
     super.dispose();
   }
 
@@ -140,15 +139,16 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                     width: 66.w,
                     controller: locationController,
                     enabled: false,
-                    hintText: addressLocation.latitude == 0.0
+                    hintText: cubit.addressLocation.latitude == 0.0
                         ? widget.address != null
                             ? "${widget.address!.latitude!}, ${widget.address!.longitude!}"
                             : translate(AppStrings.location)
-                        : "${addressLocation.latitude}, ${addressLocation.longitude}",
+                        : "${cubit.addressLocation.latitude}, ${cubit.addressLocation.longitude}",
                   ),
                   InkWell(
-                    onTap: () {
-                      NavigationService.pushNamed(Routes.map);
+                    onTap: () async {
+                      cubit.addressLocation =
+                          await NavigationService.pushNamed(Routes.map);
                     },
                     child: Container(
                       width: 10.w,
@@ -179,8 +179,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                           address: addressController.text,
                           stateId: stateId,
                           areaId: areaId,
-                          latitude: addressLocation.latitude.toString(),
-                          longitude: addressLocation.longitude.toString(),
+                          latitude: cubit.addressLocation.latitude.toString(),
+                          longitude: cubit.addressLocation.longitude.toString(),
                         ),
                       );
                     },
@@ -195,8 +195,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                           address: addressController.text,
                           stateId: stateId,
                           areaId: areaId,
-                          latitude: addressLocation.latitude.toString(),
-                          longitude: addressLocation.longitude.toString(),
+                          latitude: cubit.addressLocation.latitude.toString(),
+                          longitude: cubit.addressLocation.longitude.toString(),
                         ),
                       );
                     },

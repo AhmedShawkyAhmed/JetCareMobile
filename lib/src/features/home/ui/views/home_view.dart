@@ -10,7 +10,7 @@ import 'package:jetcare/src/features/home/cubit/home_cubit.dart';
 import 'package:jetcare/src/features/home/data/models/item_model.dart';
 import 'package:jetcare/src/features/home/data/models/package_model.dart';
 import 'package:jetcare/src/features/home/ui/views/card_view.dart';
-import 'package:jetcare/src/features/shared/ui/views/loading_view.dart';
+import 'package:jetcare/src/features/shared/views/loading_view.dart';
 import 'package:sizer/sizer.dart';
 
 class HomeView extends StatelessWidget {

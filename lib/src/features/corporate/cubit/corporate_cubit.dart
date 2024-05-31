@@ -10,8 +10,8 @@ import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/features/corporate/data/models/corporate_model.dart';
 import 'package:jetcare/src/features/corporate/data/repo/corporate_repo.dart';
 import 'package:jetcare/src/features/corporate/data/requests/corporate_request.dart';
-import 'package:jetcare/src/features/shared/ui/views/indicator_view.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/toast.dart';
+import 'package:jetcare/src/features/shared/views/indicator_view.dart';
+import 'package:jetcare/src/features/shared/widgets/toast.dart';
 
 part 'corporate_state.dart';
 

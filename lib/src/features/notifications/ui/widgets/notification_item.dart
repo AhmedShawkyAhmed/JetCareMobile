@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jetcare/src/core/constants/app_colors.dart';
-import 'package:jetcare/src/features/shared/ui/widgets/default_text.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text.dart';
 import 'package:sizer/sizer.dart';
 
 class NotificationItem extends StatefulWidget {
@@ -8,10 +8,10 @@ class NotificationItem extends StatefulWidget {
   final String message;
   final String createdAt;
   final VoidCallback onTap;
-  final int isRead;
+  final bool isRead;
   final int id;
 
-   const NotificationItem({
+  const NotificationItem({
     required this.title,
     required this.message,
     required this.createdAt,
@@ -36,9 +36,13 @@ class _NotificationItemState extends State<NotificationItem> {
         margin: EdgeInsets.only(right: 2.h, left: 2.h, bottom: 1.h),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: AppColors.darkGrey.withOpacity(0.5),
+          color: widget.isRead == false
+              ? AppColors.primaryDark.withOpacity(0.3)
+              : AppColors.darkGrey.withOpacity(0.5),
           border: Border.all(
-            color: widget.isRead == 0?AppColors.primary:AppColors.shade.withOpacity(0.2),
+            color: widget.isRead == false
+                ? AppColors.primary
+                : AppColors.shade.withOpacity(0.2),
           ),
         ),
         child: Row(
@@ -71,8 +75,7 @@ class _NotificationItemState extends State<NotificationItem> {
                     height: 0.6.h,
                   ),
                   DefaultText(
-                    text:
-                        widget.message,
+                    text: widget.message,
                     maxLines: 2,
                     fontSize: 9.sp,
                   ),

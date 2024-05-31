@@ -15,14 +15,14 @@ class CalendarModel {
   String? dayName;
   String? monthName;
   List<PeriodModel>? periods;
-  List<AreaModel>? areas;
+  List<AreaModel>? area;
 
   CalendarModel({
     this.id,
     this.day,
     this.date,
     this.periods,
-    this.areas,
+    this.area,
     this.month,
     this.year,
     this.dayName,
