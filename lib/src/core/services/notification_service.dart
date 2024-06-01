@@ -1,10 +1,18 @@
+import 'dart:io';
 import 'dart:math';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
+import 'package:jetcare/src/core/resources/firebase_options.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+import 'cache_service.dart';
 
 class NotificationService {
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
   static final NotificationService _notificationService =
@@ -16,49 +24,112 @@ class NotificationService {
 
   NotificationService._internal();
 
-  Future<void> init() async {
+  static Future<void> init() async {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    await Permission.notification.isDenied.then((value) {
+      if (value) {
+        Permission.notification.request();
+      }
+    });
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings("@mipmap/launcher_icon");
+        AndroidInitializationSettings("@mipmap/ic_launcher");
 
     DarwinInitializationSettings initializationSettingsIOS =
         DarwinInitializationSettings(
             requestSoundPermission: true,
             requestBadgePermission: true,
             requestAlertPermission: true,
-            onDidReceiveLocalNotification: (id, title, body, payload) {
+            onDidReceiveLocalNotification: (
+              id,
+              title,
+              body,
+              payload,
+            ) {
               selectNotification(payload);
             });
 
     InitializationSettings initializationSettings = InitializationSettings(
-        android: initializationSettingsAndroid,
-        iOS: initializationSettingsIOS,
-        macOS: null);
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
+      macOS: null,
+    );
 
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
-        onDidReceiveBackgroundNotificationResponse:
-            onDidReceiveNotificationResponse);
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
+      onDidReceiveBackgroundNotificationResponse:
+          onDidReceiveNotificationResponse,
+    );
     flutterLocalNotificationsPlugin.cancelAll();
+
+    FirebaseMessaging.onBackgroundMessage(firebaseBackgroundHandler);
+    String? fcmToken = await FirebaseMessaging.instance.getToken();
+    CacheService.add(key: CacheKeys.fcm, value: fcmToken);
+    printLog("FCM ${fcmToken.toString()}");
+    await onInitState();
+  }
+
+  static Future<void> firebaseBackgroundHandler(RemoteMessage message) async {
+    printError('Notification ${message.data}');
+    if (Platform.isAndroid) {
+      NotificationService.showNotification(
+        id: int.parse(message.data['id'] ?? "0"),
+        showProgress: false,
+        title: message.data['title'],
+        body: message.data['body'],
+        autoCancel: true,
+        importance: Importance.max,
+        priority: Priority.high,
+        ongoing: false,
+        badgeCount: 0,
+      );
+    }
+  }
+
+  static Future<void> onInitState() async {
+    FirebaseMessaging.instance
+        .getInitialMessage()
+        .then((RemoteMessage? message) {
+      if (message != null) {
+        // Handle initial message here
+      }
+    });
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      printResponse('Notification ${message.data}');
+      if (Platform.isAndroid) {
+        showNotification(
+          id: Random().nextInt(100000),
+          showProgress: false,
+          title: message.data['title'],
+          body: message.data['body'],
+          autoCancel: true,
+          importance: Importance.defaultImportance,
+          priority: Priority.defaultPriority,
+          ongoing: false,
+          badgeCount: 0,
+        );
+      }
+    });
   }
 
   static Future onDidReceiveNotificationResponse(
       NotificationResponse response) async {
     var payload = response.payload;
-    printLog(payload);
-    //Handle notification tapped logic here
-    // if(payload != null) {
-    //   NotificationsController.openNotification(NotificationsModel.fromJson(json.decode(payload)));
-    // }
+    printResponse("payload $payload");
   }
 
-  Future selectNotification(String? payload) async {
-    //Handle notification tapped logic here
-    // if(payload != null) {
-    //   NotificationsController.openNotification(NotificationsModel.fromJson(json.decode(payload)));
-    // }
-  }
+  static Future selectNotification(String? payload) async {}
 
-  Future<void> showNotification({
+  static Future<void> showNotification({
     int pp = 0,
     int max = 0,
     int? id,
@@ -86,8 +157,7 @@ class NotificationService {
       progress: pp,
       maxProgress: max,
       onlyAlertOnce: true,
-      sound: const RawResourceAndroidNotificationSound("action"),
-      icon: "@mipmap/launcher_icon",
+      icon: "@mipmap/ic_launcher",
       number: badgeCount,
     );
     DarwinNotificationDetails iosPlatformChannelSpecifics =
@@ -97,13 +167,14 @@ class NotificationService {
     );
 
     NotificationDetails platformChannelSpecifics = NotificationDetails(
-        android: androidPlatformChannelSpecifics,
-        iOS: iosPlatformChannelSpecifics);
+      android: androidPlatformChannelSpecifics,
+      iOS: iosPlatformChannelSpecifics,
+    );
 
     await flutterLocalNotificationsPlugin.show(
       id ?? 12345,
-      title ?? "طلبات الاعلان",
-      body ?? "جارى رفع مرفقات طلبكم....",
+      title ?? "الطلب",
+      body ?? "جارى رفع المرفقات",
       platformChannelSpecifics,
       payload: payload,
     );

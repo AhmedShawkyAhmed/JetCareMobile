@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:jetcare/main.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
 import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
@@ -193,7 +192,7 @@ class AuthCubit extends Cubit<AuthState> {
       success: (NetworkBaseModel response) async {
         emit(LoginSuccess());
         CacheService.add(key: CacheKeys.token, value: response.data!.token);
-        if (fcmToken != null) {
+        if (CacheService.get(key: CacheKeys.fcm) != null) {
           await updateFCM(id: response.data!.id!);
         }
         await ProfileCubit(instance()).getProfile();
@@ -228,7 +227,7 @@ class AuthCubit extends Cubit<AuthState> {
       success: (NetworkBaseModel response) async {
         emit(RegisterSuccess());
         CacheService.add(key: CacheKeys.token, value: response.data!.token);
-        if (fcmToken != null) {
+        if (CacheService.get(key: CacheKeys.fcm) != null) {
           await updateFCM(id: response.data!.id!);
         }
         await ProfileCubit(instance()).getProfile(isNewAccount: true);
@@ -320,7 +319,7 @@ class AuthCubit extends Cubit<AuthState> {
     var response = await repo.fcm(
       request: FCMRequest(
         id: id,
-        fcm: fcmToken!,
+        fcm: CacheService.get(key: CacheKeys.fcm),
       ),
     );
     response.when(

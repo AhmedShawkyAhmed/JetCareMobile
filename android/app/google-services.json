@@ -29,6 +29,14 @@
             {
               "client_id": "873102526889-flrdmqd95sb5r5fe3tqqnc8vlk09vkss.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "873102526889-c2uaueul1660p29qsese64k1j264hp09.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.jetcareeg.jetcare",
+                "app_store_id": "6446169634"
+              }
             }
           ]
         }

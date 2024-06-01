@@ -23,7 +23,7 @@ class NotificationCubit extends Cubit<NotificationState> {
     var response = await repo.saveNotification(request: request);
     response.when(
       success: (NetworkBaseModel response) async {
-        NotificationService().showNotification(
+        NotificationService.showNotification(
           id: 12,
           title: request.title,
           body: request.message,

@@ -11,6 +11,7 @@ class UserModel {
   num? rate;
   String? role;
   String? token;
+  String? fcm;
   bool? isActive;
   bool? isArchived;
 
@@ -22,6 +23,7 @@ class UserModel {
     this.rate,
     this.role,
     this.token,
+    this.fcm,
     this.isActive,
     this.isArchived,
   });

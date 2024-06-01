@@ -65,7 +65,7 @@ class AppRoutes {
   Route? onGenerateRoute(RouteSettings settings) {
     Routes? navigatedRoute =
         Routes.values.firstWhereOrNull((route) => route.path == settings.name);
-    printSuccess(navigatedRoute);
+    printSuccess("Route => $navigatedRoute");
     if (settings.name == '/') {
       navigatedRoute = Routes.splash;
     }

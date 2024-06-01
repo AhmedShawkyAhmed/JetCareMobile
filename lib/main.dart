@@ -15,15 +15,13 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 late LocalizationDelegate delegate;
 late PackageInfo packageInfo;
-String? fcmToken;
-String? token;
 
 void main() async {
   customError();
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  await NotificationService().init();
   await CacheService.init();
+  await Firebase.initializeApp();
+  await NotificationService.init();
   Bloc.observer = MyBlocObserver();
   packageInfo = await PackageInfo.fromPlatform();
 
