@@ -1,6 +1,6 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/resources/app_colors.dart';
 import 'package:sizer/sizer.dart';
 
 class DefaultDropdown<T> extends StatelessWidget {

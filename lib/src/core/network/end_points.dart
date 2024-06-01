@@ -72,7 +72,4 @@ class EndPoints {
   static const createOrder = "create_order";
   static const deleteOrder = "delete_order";
   static const cancelOrder = "cancel_order";
-
-// ---------------------
-  static const updateOrderStatusUser = "update_order_status_user";
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/resources/app_colors.dart';
 import 'package:jetcare/src/features/notifications/cubit/notification_cubit.dart';
 import 'package:jetcare/src/features/notifications/ui/widgets/notification_item.dart';
 import 'package:jetcare/src/features/shared/views/body_view.dart';

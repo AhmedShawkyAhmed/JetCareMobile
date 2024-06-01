@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
+import 'package:jetcare/src/core/constants/cache_keys.dart';
 import 'package:jetcare/src/core/services/cache_service.dart';
 
 class DefaultHeadersInterceptor extends Interceptor {

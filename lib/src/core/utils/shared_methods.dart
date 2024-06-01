@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:jetcare/src/core/constants/shared_preference_keys.dart';
+import 'package:jetcare/src/core/constants/cache_keys.dart';
 import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 

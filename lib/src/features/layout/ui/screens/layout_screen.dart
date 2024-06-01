@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/resources/app_colors.dart';
 import 'package:jetcare/src/features/layout/cubit/layout_cubit.dart';
 
 class LayoutScreen extends StatefulWidget {

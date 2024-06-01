@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:jetcare/src/core/constants/app_colors.dart';
+import 'package:jetcare/src/core/resources/app_colors.dart';
 import 'package:jetcare/src/core/routing/arguments/home_arguments.dart';
 import 'package:jetcare/src/core/routing/routes.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';

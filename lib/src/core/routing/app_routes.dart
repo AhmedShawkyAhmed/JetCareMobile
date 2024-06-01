@@ -71,18 +71,18 @@ class AppRoutes {
     }
     switch (navigatedRoute) {
       case Routes.splash:
-        return CustomPageRouteTransiton.fadeOut(
+        return CustomPageRouteTransition.fadeOut(
           page: BlocProvider(
             create: (context) => SplashCubit()..init(),
             child: const SplashScreen(),
           ),
         );
       case Routes.welcome:
-        return CustomPageRouteTransiton.fadeOut(
+        return CustomPageRouteTransition.fadeOut(
           page: const WelcomeScreen(),
         );
       case Routes.login:
-        return CustomPageRouteTransiton.fadeOut(
+        return CustomPageRouteTransition.fadeOut(
           page: BlocProvider(
             create: (context) => AuthCubit(instance()),
             child: const LoginScreen(),
@@ -90,31 +90,31 @@ class AppRoutes {
         );
       case Routes.register:
         final RegisterArguments arg = settings.arguments as RegisterArguments;
-        return CustomPageRouteTransiton.fadeOut(
+        return CustomPageRouteTransition.fadeOut(
           page: BlocProvider(
             create: (context) => AuthCubit(instance()),
             child: RegisterScreen(arguments: arg),
           ),
         );
       case Routes.disable:
-        return CustomPageRouteTransiton.fadeOut(
+        return CustomPageRouteTransition.fadeOut(
           page: const DisableAccountScreen(),
         );
       case Routes.deleted:
-        return CustomPageRouteTransiton.fadeOut(
+        return CustomPageRouteTransition.fadeOut(
           page: const DeletedAccountScreen(),
         );
       case Routes.resetPassword:
         final PasswordArguments arguments =
             settings.arguments as PasswordArguments;
-        return CustomPageRouteTransiton.fadeOut(
+        return CustomPageRouteTransition.fadeOut(
           page: BlocProvider(
             create: (context) => AuthCubit(instance()),
             child: ResetPassword(arguments: arguments),
           ),
         );
       case Routes.profile:
-        return CustomPageRouteTransiton.fadeOut(
+        return CustomPageRouteTransition.fadeOut(
           page: BlocProvider(
             create: (context) => ProfileCubit(instance())..initProfile(),
             child: const ProfileScreen(),
@@ -122,23 +122,23 @@ class AppRoutes {
         );
       case Routes.otp:
         final OtpArguments arguments = settings.arguments as OtpArguments;
-        return CustomPageRouteTransiton.fadeOut(
+        return CustomPageRouteTransition.fadeOut(
           page: OTPScreen(arguments: arguments),
         );
       case Routes.confirmOrder:
         final OrderArguments arguments = settings.arguments as OrderArguments;
-        return CustomPageRouteTransiton.fadeOut(
+        return CustomPageRouteTransition.fadeOut(
           page: ConfirmOrderScreen(
             arguments: arguments,
           ),
         );
       case Routes.taskDetails:
         final TaskArguments arguments = settings.arguments as TaskArguments;
-        return CustomPageRouteTransiton.fadeOut(
+        return CustomPageRouteTransition.fadeOut(
           page: TaskDetailsScreen(arguments: arguments),
         );
       case Routes.verify:
-        return CustomPageRouteTransiton.fadeOut(
+        return CustomPageRouteTransition.fadeOut(
           page: BlocProvider(
             create: (context) => AuthCubit(instance()),
             child: const VerifyEmail(),
@@ -146,7 +146,7 @@ class AppRoutes {
         );
       case Routes.layout:
         final int? current = settings.arguments as int?;
-        return CustomPageRouteTransiton.fadeOut(
+        return CustomPageRouteTransition.fadeOut(
           page: MultiBlocProvider(
             providers: [
               BlocProvider(
@@ -170,7 +170,7 @@ class AppRoutes {
         );
       case Routes.crewLayout:
         final int? current = settings.arguments as int?;
-        return CustomPageRouteTransiton.fadeOut(
+        return CustomPageRouteTransition.fadeOut(
           page: MultiBlocProvider(
             providers: [
               BlocProvider(
@@ -185,7 +185,7 @@ class AppRoutes {
         );
       case Routes.corporateItems:
         final HomeArguments arguments = settings.arguments as HomeArguments;
-        return CustomPageRouteTransiton.fadeOut(
+        return CustomPageRouteTransition.fadeOut(
           page: CorporateScreen(arguments: arguments),
         );
       // case Routes.orderDetails:
@@ -196,42 +196,42 @@ class AppRoutes {
       //   );
       case Routes.serviceItems:
         final HomeArguments arguments = settings.arguments as HomeArguments;
-        return CustomPageRouteTransiton.fadeOut(
+        return CustomPageRouteTransition.fadeOut(
           page: ServiceScreen(arguments: arguments),
         );
       case Routes.categoryItems:
         final PackageModel category = settings.arguments as PackageModel;
-        return CustomPageRouteTransiton.fadeOut(
+        return CustomPageRouteTransition.fadeOut(
           page: CategoryScreen(category: category),
         );
       case Routes.addedToCart:
-        return CustomPageRouteTransiton.fadeOut(
+        return CustomPageRouteTransition.fadeOut(
           page: const AddedToCartScreen(),
         );
       case Routes.corporateDetails:
         final CorporateModel corporate = settings.arguments as CorporateModel;
-        return CustomPageRouteTransiton.fadeOut(
+        return CustomPageRouteTransition.fadeOut(
           page: CorporateDetailsScreen(corporate: corporate),
         );
       case Routes.home:
-        return CustomPageRouteTransiton.fadeOut(
+        return CustomPageRouteTransition.fadeOut(
           page: const HomeScreen(),
         );
       case Routes.packageItems:
         final PackageDetailsModel packageDetails =
             settings.arguments as PackageDetailsModel;
-        return CustomPageRouteTransiton.fadeOut(
+        return CustomPageRouteTransition.fadeOut(
           page: PackageScreen(packageDetails: packageDetails),
         );
       case Routes.contact:
-        return CustomPageRouteTransiton.fadeOut(
+        return CustomPageRouteTransition.fadeOut(
           page: BlocProvider(
             create: (context) => SupportCubit(instance())..getContact(),
             child: const ContactScreen(),
           ),
         );
       case Routes.address:
-        return CustomPageRouteTransiton.fadeOut(
+        return CustomPageRouteTransition.fadeOut(
           page: BlocProvider(
             create: (context) => AddressCubit(instance())..getMyAddresses(),
             child: const AddressScreen(),
@@ -239,18 +239,18 @@ class AppRoutes {
         );
       case Routes.addAddress:
         final AddressModel? address = settings.arguments as AddressModel?;
-        return CustomPageRouteTransiton.fadeOut(
+        return CustomPageRouteTransition.fadeOut(
           page: BlocProvider(
             create: (context) => AddressCubit(instance())..getStates(),
             child: AddAddressScreen(address: address),
           ),
         );
       case Routes.map:
-        return CustomPageRouteTransiton.fadeOut(
+        return CustomPageRouteTransition.fadeOut(
           page: const MapScreen(),
         );
       case Routes.notification:
-        return CustomPageRouteTransiton.fadeOut(
+        return CustomPageRouteTransition.fadeOut(
           page: BlocProvider(
             create: (context) =>
                 NotificationCubit(instance())..getNotifications(),
@@ -259,12 +259,12 @@ class AppRoutes {
         );
       case Routes.success:
         final SuccessType type = settings.arguments as SuccessType;
-        return CustomPageRouteTransiton.fadeOut(
+        return CustomPageRouteTransition.fadeOut(
           page: SuccessScreen(type: type),
         );
       case Routes.info:
         final InfoType type = settings.arguments as InfoType;
-        return CustomPageRouteTransiton.fadeOut(
+        return CustomPageRouteTransition.fadeOut(
           page: BlocProvider(
             create: (context) => SupportCubit(instance()),
             child: InfoScreen(type: type),
@@ -273,7 +273,7 @@ class AppRoutes {
       case Routes.appointment:
         final AppointmentArguments arguments =
             settings.arguments as AppointmentArguments;
-        return CustomPageRouteTransiton.fadeOut(
+        return CustomPageRouteTransition.fadeOut(
           page: MultiBlocProvider(
             providers: [
               BlocProvider(
