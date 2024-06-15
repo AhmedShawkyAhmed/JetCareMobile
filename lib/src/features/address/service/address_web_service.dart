@@ -22,9 +22,9 @@ abstract class AddressWebService {
     @Body() AddressRequest? request,
   });
 
-  @POST(EndPoints.deleteAddress)
+  @DELETE(EndPoints.deleteAddress)
   Future<NetworkBaseModel> deleteAddress({
-    @Part(name: "id") int? id,
+    @Query("id") int? id,
   });
 
   @GET(EndPoints.getMyAddresses)

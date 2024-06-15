@@ -59,13 +59,8 @@ class _CrewWebService implements CrewWebService {
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = FormData();
-    if (orderId != null) {
-      _data.fields.add(MapEntry(
-        'order_id',
-        orderId.toString(),
-      ));
-    }
+    final _data = {'order_id': orderId};
+    _data.removeWhere((k, v) => v == null);
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkBaseModel<dynamic>>(Options(
       method: 'POST',

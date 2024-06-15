@@ -19,7 +19,7 @@ abstract class ProfileWebService {
   @GET(EndPoints.profile)
   Future<NetworkBaseModel<UserModel>> profile();
 
-  @GET(EndPoints.deleteAccount)
+  @DELETE(EndPoints.deleteAccount)
   Future<NetworkBaseModel> deleteAccount();
 
   @GET(EndPoints.restoreAccount)

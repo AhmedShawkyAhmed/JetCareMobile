@@ -97,19 +97,11 @@ class _OrdersWebService implements OrdersWebService {
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = FormData();
-    if (orderId != null) {
-      _data.fields.add(MapEntry(
-        'order_id',
-        orderId.toString(),
-      ));
-    }
-    if (reason != null) {
-      _data.fields.add(MapEntry(
-        'reason',
-        reason,
-      ));
-    }
+    final _data = {
+      'order_id': orderId,
+      'reason': reason,
+    };
+    _data.removeWhere((k, v) => v == null);
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkBaseModel<dynamic>>(Options(
       method: 'POST',
@@ -137,19 +129,13 @@ class _OrdersWebService implements OrdersWebService {
   @override
   Future<NetworkBaseModel<dynamic>> deleteOrder({int? orderId}) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'order_id': orderId};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = FormData();
-    if (orderId != null) {
-      _data.fields.add(MapEntry(
-        'order_id',
-        orderId.toString(),
-      ));
-    }
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkBaseModel<dynamic>>(Options(
-      method: 'POST',
+      method: 'DELETE',
       headers: _headers,
       extra: _extra,
     )

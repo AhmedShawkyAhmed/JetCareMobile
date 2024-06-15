@@ -16,9 +16,9 @@ abstract class CartWebService {
     @Body() CartRequest? request,
   });
 
-  @POST(EndPoints.deleteFromCart)
+  @DELETE(EndPoints.deleteFromCart)
   Future<NetworkBaseModel> deleteFromCart({
-    @Part(name: "id") int? id,
+    @Query("id") int? id,
   });
 
   @GET(EndPoints.getMyCart)

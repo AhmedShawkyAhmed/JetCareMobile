@@ -23,12 +23,12 @@ abstract class OrdersWebService {
 
   @POST(EndPoints.cancelOrder)
   Future<NetworkBaseModel> cancelOrder({
-    @Part(name: "order_id") int? orderId,
-    @Part(name: "reason") String? reason,
+    @Field("order_id") int? orderId,
+    @Field("reason") String? reason,
   });
 
-  @POST(EndPoints.deleteOrder)
+  @DELETE(EndPoints.deleteOrder)
   Future<NetworkBaseModel> deleteOrder({
-    @Part(name: "order_id") int? orderId,
+    @Query("order_id") int? orderId,
   });
 }

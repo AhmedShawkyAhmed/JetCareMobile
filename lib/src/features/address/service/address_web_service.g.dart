@@ -89,19 +89,13 @@ class _AddressWebService implements AddressWebService {
   @override
   Future<NetworkBaseModel<dynamic>> deleteAddress({int? id}) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'id': id};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = FormData();
-    if (id != null) {
-      _data.fields.add(MapEntry(
-        'id',
-        id.toString(),
-      ));
-    }
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<NetworkBaseModel<dynamic>>(Options(
-      method: 'POST',
+      method: 'DELETE',
       headers: _headers,
       extra: _extra,
     )

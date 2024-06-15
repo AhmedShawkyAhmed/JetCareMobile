@@ -18,7 +18,7 @@ abstract class CrewWebService {
 
   @POST(EndPoints.rejectOrder)
   Future<NetworkBaseModel> rejectOrder({
-    @Part(name: "order_id") int? orderId,
+    @Field("order_id") int? orderId,
   });
 
   @GET(EndPoints.getMyTasks)
