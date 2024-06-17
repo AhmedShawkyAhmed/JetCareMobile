@@ -5,7 +5,6 @@ class EndPoints {
   static const baseUrl = "https://api.jetcareeg.net/api/";
   static const imageDomain = "https://api.jetcareeg.net/public/images/";
 
-// --------------------- new api
   // ------------------- Auth
   static const verifyEmail = "verify_email";
   static const validateCode = "validate_code";
