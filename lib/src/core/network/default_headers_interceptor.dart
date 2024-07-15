@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:jetcare/src/core/constants/cache_keys.dart';
 import 'package:jetcare/src/core/services/cache_service.dart';
+import 'package:jetcare/src/core/shared/globals.dart';
 
 class DefaultHeadersInterceptor extends Interceptor {
   final Dio dio;
@@ -15,7 +16,7 @@ class DefaultHeadersInterceptor extends Interceptor {
     options.headers.addAll({
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${CacheService.get(key: CacheKeys.token)}",
+      'Authorization': "Bearer ${Globals.userData.token ?? CacheService.get(key: CacheKeys.token)}",
     });
     return handler.next(options);
   }
