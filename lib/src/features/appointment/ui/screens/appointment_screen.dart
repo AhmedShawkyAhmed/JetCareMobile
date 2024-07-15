@@ -4,12 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
-import 'package:jetcare/src/core/constants/cache_keys.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/resources/app_colors.dart';
 import 'package:jetcare/src/core/routing/arguments/appointment_arguments.dart';
 import 'package:jetcare/src/core/routing/routes.dart';
-import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/globals.dart';
 import 'package:jetcare/src/features/address/cubit/address_cubit.dart';
@@ -89,7 +87,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
               SizedBox(
                 height: 2.h,
               ),
-              if (CacheService.get(key: CacheKeys.token) != null) ...[
+              if (Globals.userData.token != null) ...[
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 5.w),
                   child: DefaultText(

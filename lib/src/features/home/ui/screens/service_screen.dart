@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:jetcare/src/core/resources/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
-import 'package:jetcare/src/core/constants/cache_keys.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
+import 'package:jetcare/src/core/resources/app_colors.dart';
 import 'package:jetcare/src/core/routing/arguments/home_arguments.dart';
 import 'package:jetcare/src/core/routing/routes.dart';
-import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/globals.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
@@ -41,6 +39,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
     quantityController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -145,7 +144,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         ],
                       ),
                     ),
-                    CacheService.get(key: CacheKeys.token) == null
+                    Globals.userData.token == null
                         ? DefaultAppButton(
                             title: translate(AppStrings.loginFirst),
                             onTap: () {

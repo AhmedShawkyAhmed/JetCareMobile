@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:jetcare/src/core/constants/cache_keys.dart';
-import 'package:jetcare/src/core/services/cache_service.dart';
+import 'package:jetcare/src/core/caching/database_helper.dart';
+import 'package:jetcare/src/core/caching/database_keys.dart';
 import 'package:jetcare/src/core/shared/globals.dart';
 
 class DefaultHeadersInterceptor extends Interceptor {
@@ -16,7 +16,8 @@ class DefaultHeadersInterceptor extends Interceptor {
     options.headers.addAll({
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      'Authorization': "Bearer ${Globals.userData.token ?? CacheService.get(key: CacheKeys.token)}",
+      'Authorization':
+          "Bearer ${Globals.userData.token ?? DatabaseHelper.getItem(boxName: DatabaseBox.appBox, key: DatabaseKey.token)}",
     });
     return handler.next(options);
   }

@@ -4,12 +4,11 @@ import 'dart:math';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:jetcare/src/core/constants/cache_keys.dart';
+import 'package:jetcare/src/core/caching/database_helper.dart';
+import 'package:jetcare/src/core/caching/database_keys.dart';
 import 'package:jetcare/src/core/resources/firebase_options.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:permission_handler/permission_handler.dart';
-
-import 'cache_service.dart';
 
 class NotificationService {
   static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -72,7 +71,11 @@ class NotificationService {
 
     FirebaseMessaging.onBackgroundMessage(firebaseBackgroundHandler);
     String? fcmToken = await FirebaseMessaging.instance.getToken();
-    CacheService.add(key: CacheKeys.fcm, value: fcmToken);
+    DatabaseHelper.putItem(
+      boxName: DatabaseBox.appBox,
+      key: DatabaseKey.fcmToken,
+      item: fcmToken,
+    );
     printLog("FCM ${fcmToken.toString()}");
     await onInitState();
   }

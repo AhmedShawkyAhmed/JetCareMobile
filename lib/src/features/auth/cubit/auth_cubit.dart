@@ -3,19 +3,18 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:jetcare/src/core/caching/database_helper.dart';
+import 'package:jetcare/src/core/caching/database_keys.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
-import 'package:jetcare/src/core/constants/cache_keys.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/network/models/network_base_model.dart';
 import 'package:jetcare/src/core/network/models/network_exceptions.dart';
-import 'package:jetcare/src/core/routing/routes.dart';
 import 'package:jetcare/src/core/routing/arguments/otp_arguments.dart';
 import 'package:jetcare/src/core/routing/arguments/password_arguments.dart';
 import 'package:jetcare/src/core/routing/arguments/register_arguments.dart';
-import 'package:jetcare/src/core/services/cache_service.dart';
+import 'package:jetcare/src/core/routing/routes.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/globals.dart';
-import 'package:jetcare/src/features/shared/widgets/toast.dart';
 import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/features/auth/data/repo/auth_repo.dart';
@@ -27,6 +26,7 @@ import 'package:jetcare/src/features/auth/data/requests/register_request.dart';
 import 'package:jetcare/src/features/profile/cubit/profile_cubit.dart';
 import 'package:jetcare/src/features/profile/data/models/user_model.dart';
 import 'package:jetcare/src/features/shared/views/indicator_view.dart';
+import 'package:jetcare/src/features/shared/widgets/toast.dart';
 
 part 'auth_state.dart';
 
@@ -190,9 +190,15 @@ class AuthCubit extends Cubit<AuthState> {
     );
     response.when(
       success: (NetworkBaseModel response) async {
-        await CacheService.add(key: CacheKeys.token, value: response.data!.token);
+        await DatabaseHelper.putItem(
+          boxName: DatabaseBox.appBox,
+          key: DatabaseKey.token,
+          item: response.data!.token,
+        );
         Globals.userData.token = response.data!.token;
-        if (await CacheService.get(key: CacheKeys.fcm) != null) {
+        if (await DatabaseHelper.getItem(
+                boxName: DatabaseBox.appBox, key: DatabaseKey.fcmToken) !=
+            null) {
           await updateFCM(id: response.data!.id!);
         }
         await ProfileCubit(instance()).getProfile();
@@ -227,8 +233,16 @@ class AuthCubit extends Cubit<AuthState> {
     response.when(
       success: (NetworkBaseModel response) async {
         emit(RegisterSuccess());
-        CacheService.add(key: CacheKeys.token, value: response.data!.token);
-        if (CacheService.get(key: CacheKeys.fcm) != null) {
+        await DatabaseHelper.putItem(
+          boxName: DatabaseBox.appBox,
+          key: DatabaseKey.token,
+          item: response.data!.token,
+        );
+        if (await DatabaseHelper.getItem(
+              boxName: DatabaseBox.appBox,
+              key: DatabaseKey.fcmToken,
+            ) !=
+            null) {
           await updateFCM(id: response.data!.id!);
         }
         await ProfileCubit(instance()).getProfile(isNewAccount: true);
@@ -320,7 +334,10 @@ class AuthCubit extends Cubit<AuthState> {
     var response = await repo.fcm(
       request: FCMRequest(
         id: id,
-        fcm: CacheService.get(key: CacheKeys.fcm),
+        fcm: await DatabaseHelper.getItem(
+          boxName: DatabaseBox.appBox,
+          key: DatabaseKey.fcmToken,
+        ),
       ),
     );
     response.when(
@@ -340,9 +357,13 @@ class AuthCubit extends Cubit<AuthState> {
     var response = await repo.logout();
     response.when(
       success: (NetworkBaseModel response) async {
-        CacheService.clear();
+        DatabaseHelper.clearDatabase();
         Globals.userData = UserModel();
-        CacheService.add(key: CacheKeys.language, value: Languages.ar.name);
+        DatabaseHelper.putItem(
+          boxName: DatabaseBox.appBox,
+          key: DatabaseKey.language,
+          item: Languages.ar.name,
+        );
         NavigationService.pushNamedAndRemoveUntil(
             Routes.login, (route) => false);
         emit(LogoutSuccess());

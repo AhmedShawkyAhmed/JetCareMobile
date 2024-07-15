@@ -1,24 +1,24 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:jetcare/src/core/resources/app_colors.dart';
+import 'package:jetcare/src/core/caching/database_helper.dart';
+import 'package:jetcare/src/core/caching/database_keys.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
-import 'package:jetcare/src/core/constants/cache_keys.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/network/models/network_base_model.dart';
 import 'package:jetcare/src/core/network/models/network_exceptions.dart';
+import 'package:jetcare/src/core/resources/app_colors.dart';
 import 'package:jetcare/src/core/routing/routes.dart';
-import 'package:jetcare/src/core/services/cache_service.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/globals.dart';
-import 'package:jetcare/src/features/auth/cubit/auth_cubit.dart';
-import 'package:jetcare/src/features/shared/widgets/default_text.dart';
-import 'package:jetcare/src/features/shared/widgets/toast.dart';
 import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
+import 'package:jetcare/src/features/auth/cubit/auth_cubit.dart';
 import 'package:jetcare/src/features/profile/data/repo/profile_repo.dart';
 import 'package:jetcare/src/features/profile/data/requests/update_profile_request.dart';
 import 'package:jetcare/src/features/shared/views/indicator_view.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text.dart';
+import 'package:jetcare/src/features/shared/widgets/toast.dart';
 import 'package:sizer/sizer.dart';
 
 part 'profile_state.dart';
@@ -109,13 +109,15 @@ class ProfileCubit extends Cubit<ProfileState> {
             (route) => false,
           );
         } else {
-          if (CacheService.get(key: CacheKeys.fcm) != Globals.userData.fcm) {
+          if (DatabaseHelper.getItem(
+                  boxName: DatabaseBox.appBox, key: DatabaseKey.fcmToken) !=
+              Globals.userData.fcm) {
             await AuthCubit(instance()).updateFCM(id: response.data!.id!);
           }
           if (Globals.userData.role == Roles.client.name) {
-            if(isNewAccount){
+            if (isNewAccount) {
               NavigationService.pushReplacementNamed(Routes.welcome);
-            }else{
+            } else {
               NavigationService.pushReplacementNamed(Routes.layout);
             }
           } else {
@@ -125,7 +127,7 @@ class ProfileCubit extends Cubit<ProfileState> {
         emit(ProfileSuccess());
       },
       failure: (NetworkExceptions error) {
-        CacheService.clear();
+        DatabaseHelper.clearDatabase();
         NavigationService.pushReplacementNamed(Routes.login);
         error.showError();
         emit(ProfileFailure());

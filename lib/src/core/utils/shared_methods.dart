@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:jetcare/src/core/constants/cache_keys.dart';
-import 'package:jetcare/src/core/services/cache_service.dart';
+import 'package:jetcare/src/core/caching/database_helper.dart';
+import 'package:jetcare/src/core/caching/database_keys.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'enums.dart';
@@ -83,4 +83,8 @@ Future<void> openUrl(String url) async {
   }
 }
 
-bool isArabic = CacheService.get(key: CacheKeys.language) == Languages.ar.name;
+bool isArabic = DatabaseHelper.getItem(
+      boxName: DatabaseBox.appBox,
+      key: DatabaseKey.language,
+    ) ==
+    Languages.ar.name;
