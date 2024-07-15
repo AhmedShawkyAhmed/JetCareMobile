@@ -14,7 +14,8 @@ class CrewLayoutScreen extends StatefulWidget {
 
 class _CrewLayoutScreenState extends State<CrewLayoutScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  late LayoutCubit cubit = BlocProvider.of(context);
+  LayoutCubit cubit = LayoutCubit();
+
   @override
   void initState() {
     if (widget.current != null) {
@@ -22,28 +23,32 @@ class _CrewLayoutScreenState extends State<CrewLayoutScreen> {
     }
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LayoutCubit, LayoutState>(
-      builder: (context, state) {
-        return Scaffold(
-          backgroundColor: AppColors.mainColor,
-          key: scaffoldKey,
-          body: cubit.crewScreens[cubit.currentIndex],
-          bottomNavigationBar: BottomNavigationBar(
-            elevation: 0.0,
+    return BlocProvider(
+      create: (context) => cubit..init(),
+      child: BlocBuilder<LayoutCubit, LayoutState>(
+        builder: (context, state) {
+          return Scaffold(
             backgroundColor: AppColors.mainColor,
-            selectedItemColor: AppColors.primary,
-            unselectedItemColor: AppColors.shade,
-            type: BottomNavigationBarType.fixed,
-            currentIndex: cubit.currentIndex,
-            onTap: (index) {
-              cubit.changeIndex(index);
-            },
-            items: cubit.crewItem,
-          ),
-        );
-      },
+            key: scaffoldKey,
+            body: cubit.crewScreens[cubit.currentIndex],
+            bottomNavigationBar: BottomNavigationBar(
+              elevation: 0.0,
+              backgroundColor: AppColors.mainColor,
+              selectedItemColor: AppColors.primary,
+              unselectedItemColor: AppColors.shade,
+              type: BottomNavigationBarType.fixed,
+              currentIndex: cubit.currentIndex,
+              onTap: (index) {
+                cubit.changeIndex(index);
+              },
+              items: cubit.crewItem,
+            ),
+          );
+        },
+      ),
     );
   }
 }

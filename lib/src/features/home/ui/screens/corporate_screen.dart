@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:jetcare/src/core/resources/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
+import 'package:jetcare/src/core/resources/app_colors.dart';
 import 'package:jetcare/src/core/routing/arguments/home_arguments.dart';
 import 'package:jetcare/src/core/shared/globals.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
@@ -15,18 +15,32 @@ import 'package:jetcare/src/features/shared/widgets/default_text.dart';
 import 'package:jetcare/src/features/shared/widgets/default_text_field.dart';
 import 'package:sizer/sizer.dart';
 
-class CorporateScreen extends StatelessWidget {
+class CorporateScreen extends StatefulWidget {
   final HomeArguments arguments;
 
-  CorporateScreen({
+  const CorporateScreen({
     required this.arguments,
     super.key,
   });
 
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
-  final TextEditingController messageController = TextEditingController();
+  @override
+  State<CorporateScreen> createState() => _CorporateScreenState();
+}
+
+class _CorporateScreenState extends State<CorporateScreen> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController messageController = TextEditingController();
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    phoneController.dispose();
+    messageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +52,10 @@ class CorporateScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: 5.w, right: 5.w),
               child: CardView(
-                title:
-                    isArabic ? arguments.item!.nameAr : arguments.item!.nameEn,
-                image: arguments.item!.image!,
+                title: isArabic
+                    ? widget.arguments.item!.nameAr
+                    : widget.arguments.item!.nameEn,
+                image: widget.arguments.item!.image!,
                 height: 19.h,
                 mainHeight: 25.h,
                 titleFont: 15.sp,
@@ -62,14 +77,14 @@ class CorporateScreen extends StatelessWidget {
             SizedBox(
               height: 1.h,
             ),
-            if (arguments.item!.descriptionAr != "" &&
-                arguments.item!.descriptionAr != null)
+            if (widget.arguments.item!.descriptionAr != "" &&
+                widget.arguments.item!.descriptionAr != null)
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5.w),
                 child: DefaultText(
                   text: isArabic
-                      ? arguments.item!.descriptionAr.toString()
-                      : arguments.item!.descriptionEn.toString(),
+                      ? widget.arguments.item!.descriptionAr.toString()
+                      : widget.arguments.item!.descriptionEn.toString(),
                   fontSize: 12.sp,
                   maxLines: 200,
                   align: TextAlign.start,
@@ -105,7 +120,7 @@ class CorporateScreen extends StatelessWidget {
                 CorporateCubit(instance()).addCorporateOrder(
                   request: CorporateRequest(
                     userId: Globals.userData.id!,
-                    itemId: arguments.item!.id!,
+                    itemId: widget.arguments.item!.id!,
                     name: nameController.text,
                     email: emailController.text,
                     phone: phoneController.text,

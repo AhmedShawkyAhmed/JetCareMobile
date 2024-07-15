@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/resources/app_colors.dart';
 import 'package:jetcare/src/features/notifications/cubit/notification_cubit.dart';
 import 'package:jetcare/src/features/notifications/ui/widgets/notification_item.dart';
@@ -14,43 +15,46 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
-  late NotificationCubit cubit = BlocProvider.of(context);
+  NotificationCubit cubit = NotificationCubit(instance());
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.mainColor,
-      body: BodyView(
-        hasBack: true,
-        widget: BlocBuilder<NotificationCubit, NotificationState>(
-          builder: (context, state) {
-            if (state is GetNotificationLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            return cubit.notifications.isEmpty
-                ? const Center(
-                    child: DefaultText(text: "لا يوجد إشعارات"),
-                  )
-                : ListView.builder(
-                    itemCount: cubit.notifications.length,
-                    itemBuilder: (context, index) {
-                      return NotificationItem(
-                        id: cubit.notifications[index].id!,
-                        title: cubit.notifications[index].title!,
-                        message: cubit.notifications[index].message!,
-                        createdAt: cubit.notifications[index].createdAt!,
-                        isRead: cubit.notifications[index].isRead!,
-                        onTap: () {
-                          cubit.readNotification(
-                            id: cubit.notifications[index].id!,
-                          );
-                        },
-                      );
-                    },
-                  );
-          },
+    return BlocProvider(
+      create: (context) => cubit..getNotifications(),
+      child: Scaffold(
+        backgroundColor: AppColors.mainColor,
+        body: BodyView(
+          hasBack: true,
+          widget: BlocBuilder<NotificationCubit, NotificationState>(
+            builder: (context, state) {
+              if (state is GetNotificationLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return cubit.notifications.isEmpty
+                  ? const Center(
+                      child: DefaultText(text: "لا يوجد إشعارات"),
+                    )
+                  : ListView.builder(
+                      itemCount: cubit.notifications.length,
+                      itemBuilder: (context, index) {
+                        return NotificationItem(
+                          id: cubit.notifications[index].id!,
+                          title: cubit.notifications[index].title!,
+                          message: cubit.notifications[index].message!,
+                          createdAt: cubit.notifications[index].createdAt!,
+                          isRead: cubit.notifications[index].isRead!,
+                          onTap: () {
+                            cubit.readNotification(
+                              id: cubit.notifications[index].id!,
+                            );
+                          },
+                        );
+                      },
+                    );
+            },
+          ),
         ),
       ),
     );

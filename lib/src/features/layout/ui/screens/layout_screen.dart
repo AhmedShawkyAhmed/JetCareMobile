@@ -14,7 +14,7 @@ class LayoutScreen extends StatefulWidget {
 
 class _LayoutScreenState extends State<LayoutScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  late LayoutCubit cubit = BlocProvider.of(context);
+  LayoutCubit cubit = LayoutCubit();
 
   @override
   void initState() {
@@ -26,28 +26,31 @@ class _LayoutScreenState extends State<LayoutScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LayoutCubit, LayoutState>(
-      builder: (context, state) {
-        return Scaffold(
-          backgroundColor: AppColors.mainColor,
-          key: scaffoldKey,
-          body: cubit.clientScreens[cubit.currentIndex],
-          bottomNavigationBar: BottomNavigationBar(
-            elevation: 0.0,
-            showSelectedLabels: true,
-            showUnselectedLabels: true,
+    return BlocProvider(
+      create: (context) => cubit..init(),
+      child: BlocBuilder<LayoutCubit, LayoutState>(
+        builder: (context, state) {
+          return Scaffold(
             backgroundColor: AppColors.mainColor,
-            selectedItemColor: AppColors.primary,
-            unselectedItemColor: AppColors.shade,
-            type: BottomNavigationBarType.fixed,
-            currentIndex: cubit.currentIndex,
-            onTap: (index) {
-              cubit.changeIndex(index);
-            },
-            items: cubit.clientItem,
-          ),
-        );
-      },
+            key: scaffoldKey,
+            body: cubit.clientScreens[cubit.currentIndex],
+            bottomNavigationBar: BottomNavigationBar(
+              elevation: 0.0,
+              showSelectedLabels: true,
+              showUnselectedLabels: true,
+              backgroundColor: AppColors.mainColor,
+              selectedItemColor: AppColors.primary,
+              unselectedItemColor: AppColors.shade,
+              type: BottomNavigationBarType.fixed,
+              currentIndex: cubit.currentIndex,
+              onTap: (index) {
+                cubit.changeIndex(index);
+              },
+              items: cubit.clientItem,
+            ),
+          );
+        },
+      ),
     );
   }
 }

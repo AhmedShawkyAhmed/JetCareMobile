@@ -28,8 +28,13 @@ class ConfirmOrderScreen extends StatefulWidget {
 }
 
 class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
-  final TextEditingController reasonController = TextEditingController();
+   TextEditingController reasonController = TextEditingController();
 
+   @override
+  void dispose() {
+     reasonController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

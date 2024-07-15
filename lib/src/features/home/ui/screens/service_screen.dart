@@ -37,6 +37,11 @@ class _ServiceScreenState extends State<ServiceScreen> {
   TextEditingController quantityController = TextEditingController();
 
   @override
+  void dispose() {
+    quantityController.dispose();
+    super.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),

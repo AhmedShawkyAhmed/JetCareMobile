@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/resources/app_colors.dart';
 import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
@@ -22,7 +23,7 @@ class InfoScreen extends StatefulWidget {
 }
 
 class _InfoScreenState extends State<InfoScreen> {
-  late SupportCubit cubit = BlocProvider.of(context);
+   SupportCubit cubit = SupportCubit(instance());
 
   @override
   void initState() {
@@ -36,57 +37,60 @@ class _InfoScreenState extends State<InfoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.mainColor,
-      body: BodyView(
-        widget: BlocBuilder<SupportCubit, SupportState>(
-          builder: (context, state) {
-            if (state is GetInfoLoading) {
-              return ListView.builder(
-                itemBuilder: (context, index) {
-                  return LoadingView(
-                    height: 15.h,
-                  );
-                },
+    return BlocProvider(
+      create: (context) => cubit,
+      child: Scaffold(
+        backgroundColor: AppColors.mainColor,
+        body: BodyView(
+          widget: BlocBuilder<SupportCubit, SupportState>(
+            builder: (context, state) {
+              if (state is GetInfoLoading) {
+                return ListView.builder(
+                  itemBuilder: (context, index) {
+                    return LoadingView(
+                      height: 15.h,
+                    );
+                  },
+                );
+              }
+              return Column(
+                children: [
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  DefaultText(
+                    text: isArabic
+                        ? widget.type == InfoType.terms
+                        ? cubit.terms?.titleAr ?? "الشروط والأحكام"
+                        : cubit.about?.titleAr ?? "من نحن"
+                        : widget.type == InfoType.terms
+                        ? cubit.terms?.titleEn ?? "Terms & Conditions"
+                        : cubit.about?.titleEn ?? "About Us",
+                    fontSize: 20.sp,
+                  ),
+                  Expanded(
+                      child: ListView(
+                        padding: EdgeInsets.symmetric(horizontal: 5.w,
+                            vertical: 2.h),
+                        children: [
+                          DefaultText(
+                            text: isArabic
+                                ? widget.type == InfoType.terms
+                                ? cubit.terms?.contentAr ?? ""
+                                : cubit.about?.contentAr ?? ""
+                                : widget.type == InfoType.terms
+                                ? cubit.terms?.contentEn ?? ""
+                                : cubit.about?.contentEn ?? "",
+                            fontSize: 16.sp,
+                            maxLines: 300,
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ],
+                      )),
+                ],
               );
-            }
-            return Column(
-              children: [
-                SizedBox(
-                  height: 5.h,
-                ),
-                DefaultText(
-                  text: isArabic
-                      ? widget.type == InfoType.terms
-                      ? cubit.terms?.titleAr ?? "الشروط والأحكام"
-                      : cubit.about?.titleAr ?? "من نحن"
-                      : widget.type == InfoType.terms
-                      ? cubit.terms?.titleEn ?? "Terms & Conditions"
-                      : cubit.about?.titleEn ?? "About Us",
-                  fontSize: 20.sp,
-                ),
-                Expanded(
-                    child: ListView(
-                      padding: EdgeInsets.symmetric(horizontal: 5.w,
-                          vertical: 2.h),
-                      children: [
-                        DefaultText(
-                          text: isArabic
-                              ? widget.type == InfoType.terms
-                              ? cubit.terms?.contentAr ?? ""
-                              : cubit.about?.contentAr ?? ""
-                              : widget.type == InfoType.terms
-                              ? cubit.terms?.contentEn ?? ""
-                              : cubit.about?.contentEn ?? "",
-                          fontSize: 16.sp,
-                          maxLines: 300,
-                          fontWeight: FontWeight.w300,
-                        ),
-                      ],
-                    )),
-              ],
-            );
-          },
+            },
+          ),
         ),
       ),
     );

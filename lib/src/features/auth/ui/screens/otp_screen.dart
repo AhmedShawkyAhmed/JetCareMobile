@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:jetcare/src/core/resources/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
+import 'package:jetcare/src/core/resources/app_colors.dart';
 import 'package:jetcare/src/core/routing/arguments/otp_arguments.dart';
-import 'package:jetcare/src/features/shared/widgets/default_app_button.dart';
-import 'package:jetcare/src/features/shared/widgets/default_text.dart';
 import 'package:jetcare/src/core/utils/enums.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/features/auth/cubit/auth_cubit.dart';
 import 'package:jetcare/src/features/shared/views/body_view.dart';
+import 'package:jetcare/src/features/shared/widgets/default_app_button.dart';
+import 'package:jetcare/src/features/shared/widgets/default_text.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:sizer/sizer.dart';
 
-class OTPScreen extends StatelessWidget {
+class OTPScreen extends StatefulWidget {
   final OtpArguments arguments;
 
   const OTPScreen({
@@ -22,8 +22,20 @@ class OTPScreen extends StatelessWidget {
   });
 
   @override
+  State<OTPScreen> createState() => _OTPScreenState();
+}
+
+class _OTPScreenState extends State<OTPScreen> {
+  TextEditingController verifyCodeController = TextEditingController();
+
+  @override
+  void dispose() {
+    verifyCodeController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    TextEditingController verifyCodeController = TextEditingController();
     return Scaffold(
       backgroundColor: AppColors.mainColor,
       body: BodyView(
@@ -40,7 +52,7 @@ class OTPScreen extends StatelessWidget {
               height: 1.h,
             ),
             DefaultText(
-              text: arguments.email,
+              text: widget.arguments.email,
               fontSize: 15.sp,
             ),
             Padding(
@@ -83,7 +95,7 @@ class OTPScreen extends StatelessWidget {
               textColor: AppColors.primaryLight,
               onTap: () {
                 AuthCubit(instance()).verifyEmail(
-                  email: arguments.email,
+                  email: widget.arguments.email,
                   type: OTPTypes.resend,
                 );
               },
@@ -95,8 +107,8 @@ class OTPScreen extends StatelessWidget {
               title: translate(AppStrings.verify),
               onTap: () async {
                 AuthCubit(instance()).validateCode(
-                  type: arguments.type,
-                  email: arguments.email,
+                  type: widget.arguments.type,
+                  email: widget.arguments.email,
                   code: verifyCodeController.text,
                 );
               },

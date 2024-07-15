@@ -54,15 +54,13 @@ Future<void> initAppModule() async {
   instance.registerFactory<LanguageCubit>(() => LanguageCubit());
   instance.registerFactory<ProfileCubit>(() => ProfileCubit(instance()));
   instance.registerFactory<AuthCubit>(() => AuthCubit(instance()));
-  instance.registerLazySingleton<CrewCubit>(() => CrewCubit(instance()));
-  instance
-      .registerFactory<NotificationCubit>(() => NotificationCubit(instance()));
+  instance.registerFactory<CrewCubit>(() => CrewCubit(instance()));
+  instance.registerFactory<NotificationCubit>(() => NotificationCubit(instance()));
   instance.registerFactory<SupportCubit>(() => SupportCubit(instance()));
   instance.registerFactory<AddressCubit>(() => AddressCubit(instance()));
   instance.registerFactory<HomeCubit>(() => HomeCubit(instance()));
   instance.registerFactory<CartCubit>(() => CartCubit(instance()));
-  instance
-      .registerFactory<AppointmentCubit>(() => AppointmentCubit(instance()));
+  instance.registerFactory<AppointmentCubit>(() => AppointmentCubit(instance()));
   instance.registerFactory<CorporateCubit>(() => CorporateCubit(instance()));
   instance.registerFactory<OrdersCubit>(() => OrdersCubit(instance()));
 
@@ -70,39 +68,25 @@ Future<void> initAppModule() async {
   instance.registerLazySingleton<AuthRepo>(() => AuthRepo(instance()));
   instance.registerLazySingleton<ProfileRepo>(() => ProfileRepo(instance()));
   instance.registerLazySingleton<CrewRepo>(() => CrewRepo(instance()));
-  instance.registerLazySingleton<NotificationRepo>(
-      () => NotificationRepo(instance()));
+  instance.registerLazySingleton<NotificationRepo>(() => NotificationRepo(instance()));
   instance.registerLazySingleton<SupportRepo>(() => SupportRepo(instance()));
   instance.registerLazySingleton<AddressRepo>(() => AddressRepo(instance()));
   instance.registerLazySingleton<HomeRepo>(() => HomeRepo(instance()));
   instance.registerLazySingleton<CartRepo>(() => CartRepo(instance()));
-  instance.registerLazySingleton<AppointmentRepo>(
-      () => AppointmentRepo(instance()));
-  instance
-      .registerLazySingleton<CorporateRepo>(() => CorporateRepo(instance()));
+  instance.registerLazySingleton<AppointmentRepo>(() => AppointmentRepo(instance()));
+  instance.registerLazySingleton<CorporateRepo>(() => CorporateRepo(instance()));
   instance.registerLazySingleton<OrdersRepo>(() => OrdersRepo(instance()));
 
   // --------------------- Web Service
-  instance
-      .registerLazySingleton<AuthWebService>(() => AuthWebService(instance()));
-  instance.registerLazySingleton<ProfileWebService>(
-      () => ProfileWebService(instance()));
-  instance
-      .registerLazySingleton<CrewWebService>(() => CrewWebService(instance()));
-  instance.registerLazySingleton<NotificationWebService>(
-      () => NotificationWebService(instance()));
-  instance.registerLazySingleton<SupportWebService>(
-      () => SupportWebService(instance()));
-  instance.registerLazySingleton<AddressWebService>(
-      () => AddressWebService(instance()));
-  instance
-      .registerLazySingleton<HomeWebService>(() => HomeWebService(instance()));
-  instance
-      .registerLazySingleton<CartWebService>(() => CartWebService(instance()));
-  instance.registerLazySingleton<AppointmentWebService>(
-      () => AppointmentWebService(instance()));
-  instance.registerLazySingleton<CorporateWebService>(
-      () => CorporateWebService(instance()));
-  instance.registerLazySingleton<OrdersWebService>(
-      () => OrdersWebService(instance()));
+  instance.registerLazySingleton<AuthWebService>(() => AuthWebService(instance()));
+  instance.registerLazySingleton<ProfileWebService>(() => ProfileWebService(instance()));
+  instance.registerLazySingleton<CrewWebService>(() => CrewWebService(instance()));
+  instance.registerLazySingleton<NotificationWebService>(() => NotificationWebService(instance()));
+  instance.registerLazySingleton<SupportWebService>(() => SupportWebService(instance()));
+  instance.registerLazySingleton<AddressWebService>(() => AddressWebService(instance()));
+  instance.registerLazySingleton<HomeWebService>(() => HomeWebService(instance()));
+  instance.registerLazySingleton<CartWebService>(() => CartWebService(instance()));
+  instance.registerLazySingleton<AppointmentWebService>(() => AppointmentWebService(instance()));
+  instance.registerLazySingleton<CorporateWebService>(() => CorporateWebService(instance()));
+  instance.registerLazySingleton<OrdersWebService>(() => OrdersWebService(instance()));
 }

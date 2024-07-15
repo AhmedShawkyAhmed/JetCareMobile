@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:jetcare/src/core/resources/app_colors.dart';
 import 'package:jetcare/src/core/constants/app_strings.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
+import 'package:jetcare/src/core/resources/app_colors.dart';
 import 'package:jetcare/src/core/routing/routes.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
 import 'package:jetcare/src/core/shared/globals.dart';
@@ -32,7 +32,7 @@ class AddAddressScreen extends StatefulWidget {
 }
 
 class _AddAddressScreenState extends State<AddAddressScreen> {
-  late AddressCubit cubit = BlocProvider.of(context);
+  AddressCubit cubit = AddressCubit(instance());
   TextEditingController phoneController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController locationController = TextEditingController();
@@ -50,158 +50,163 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.mainColor,
-      body: BodyView(
-        widget: ListView(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: 2.h,
-                  ),
-                  child: DefaultText(
-                    text: translate(AppStrings.addAddress),
-                    fontSize: 20.sp,
-                  ),
-                ),
-              ],
-            ),
-            DefaultTextField(
-              controller: phoneController,
-              hintText: widget.address != null
-                  ? widget.address!.phone!
-                  : translate(AppStrings.phone),
-              keyboardType: TextInputType.phone,
-            ),
-            DefaultTextField(
-              controller: addressController,
-              hintText: widget.address != null
-                  ? widget.address!.address!
-                  : translate(AppStrings.orderAddress),
-            ),
-            BlocBuilder<AddressCubit, AddressState>(
-              builder: (context, state) {
-                return cubit.states.isEmpty
-                    ? const SizedBox()
-                    : Container(
-                        height: 5.h,
-                        width: 100.w,
-                        margin: EdgeInsets.symmetric(
-                            horizontal: 10.w, vertical: 2.h),
-                        child: DefaultDropdown<AreaModel>(
-                          hint: translate(AppStrings.state),
-                          showSearchBox: true,
-                          itemAsString: (AreaModel? u) => u?.nameAr ?? "",
-                          items: cubit.states,
-                          onChanged: (val) {
-                            setState(() {
-                              stateId = val!.id!;
-                              cubit.getAreasOfState(stateId: stateId);
-                            });
-                          },
-                        ),
-                      );
-              },
-            ),
-            BlocBuilder<AddressCubit, AddressState>(
-              builder: (context, state) {
-                return cubit.areas.isEmpty
-                    ? const SizedBox()
-                    : Container(
-                        height: 5.h,
-                        width: 100.w,
-                        margin: EdgeInsets.symmetric(
-                            horizontal: 10.w, vertical: 2.h),
-                        child: DefaultDropdown<AreaModel>(
-                          hint: translate(AppStrings.area),
-                          showSearchBox: true,
-                          itemAsString: (AreaModel? u) => u?.nameAr ?? "",
-                          items: cubit.areas,
-                          onChanged: (val) {
-                            setState(() {
-                              areaId = val!.id!;
-                            });
-                          },
-                        ),
-                      );
-              },
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.w),
-              child: Row(
+    return BlocProvider(
+      create: (context) => cubit..getStates(),
+      child: Scaffold(
+        backgroundColor: AppColors.mainColor,
+        body: BodyView(
+          widget: ListView(
+            children: [
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  DefaultTextField(
-                    marginHorizontal: 3.w,
-                    width: 66.w,
-                    controller: locationController,
-                    enabled: false,
-                    hintText: cubit.addressLocation.latitude == 0.0
-                        ? widget.address != null
-                            ? "${widget.address!.latitude!}, ${widget.address!.longitude!}"
-                            : translate(AppStrings.location)
-                        : "${cubit.addressLocation.latitude}, ${cubit.addressLocation.longitude}",
-                  ),
-                  InkWell(
-                    onTap: () async {
-                      cubit.addressLocation =
-                          await NavigationService.pushNamed(Routes.map);
-                    },
-                    child: Container(
-                      width: 10.w,
-                      height: 10.w,
-                      decoration: BoxDecoration(
-                          color: AppColors.primary,
-                          borderRadius: BorderRadius.circular(6)),
-                      child: Icon(
-                        Icons.location_on_rounded,
-                        color: AppColors.white,
-                        size: 20.sp,
-                      ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 2.h,
+                    ),
+                    child: DefaultText(
+                      text: translate(AppStrings.addAddress),
+                      fontSize: 20.sp,
                     ),
                   ),
-                  const Spacer(),
                 ],
               ),
-            ),
-            widget.address != null
-                ? DefaultAppButton(
-                    title: translate(AppStrings.save),
-                    onTap: () {
-                      AddressCubit(instance()).updateAddress(
-                        request: AddressRequest(
-                          id: widget.address!.id!,
-                          userId: Globals.userData.id,
-                          phone: phoneController.text,
-                          address: addressController.text,
-                          stateId: stateId,
-                          areaId: areaId,
-                          latitude: cubit.addressLocation.latitude.toString(),
-                          longitude: cubit.addressLocation.longitude.toString(),
+              DefaultTextField(
+                controller: phoneController,
+                hintText: widget.address != null
+                    ? widget.address!.phone!
+                    : translate(AppStrings.phone),
+                keyboardType: TextInputType.phone,
+              ),
+              DefaultTextField(
+                controller: addressController,
+                hintText: widget.address != null
+                    ? widget.address!.address!
+                    : translate(AppStrings.orderAddress),
+              ),
+              BlocBuilder<AddressCubit, AddressState>(
+                builder: (context, state) {
+                  return cubit.states.isEmpty
+                      ? const SizedBox()
+                      : Container(
+                          height: 5.h,
+                          width: 100.w,
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 10.w, vertical: 2.h),
+                          child: DefaultDropdown<AreaModel>(
+                            hint: translate(AppStrings.state),
+                            showSearchBox: true,
+                            itemAsString: (AreaModel? u) => u?.nameAr ?? "",
+                            items: cubit.states,
+                            onChanged: (val) {
+                              setState(() {
+                                stateId = val!.id!;
+                                cubit.getAreasOfState(stateId: stateId);
+                              });
+                            },
+                          ),
+                        );
+                },
+              ),
+              BlocBuilder<AddressCubit, AddressState>(
+                builder: (context, state) {
+                  return cubit.areas.isEmpty
+                      ? const SizedBox()
+                      : Container(
+                          height: 5.h,
+                          width: 100.w,
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 10.w, vertical: 2.h),
+                          child: DefaultDropdown<AreaModel>(
+                            hint: translate(AppStrings.area),
+                            showSearchBox: true,
+                            itemAsString: (AreaModel? u) => u?.nameAr ?? "",
+                            items: cubit.areas,
+                            onChanged: (val) {
+                              setState(() {
+                                areaId = val!.id!;
+                              });
+                            },
+                          ),
+                        );
+                },
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    DefaultTextField(
+                      marginHorizontal: 3.w,
+                      width: 66.w,
+                      controller: locationController,
+                      enabled: false,
+                      hintText: cubit.addressLocation.latitude == 0.0
+                          ? widget.address != null
+                              ? "${widget.address!.latitude!}, ${widget.address!.longitude!}"
+                              : translate(AppStrings.location)
+                          : "${cubit.addressLocation.latitude}, ${cubit.addressLocation.longitude}",
+                    ),
+                    InkWell(
+                      onTap: () async {
+                        cubit.addressLocation =
+                            await NavigationService.pushNamed(Routes.map);
+                      },
+                      child: Container(
+                        width: 10.w,
+                        height: 10.w,
+                        decoration: BoxDecoration(
+                            color: AppColors.primary,
+                            borderRadius: BorderRadius.circular(6)),
+                        child: Icon(
+                          Icons.location_on_rounded,
+                          color: AppColors.white,
+                          size: 20.sp,
                         ),
-                      );
-                    },
-                  )
-                : DefaultAppButton(
-                    title: translate(AppStrings.aAddress),
-                    onTap: () {
-                      AddressCubit(instance()).addAddress(
-                        request: AddressRequest(
-                          userId: Globals.userData.id!,
-                          phone: phoneController.text,
-                          address: addressController.text,
-                          stateId: stateId,
-                          areaId: areaId,
-                          latitude: cubit.addressLocation.latitude.toString(),
-                          longitude: cubit.addressLocation.longitude.toString(),
-                        ),
-                      );
-                    },
-                  ),
-          ],
+                      ),
+                    ),
+                    const Spacer(),
+                  ],
+                ),
+              ),
+              widget.address != null
+                  ? DefaultAppButton(
+                      title: translate(AppStrings.save),
+                      onTap: () {
+                        AddressCubit(instance()).updateAddress(
+                          request: AddressRequest(
+                            id: widget.address!.id!,
+                            userId: Globals.userData.id,
+                            phone: phoneController.text,
+                            address: addressController.text,
+                            stateId: stateId,
+                            areaId: areaId,
+                            latitude: cubit.addressLocation.latitude.toString(),
+                            longitude:
+                                cubit.addressLocation.longitude.toString(),
+                          ),
+                        );
+                      },
+                    )
+                  : DefaultAppButton(
+                      title: translate(AppStrings.aAddress),
+                      onTap: () {
+                        AddressCubit(instance()).addAddress(
+                          request: AddressRequest(
+                            userId: Globals.userData.id!,
+                            phone: phoneController.text,
+                            address: addressController.text,
+                            stateId: stateId,
+                            areaId: areaId,
+                            latitude: cubit.addressLocation.latitude.toString(),
+                            longitude:
+                                cubit.addressLocation.longitude.toString(),
+                          ),
+                        );
+                      },
+                    ),
+            ],
+          ),
         ),
       ),
     );
