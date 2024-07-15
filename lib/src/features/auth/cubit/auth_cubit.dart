@@ -190,13 +190,13 @@ class AuthCubit extends Cubit<AuthState> {
     );
     response.when(
       success: (NetworkBaseModel response) async {
-        emit(LoginSuccess());
         await CacheService.add(key: CacheKeys.token, value: response.data!.token);
         Globals.userData.token = response.data!.token;
         if (await CacheService.get(key: CacheKeys.fcm) != null) {
           await updateFCM(id: response.data!.id!);
         }
         await ProfileCubit(instance()).getProfile();
+        emit(LoginSuccess());
       },
       failure: (NetworkExceptions error) {
         emit(LoginFailure());
