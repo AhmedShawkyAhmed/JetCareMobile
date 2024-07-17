@@ -5,6 +5,7 @@ import 'package:jetcare/src/core/caching/database_keys.dart';
 import 'package:jetcare/src/core/di/service_locator.dart';
 import 'package:jetcare/src/core/routing/routes.dart';
 import 'package:jetcare/src/core/services/navigation_service.dart';
+import 'package:jetcare/src/core/shared/globals.dart';
 import 'package:jetcare/src/core/utils/shared_methods.dart';
 import 'package:jetcare/src/features/profile/cubit/profile_cubit.dart';
 
@@ -14,11 +15,13 @@ class SplashCubit extends Cubit<SplashState> {
   SplashCubit() : super(SplashInitial());
 
   Future<void> init() async {
-    String? token = DatabaseHelper.getItem(
-        boxName: DatabaseBox.appBox, key: DatabaseKey.token);
-    printLog("Token | $token");
+    Globals.userData.token = await DatabaseHelper.getItem(
+      boxName: DatabaseBox.appBox,
+      key: DatabaseKey.token,
+    );
+    printLog("Token | ${Globals.userData.token}");
     await Future.delayed(const Duration(seconds: 2), () {
-      if (token == null) {
+      if (Globals.userData.token == null) {
         NavigationService.pushNamedAndRemoveUntil(
             Routes.login, (route) => false);
       } else {

@@ -97,6 +97,10 @@ class ProfileCubit extends Cubit<ProfileState> {
     response.when(
       success: (NetworkBaseModel response) async {
         Globals.userData = response.data!;
+        Globals.userData.token = await DatabaseHelper.getItem(
+          boxName: DatabaseBox.appBox,
+          key: DatabaseKey.token,
+        );
         printSuccess(Globals.userData.role);
         if (Globals.userData.isActive == false) {
           NavigationService.pushNamedAndRemoveUntil(

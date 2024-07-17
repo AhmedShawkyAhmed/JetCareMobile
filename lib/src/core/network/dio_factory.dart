@@ -1,22 +1,25 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 
 import 'default_headers_interceptor.dart';
 import 'end_points.dart';
 
-class DioFactory {
-  Future<Dio> getDio() async {
-    Dio dio = Dio();
+class DioHelper {
+  DioHelper._();
 
-    dio.options = BaseOptions(
-      baseUrl: EndPoints.baseUrl,
-      receiveDataWhenStatusError: true,
-      receiveTimeout: const Duration(seconds: 120),
-      sendTimeout: const Duration(seconds: 120),
-    );
+  static Dio get dio => _initializeDioIfNeeded();
+  static Dio? _dio;
 
-    if (!kReleaseMode) {
-      dio.interceptors.addAll([
+  static Dio _initializeDioIfNeeded() {
+    if (_dio == null) {
+      _dio = Dio(
+        BaseOptions(
+          baseUrl: EndPoints.baseUrl,
+          receiveDataWhenStatusError: true,
+          connectTimeout: const Duration(seconds: 30),
+          sendTimeout: null,
+        ),
+      );
+      _dio!.interceptors.addAll([
         LogInterceptor(
           responseBody: true,
           error: true,
@@ -28,7 +31,6 @@ class DioFactory {
         DefaultHeadersInterceptor(dio: dio)
       ]);
     }
-
-    return dio;
+    return _dio!;
   }
 }

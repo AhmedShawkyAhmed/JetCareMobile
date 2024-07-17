@@ -24,8 +24,10 @@ void main() async {
   await NotificationService.init();
   Bloc.observer = MyBlocObserver();
   packageInfo = await PackageInfo.fromPlatform();
-  String? lang = DatabaseHelper.getItem(
-      boxName: DatabaseBox.appBox, key: DatabaseKey.language);
+  String? lang = await DatabaseHelper.getItem(
+    boxName: DatabaseBox.appBox,
+    key: DatabaseKey.language,
+  );
   final locale = lang ?? Languages.ar.name;
   DatabaseHelper.putItem(
     boxName: DatabaseBox.appBox,

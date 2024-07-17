@@ -190,12 +190,12 @@ class AuthCubit extends Cubit<AuthState> {
     );
     response.when(
       success: (NetworkBaseModel response) async {
+        Globals.userData.token = response.data!.token;
         await DatabaseHelper.putItem(
           boxName: DatabaseBox.appBox,
           key: DatabaseKey.token,
           item: response.data!.token,
         );
-        Globals.userData.token = response.data!.token;
         if (await DatabaseHelper.getItem(
                 boxName: DatabaseBox.appBox, key: DatabaseKey.fcmToken) !=
             null) {
